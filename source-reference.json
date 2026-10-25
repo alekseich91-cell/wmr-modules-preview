@@ -4,7 +4,27 @@
     "templates/core/settings_tabs/_modules.html": "94f357d1ded801a24b1ad5cd2c640cbcd08f47884cdc1cef66de4fb70aed4456",
     "templates/core/settings_tabs/_nav.html": "994f5fab1c6bd0aa8c00a776e3118c9c20561c141f73790b98c63052d875492a",
     "core/modules.py": "e1165ef1b28d0cbc7bdb1f2043b2018d46f21c4c62c57fd743e82924577d2398",
-    "core/warehouse_input.py": "cffacc88f76c6ca756209c876e239771ca1d6316e1075f63e1026dc3fb151fec"
+    "core/warehouse_input.py": "cffacc88f76c6ca756209c876e239771ca1d6316e1075f63e1026dc3fb151fec",
+    "core/module_guards.py": "10df2f81a93d19f1bc815568130b8821133c4a69d7eb9ca839118c7183d19d68",
+    "core/views_settings.py": "da232ea49ce6433ac080e70b19ef39e64d5200cc95956b9f3adb104ea291adcf",
+    "core/permissions.py": "a77f3f0c386db9f13cb1307306e62daa88079efbb942c28c7756be3b3dfb9f03",
+    "tests/test_module_toggles_phase7.py": "d84808b066ee3af688334641d982ed469c119534c789a2ec3b409d6dc9b53300"
   },
-  "rendering": "Original Django module and settings-navigation templates rendered offline. Pricing annotations and client-side interactions are added by the prototype. Warehouse contract v1 uses the mode selector instead of the legacy scanner checkbox."
+  "rendering": "Original Django module and settings-navigation templates rendered offline. Pricing annotations and client-side interactions are added by the prototype. Warehouse contract v1 uses the mode selector instead of the legacy scanner checkbox.",
+  "pricing_version": 3,
+  "core_findings": {
+    "permanent_cards": [
+      "calendar",
+      "estimates",
+      "catalog"
+    ],
+    "evidence": "MODULE_REGISTRY category=core; save_modules excludes core from new_disabled; RegistryCoreTilesTests verifies optional sets exclude core.",
+    "conditional_blocks": {
+      "smart_loading": "Finalized loading lists with pending returns.",
+      "alerts": "Unacknowledged at-risk items on reserved/confirmed estimates not past project return."
+    },
+    "dependencies": "Treasury permission includes accounting permission. Prototype couples these paid modules.",
+    "limits": "No live database access. Blockers are explained, not simulated. Acceptance has a WARN definition, but save_modules only applies module guards to newly disabled unflagged modules; acceptance uses a dedicated flag.",
+    "commercial_proposal": "10,000 core + 36,000 optional modules + 4,000 advanced tools/mode = 50,000. UI preferences, mobile access, notifications, feedback and help have no surcharge."
+  }
 }

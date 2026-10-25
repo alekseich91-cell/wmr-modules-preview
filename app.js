@@ -1,8 +1,8 @@
-import {makeState, calculate, moduleTotal, setModule, setOption, restore, normalizeCalendar} from './model.js?v=2';
+import {makeState, calculate, moduleTotal, setModule, setOption, restore, normalizeCalendar} from './model.js?v=3';
 const $ = id => document.getElementById(id);
 const money = n => new Intl.NumberFormat('ru-RU').format(n);
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const key = 'wmr-pricing-v2';
+const key = 'wmr-pricing-v3';
 let catalog, originalHTML, state, filter = 'all', category = 'all', expanded = true, toastTimer;
 
 function showToast(text) {
@@ -36,30 +36,38 @@ function renderCatalog() {
     el.id=`group-${group}`;el.dataset.group=group;
     const heading=el.querySelector('h6');
     const sum=catalog.modules.filter(m=>m.group===group).reduce((n,m)=>n+moduleTotal(m,state),0);
-    heading.append(priceTag(sum?`${money(sum)} ₽/мес`:'Не выбрано','group-price'));
+    const hasSelected=catalog.modules.some(m=>m.group===group&&state.modules[m.id]);
+    heading.append(priceTag(sum?`${money(sum)} ₽/мес`:hasSelected?'Без доплаты':'Не выбрано','group-price'));
   }
   for (const m of catalog.modules) {
     const card=m.id==='mobile'?$('mobileBlock'):form.querySelector(`[data-module="${m.id}"]`);
     card.removeAttribute('data-module');card.dataset.card=m.id;
     card.classList.add('original-module');card.classList.toggle('enabled',state.modules[m.id]);
     const head=card.querySelector('.card-header');
+    card.id=`card-${m.id}`;
     let master=head.querySelector('input[type="checkbox"]');
-    if(!master){
-      head.querySelector('.badge')?.remove();
+    if(!m.core){
+      if(!master){
+        head.querySelector('.badge')?.remove();
       const wrap=document.createElement('div');wrap.className='form-check form-switch mb-0 flex-shrink-0';
       master=document.createElement('input');master.type='checkbox';master.className='form-check-input mod-switch';wrap.append(master);head.append(wrap);
     }
     master.id=`module-${m.id}`;master.dataset.module=m.id;master.checked=!!state.modules[m.id];master.setAttribute('aria-label',m.label);
+    }else{
+      head.querySelector('.badge').innerHTML='<i class="bi bi-lock-fill"></i> Ядро';
+      head.querySelector('.badge').title='Обязательная часть WMR — отключение не предусмотрено';
+    }
     const priceRow=document.createElement('div');priceRow.className='pricing-module-row';
-    priceRow.innerHTML=`<strong>${m.custom?'Индивидуально':`${money(m.price)} ₽ <small>/ мес</small>`}</strong><span>${m.custom?'Вне общего итога':`Выбрано: ${money(moduleTotal(m,state))} ₽`}</span>`;
+    priceRow.innerHTML=`<strong>${m.custom?'Индивидуально':m.price?`${money(m.price)} ₽ <small>/ мес</small>`:'Без доплаты'}</strong><span>${m.custom?'Вне общего итога':m.core?'Обязательная часть':m.price?`Выбрано: ${money(moduleTotal(m,state))} ₽`:'Можно скрыть'}</span>`;
     head.after(priceRow);
+    if(m.note){const note=document.createElement('div');note.className='module-billing-note';note.textContent=m.note;priceRow.after(note);}
     const sub=card.querySelector('.core-opts,.sub-opts') || (m.id==='mobile'?$('mobileBlockBody'):null);
     if(sub){sub.classList.toggle('d-none',!expanded&&!query);sub.classList.toggle('inactive-options',!state.modules[m.id]);}
     for(const o of m.options){
       if(o.type==='multi'){
         for(const input of card.querySelectorAll(`[data-mo-list="${o.key}"]`)){
           input.dataset.multi=o.key;input.checked=state.values[o.key].includes(input.value);input.disabled=!state.modules[m.id];
-          input.closest('.form-check').append(priceTag(`+${money(o.choicePrices[input.value])} ₽`));
+          if(o.choicePrices[input.value])input.closest('.form-check').append(priceTag(`+${money(o.choicePrices[input.value])} ₽`));
         }
         continue;
       }
@@ -71,7 +79,7 @@ function renderCatalog() {
       const row=input.closest('.js-search-sub')||input.parentElement;
       if(o.type==='bool'){
         input.checked=!!state.options[o.key];input.dataset.option=o.key;
-        const tag=priceTag(`+${money(o.price)} ₽`);if(label)label.after(tag);else row.append(tag);
+        if(o.price){const tag=priceTag(`+${money(o.price)} ₽`);if(label)label.after(tag);else row.append(tag);}
       }else{
         input.dataset.value=o.key;input.value=state.values[o.key];
         if(o.type==='select'&&o.choicePrices){
@@ -97,13 +105,14 @@ function renderQuote() {
   const bill = calculate(catalog,state);
   $('total').textContent = money(bill.total);
   $('mobile-total').textContent = `${money(bill.total)} ₽/мес${bill.custom ? ' + склады' : ''}`;
+  $('core-total').textContent = `${money(bill.core)} ₽`;
   $('module-total').textContent = `${money(bill.modules)} ₽`;
   $('option-total').textContent = `${money(bill.options)} ₽`;
-  $('module-count').textContent = catalog.modules.filter(m => state.modules[m.id] && m.price).length;
+  $('module-count').textContent = catalog.modules.filter(m => state.modules[m.id] && m.price && !m.core).length;
   $('option-count').textContent = bill.items.filter(i => i.parent).length;
   $('progress-fill').style.width = `${bill.total/catalog.full*100}%`;
   $('package-share').textContent = `${Math.round(bill.total/catalog.full*100)}% полного набора`;
-  $('total-caption').textContent = bill.custom ? 'Подписка + индивидуальный расчёт складов' : 'За выбранные модули и настройки';
+  $('total-caption').textContent = bill.custom ? 'Подписка + индивидуальный расчёт складов' : 'Ядро + выбранные возможности';
   $('custom-note').hidden = !bill.custom;
   $('line-count').textContent = `(${bill.items.length})`;
   $('breakdown').innerHTML = bill.items.map(i => `<div class="breakdown-row"><span>${escape(i.label)}${i.parent ? `<small>${escape(i.parent)}</small>` : ''}</span><strong>${money(i.price)} ₽</strong></div>`).join('');
@@ -124,7 +133,7 @@ function configurationText() {
       else lines.push(`  ${o.label}: ${o.choices?.find(c=>c[0]===state.values[o.key])?.[1] ?? state.values[o.key]}`);
     }
   }
-  lines.push('', 'Прототип ценовой модели. Сервер, внедрение и внешние сервисы оплачиваются отдельно.');
+  lines.push('', 'Обязательное ядро: календарь, сметы, каталог — 10 000 ₽/мес. Настройки без цены входят в соответствующий модуль. Сервер, внедрение и внешние сервисы оплачиваются отдельно.');
   return lines.join('\n');
 }
 async function copy() {
@@ -138,10 +147,10 @@ async function copy() {
   }
 }
 async function init() {
-  const response = await fetch('./catalog.json?v=2');
+  const response = await fetch('./catalog.json?v=3');
   if (!response.ok) throw new Error('catalog');
   catalog = await response.json();
-  const markup=await fetch('./modules-original.html?v=2');if(!markup.ok)throw new Error('markup');originalHTML=await markup.text();
+  const markup=await fetch('./modules-original.html?v=3');if(!markup.ok)throw new Error('markup');originalHTML=await markup.text();
   let saved;
   try { saved = JSON.parse(localStorage.getItem(key)); } catch {}
   state = saved ? restore(catalog,saved) : makeState(catalog,true);
@@ -186,7 +195,7 @@ async function init() {
     state=makeState(catalog,true);state.modules.multiwarehouse=custom;refresh();
     showToast('Полный набор — 50 000 ₽/мес. Мультисклад рассчитывается отдельно.');
   });
-  $('clear-all').addEventListener('click',()=>{state=makeState(catalog);refresh();showToast('Всё выключено. Стоимость — 0 ₽/мес.');});
+  $('clear-all').addEventListener('click',()=>{state=makeState(catalog);refresh();showToast('Оставлено ядро за 10 000 ₽/мес и возможности без доплаты.');});
   $('choose-warehouses').addEventListener('click',()=>{state.modules.multiwarehouse=true;refresh();showToast('Мультисклад добавлен к запросу без изменения суммы.');});
   $('copy').addEventListener('click',copy);
   try { document.body.classList.toggle('dark',localStorage.getItem('wmr-pricing-theme')==='dark'); } catch {}
