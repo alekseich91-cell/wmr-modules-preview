@@ -1,0 +1,1 @@
+{"name":"wmr-modules-preview","version":"1.0.0","private":true,"type":"module","scripts":{"test":"bash scripts/gate.sh"},"devDependencies":{"playwright":"1.58.2"}}

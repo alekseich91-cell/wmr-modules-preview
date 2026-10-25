@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f7f9">
+  <meta name="description" content="Интерактивный прототип тарифов WMR. Выберите модули и настройки и рассчитайте стоимость подписки.">
+  <title>WMR — Конструктор подписки</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23ef5b35'/%3E%3Ctext x='10' y='45' font-family='Arial' font-size='40' font-weight='bold' fill='white'%3EW%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#workspace">Перейти к модулям</a>
+  <aside class="sidebar">
+    <a class="brand" href="#"><span class="brand-mark">w</span><span>WMR<span class="brand-caption">RENTAL MANAGEMENT</span></span></a>
+    <div class="sidebar-caption">РАБОЧЕЕ ПРОСТРАНСТВО</div>
+    <div class="workspace-label"><span class="workspace-avatar">W</span><span>Ваша компания<small>Конструктор подписки</small></span></div>
+    <div class="sidebar-caption categories-label">МОДУЛИ И ВОЗМОЖНОСТИ</div>
+    <nav id="categories" aria-label="Категории модулей"></nav>
+    <div class="sidebar-bottom"><span class="live-dot"></span> Прототип тарификации<small>Цены для обсуждения.<br>Оплата не производится.</small></div>
+  </aside>
+  <div class="page">
+    <header class="topbar"><div><span class="muted">Настройки</span><span class="slash">/</span><strong>Модули и подписка</strong></div><span class="prototype-tag">КОНЦЕПЦИЯ · 01</span></header>
+    <main id="workspace">
+      <div class="page-heading"><div><div class="eyebrow">WMR / ВАША КОНФИГУРАЦИЯ</div><h1>Всё нужное.<br><span>В одной подписке.</span></h1><p>Выберите модули под процессы вашей команды.<br>Стоимость меняется сразу — каждый переключатель прозрачен.</p></div><div class="full-price"><span>Полная комплектация</span><strong>50 000 <small>₽/мес</small></strong><span>Мультисклад — индивидуально</span></div></div>
+      <div class="layout">
+        <div class="catalog-column">
+          <section class="base-card"><div class="base-icon">W</div><div><div class="base-title">База WMR <span class="chip">Всегда включена</span></div><p>Проекты, календарь, сметы, каталог и бронирование.<br>Одна компания · один склад · без оплаты за пользователя.</p></div><div class="base-price">10 000 ₽<small>в месяц</small></div></section>
+          <div class="toolbar"><div class="search-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg><input id="search" type="search" placeholder="Найти модуль или настройку…" aria-label="Поиск модулей и настроек"></div><button id="expand" class="text-button">Раскрыть настройки</button></div>
+          <div class="filterbar"><div class="tabs" role="group" aria-label="Фильтр модулей"><button class="active" data-filter="all" aria-pressed="true">Все <span id="all-count"></span></button><button data-filter="paid" aria-pressed="false">Платные</button><button data-filter="selected" aria-pressed="false">Выбранные</button></div><span class="legend"><i></i> Включено в расчёт</span></div>
+          <div id="catalog" aria-busy="true"><p class="loading">Загружаем модули…</p></div>
+          <div id="empty" class="empty" hidden>Ничего не найдено.<br><small>Попробуйте другое название или сбросьте фильтры.</small><button id="clear-filters" class="text-button">Показать все модули</button></div>
+          <section class="pricing-note"><strong>Как устроен расчёт</strong><p>База + включённые модули + выбранные платные настройки. Поднастройки оплачиваются только при включённом родительском модуле. «Включено» означает 0 ₽ доплаты. Сервер, внедрение и внешние сервисы в расчёт не входят.</p><p>Состав соответствует вкладке «Модули» WMR. Режимы «Договорная цена» и «Зарплатный табель» переключаются взаимоисключающе и не меняют цену полного комплекта.</p></section>
+        </div>
+        <aside class="quote-column" aria-label="Расчёт стоимости"><div class="quote-card" id="quote"><div class="quote-top"><span class="eyebrow">ВАША ПОДПИСКА</span><span class="quote-dot"></span></div><div class="total"><span id="total" aria-live="polite" aria-atomic="true">10 000</span><span class="currency">₽<small>/ месяц</small></span></div><p id="total-caption">Стоимость для одной компании</p><div class="progress"><div id="progress-fill"></div></div><div class="progress-label"><span id="package-share">20% полного набора</span><span>50 000 ₽</span></div><div class="summary-rows"><div><span>База WMR</span><strong>10 000 ₽</strong></div><div><span>Модули <small id="module-count"></small></span><strong id="module-total">0 ₽</strong></div><div><span>Платные настройки <small id="option-count"></small></span><strong id="option-total">0 ₽</strong></div></div><div id="custom-note" class="custom-note" hidden><strong>+ Мультисклад</strong><span>Стоимость согласуется отдельно и не включена в итог.</span></div><div class="presets"><button id="full" class="primary-button">Весь WMR за 50 000 ₽ <span>↗</span></button><button id="base-only" class="secondary-button">Оставить только базу</button></div><details class="breakdown"><summary>Детализация расчёта <span id="line-count"></span></summary><div id="breakdown"></div></details><button id="copy" class="copy-button">Скопировать конфигурацию <span>↗</span></button><div class="quote-foot"><span>Без оплаты и обязательств</span><small>Выбор сохраняется в этом браузере.</small></div></div><div class="help-card"><span>↗</span><div><strong>Несколько складов?</strong><p>Архитектура, перемещения и сопровождение — по индивидуальному предложению.</p><button id="choose-warehouses" class="text-button">Добавить к запросу →</button></div></div></aside>
+      </div>
+      <footer><span>WMR · Конструктор модулей</span><span>Прототип ценовой модели / октябрь 2026</span></footer>
+    </main>
+  </div>
+  <div class="mobile-total"><div><small>Ваша подписка</small><strong id="mobile-total">10 000 ₽/мес</strong></div><a href="#quote">Расчёт ↑</a></div>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <noscript><p>Для работы калькулятора включите JavaScript.</p></noscript>
+</body>
+</html>
