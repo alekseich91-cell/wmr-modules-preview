@@ -1,25 +1,9 @@
-import {makeState, calculate, moduleTotal, setModule, setOption, restore, normalizeCalendar} from './model.js';
+import {makeState, calculate, moduleTotal, setModule, setOption, restore, normalizeCalendar} from './model.js?v=2';
 const $ = id => document.getElementById(id);
 const money = n => new Intl.NumberFormat('ru-RU').format(n);
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const key = 'wmr-pricing-v1';
-let catalog, state, filter = 'all', category = 'all', expanded = false, toastTimer;
-const opened = new Set();
-const paths = {
-  all:'M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z',
-  projects:'M4 5h16v15H4zM8 3v4M16 3v4M4 10h16M8 14h3M14 14h2',
-  warehouse:'M3 9l9-6 9 6v11H3zM8 20v-9h8v9M8 15h8',
-  team:'M9 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21v-2a7 7 0 0 1 14 0v2M16 5a4 4 0 0 1 0 8M19 16a5 5 0 0 1 3 5',
-  monitoring:'M5 17h14l-2-3V9a5 5 0 0 0-10 0v5zM10 20h4',
-  public:'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM3 12h18M12 3c-5 5-5 13 0 18 5-5 5-13 0-18',
-  crm:'M4 4h15v17H4zM8 4v17M11 9h5M11 13h5M2 8h4M2 13h4M2 18h4',
-  integration:'M8 3v5M16 3v5M6 8h12v3a6 6 0 0 1-12 0zM12 17v5',
-  extra:'M4 4h16v16H4zM8 12h8M12 8v8',
-  mobile:'M7 2h10v20H7zM10 18h4'
-};
-const icon = name => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${paths[name] || paths.all}" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-const toggle = (id, checked, attrs = '', disabled = false) => `<label class="switch"><input id="${escape(id)}" type="checkbox" role="switch" ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''} ${attrs}><span class="switch-track"></span></label>`;
-const optionCost = o => o.price ? `+${money(o.price)} ₽` : 'Включено · 0 ₽';
+const key = 'wmr-pricing-v2';
+let catalog, originalHTML, state, filter = 'all', category = 'all', expanded = true, toastTimer;
 
 function showToast(text) {
   clearTimeout(toastTimer);
@@ -28,69 +12,87 @@ function showToast(text) {
   toastTimer = setTimeout(() => $('toast').classList.remove('visible'), 4200);
 }
 function persist() {
-  try { localStorage.setItem(key, JSON.stringify(state)); }
-  catch { $('quote').querySelector('.quote-foot small').textContent = 'Хранилище недоступно — выбор действует до перезагрузки.'; }
-}
-function optionHTML(m, o) {
-  const id = `opt-${o.key}`, enabled = !!state.modules[m.id];
-  const help = o.desc ? `<span class="option-help" tabindex="0" title="${escape(o.desc)}" aria-label="${escape(o.desc)}">?</span>` : '';
-  const label = `<div class="option-label"><label for="${id}">${escape(o.label)}</label>${help}</div>`;
-  const price = `<span class="option-price ${o.price ? 'paid' : ''}">${optionCost(o)}</span>`;
-  const disabled = enabled ? '' : 'disabled';
-  if (o.type === 'bool') return `<div class="option">${label}${price}${toggle(id, state.options[o.key], `data-option="${o.key}" aria-label="${escape(o.label)}: ${optionCost(o)}"`, !enabled)}</div>`;
-  let control = '';
-  if (o.type === 'select') {
-    control = `<select id="${id}" data-value="${o.key}" ${disabled}>${(o.choices || []).map(([v,l]) => `<option value="${escape(v)}" ${state.values[o.key] === v ? 'selected' : ''} ${o.key === 'calendar_default_view' && !state.values.calendar_views.includes(v) ? 'disabled' : ''}>${escape(l)}</option>`).join('')}</select>`;
-  } else if (o.type === 'int') {
-    control = `<input id="${id}" data-value="${o.key}" type="number" min="${o.min}" max="${o.max}" value="${state.values[o.key]}" ${disabled}>`;
-  } else if (o.type === 'multi') {
-    control = o.choices.map(([v,l]) => `<label class="choice"><input type="checkbox" data-multi="${o.key}" value="${v}" ${state.values[o.key]?.includes(v) ? 'checked' : ''} ${disabled}>${escape(l)} · 0 ₽</label>`).join('');
-  }
-  return `<div class="option">${label}${price}<div class="option-controls">${control}</div></div>`;
-}
-function cardHTML(m, query) {
-  const enabled = state.modules[m.id], total = moduleTotal(m, state);
-  const paidOptions = m.options.filter(o => o.price);
-  const optionsTotal = m.options.reduce((n,o) => n + o.price, 0);
-  const control = m.core ? '<span class="chip">Ядро</span>' : toggle(`module-${m.id}`, enabled, `data-module="${m.id}" aria-label="${escape(m.label)}"`);
-  let price = m.custom ? '<span class="module-price custom">Индивидуально</span>' : m.price ? `<span class="module-price">${money(m.price)} ₽ <small>/ мес</small></span>` : '<span class="module-price included">В базе · 0 ₽ доплаты</span>';
-  let note = m.custom ? 'Вне общего итога' : enabled && total ? `В расчёте<br>${money(total)} ₽/мес` : paidOptions.length ? `Настройки<br>до +${money(optionsTotal)} ₽` : enabled ? 'Подключено' : '';
-  let desc = m.description;
-  if (m.id === 'bug_reports') desc = 'Отправка сообщений об ошибках разработчику. Плавающая кнопка и форма обратной связи.';
-  if (m.id === 'treasury') desc += ' Требует модуль «Бухгалтерия».';
-  const open = expanded || opened.has(m.id) || (query && m.options.some(o => `${o.label} ${o.desc || ''}`.toLowerCase().includes(query)));
-  return `<article class="module-card ${enabled ? 'enabled' : ''} ${m.core ? 'core' : ''}" data-card="${m.id}"><div class="module-head"><span class="module-icon">${icon(m.group)}</span><h3>${escape(m.label)}</h3>${control}</div><p class="module-description">${escape(desc)}</p><div class="module-price-row">${price}<span class="module-selection">${note}</span></div>${m.options.length ? `<details class="options" data-details="${m.id}" ${open ? 'open' : ''}><summary><span>Настройки · ${m.options.length}${optionsTotal ? ` <span> / до +${money(optionsTotal)} ₽</span>` : ' / включены'}</span></summary>${!enabled ? '<p class="parent-hint">Включите модуль, чтобы выбрать настройки.</p>' : ''}<div class="option-list">${m.options.map(o => optionHTML(m,o)).join('')}</div></details>` : ''}</article>`;
+  try { localStorage.setItem(key, JSON.stringify(state)); return true; }
+  catch { $('modSaveMsg').textContent = 'Хранилище недоступно — выбор действует до перезагрузки.'; return false; }
 }
 function renderNav() {
-  const groups = [['all','Все модули'], ...catalog.groups];
-  $('categories').innerHTML = groups.map(([id,label]) => {
-    const count = id === 'all' ? catalog.modules.length : catalog.modules.filter(m => m.group === id).length;
-    return `<button data-category="${id}" class="${category === id ? 'active' : ''}" aria-pressed="${category === id}">${icon(id)}<span>${escape(label)}</span><span class="nav-count">${count}</span></button>`;
-  }).join('');
+  $('category-filter').innerHTML = [['all','Все категории'],...catalog.groups].map(([id,label])=>`<option value="${id}" ${id===category?'selected':''}>${escape(label)}</option>`).join('');
+}
+function priceTag(text, className='') {
+  const span=document.createElement('span');span.className='pricing-option '+className;span.textContent=text;return span;
 }
 function renderCatalog() {
-  const query = $('search').value.trim().toLowerCase();
-  let visible = 0;
-  $('catalog').innerHTML = catalog.groups.map(([group, label]) => {
-    const modules = catalog.modules.filter(m => {
-      if (m.group !== group || category !== 'all' && group !== category) return false;
-      if (filter === 'selected' && !state.modules[m.id]) return false;
-      if (filter === 'paid' && !m.price && !m.custom && !m.options.some(o => o.price)) return false;
-      return !query || `${m.label} ${m.description} ${m.options.map(o => `${o.label} ${o.desc || ''}`).join(' ')}`.toLowerCase().includes(query);
-    }).sort((a,b) => Number(b.core) - Number(a.core));
-    visible += modules.length;
-    if (!modules.length) return '';
-    const sum = catalog.modules.filter(m => m.group === group).reduce((n,m) => n + moduleTotal(m,state), 0);
-    return `<section class="group" id="group-${group}"><div class="group-header"><h2>${escape(label)}</h2><span>${modules.length}</span><span class="group-sum">${sum ? `+${money(sum)} ₽/мес` : 'Включено в базу'}</span></div><div class="cards">${modules.map(m => cardHTML(m,query)).join('')}</div></section>`;
-  }).join('');
-  $('empty').hidden = visible > 0;
-  $('catalog').setAttribute('aria-busy','false');
-  document.querySelectorAll('[data-details]').forEach(details => details.addEventListener('toggle', () => {
-    if (details.open) opened.add(details.dataset.details);
-    else opened.delete(details.dataset.details);
-  }));
-  $('expand').textContent = expanded ? 'Свернуть настройки' : 'Раскрыть настройки';
+  const query=$('search').value.trim().toLowerCase();
+  $('catalog').innerHTML=originalHTML;
+  const form=$('modulesForm');
+  form.querySelector(':scope > p').remove();
+  form.querySelector('.settings-search').remove();
+  form.querySelector('.settings-search-empty').remove();
+  form.querySelector('[type="hidden"]')?.remove();
+  const masterGroups=[...form.querySelectorAll('#modulesList > .js-search-group')];
+  let visible=0;
+  for (const [i,[group,label]] of catalog.groups.entries()) {
+    const el=masterGroups[i];if(!el)continue;
+    el.id=`group-${group}`;el.dataset.group=group;
+    const heading=el.querySelector('h6');
+    const sum=catalog.modules.filter(m=>m.group===group).reduce((n,m)=>n+moduleTotal(m,state),0);
+    heading.append(priceTag(sum?`${money(sum)} ₽/мес`:'Не выбрано','group-price'));
+  }
+  for (const m of catalog.modules) {
+    const card=m.id==='mobile'?$('mobileBlock'):form.querySelector(`[data-module="${m.id}"]`);
+    card.removeAttribute('data-module');card.dataset.card=m.id;
+    card.classList.add('original-module');card.classList.toggle('enabled',state.modules[m.id]);
+    const head=card.querySelector('.card-header');
+    let master=head.querySelector('input[type="checkbox"]');
+    if(!master){
+      head.querySelector('.badge')?.remove();
+      const wrap=document.createElement('div');wrap.className='form-check form-switch mb-0 flex-shrink-0';
+      master=document.createElement('input');master.type='checkbox';master.className='form-check-input mod-switch';wrap.append(master);head.append(wrap);
+    }
+    master.id=`module-${m.id}`;master.dataset.module=m.id;master.checked=!!state.modules[m.id];master.setAttribute('aria-label',m.label);
+    const priceRow=document.createElement('div');priceRow.className='pricing-module-row';
+    priceRow.innerHTML=`<strong>${m.custom?'Индивидуально':`${money(m.price)} ₽ <small>/ мес</small>`}</strong><span>${m.custom?'Вне общего итога':`Выбрано: ${money(moduleTotal(m,state))} ₽`}</span>`;
+    head.after(priceRow);
+    const sub=card.querySelector('.core-opts,.sub-opts') || (m.id==='mobile'?$('mobileBlockBody'):null);
+    if(sub){sub.classList.toggle('d-none',!expanded&&!query);sub.classList.toggle('inactive-options',!state.modules[m.id]);}
+    for(const o of m.options){
+      if(o.type==='multi'){
+        for(const input of card.querySelectorAll(`[data-mo-list="${o.key}"]`)){
+          input.dataset.multi=o.key;input.checked=state.values[o.key].includes(input.value);input.disabled=!state.modules[m.id];
+          input.closest('.form-check').append(priceTag(`+${money(o.choicePrices[input.value])} ₽`));
+        }
+        continue;
+      }
+      const input=[...card.querySelectorAll('input,select')].find(el=>el.name===o.key||el.id===o.key||el.dataset.moKey===o.key||el.dataset.moFlag===o.key||el.dataset.csField===o.key||el.dataset.moSelect===o.key);
+      if(!input)throw new Error('Original control missing: '+o.key);
+      const oldId=input.id;const label=card.querySelector(`label[for="${oldId}"]`);
+      input.id=`opt-${o.key}`;if(label)label.htmlFor=input.id;
+      input.disabled=!state.modules[m.id];
+      const row=input.closest('.js-search-sub')||input.parentElement;
+      if(o.type==='bool'){
+        input.checked=!!state.options[o.key];input.dataset.option=o.key;
+        const tag=priceTag(`+${money(o.price)} ₽`);if(label)label.after(tag);else row.append(tag);
+      }else{
+        input.dataset.value=o.key;input.value=state.values[o.key];
+        if(o.type==='select'&&o.choicePrices){
+          for(const option of input.options)option.textContent=`${o.choices.find(c=>c[0]===option.value)[1]} — ${o.choicePrices[option.value]?`+${money(o.choicePrices[option.value])} ₽/мес`:'без доплаты'}`;
+          const hint=document.createElement('div');hint.className='mode-pricing-note';hint.textContent='Ручной: +0 ₽ · Сканерный: +1 000 ₽ · Гибридный: +1 500 ₽';row.append(hint);
+        }
+        if(o.key==='calendar_default_view')for(const option of input.options)option.disabled=!state.values.calendar_views.includes(option.value);
+      }
+    }
+    let matches=(category==='all'||m.group===category)&&(filter!=='selected'||state.modules[m.id]);
+    if(query)matches=matches&&`${m.label} ${m.description} ${m.options.map(o=>`${o.label} ${o.desc||''}`).join(' ')}`.toLowerCase().includes(query);
+    card.closest('.js-search-unit').hidden=!matches;if(matches)visible++;
+  }
+  for(const group of masterGroups)group.hidden=![...group.querySelectorAll('.js-search-unit')].some(el=>!el.hidden);
+  $('modSaveBtn').type='button';$('modSaveBtn').addEventListener('click',saveConfiguration);
+  form.addEventListener('submit',e=>{e.preventDefault();saveConfiguration();});
+  $('modSaveMsg').textContent='Выбор автоматически сохраняется в этом браузере.';
+  $('empty').hidden=visible>0;$('catalog').setAttribute('aria-busy','false');
+  $('expand').textContent=expanded?'Свернуть настройки':'Раскрыть настройки';
 }
+function saveConfiguration(){if(persist()){showToast('Конфигурация сохранена в этом браузере.');$('modSaveMsg').textContent='Сохранено';}else showToast('Не удалось сохранить. Скопируйте расчёт, чтобы не потерять выбор.');}
 function renderQuote() {
   const bill = calculate(catalog,state);
   $('total').textContent = money(bill.total);
@@ -101,7 +103,7 @@ function renderQuote() {
   $('option-count').textContent = bill.items.filter(i => i.parent).length;
   $('progress-fill').style.width = `${bill.total/catalog.full*100}%`;
   $('package-share').textContent = `${Math.round(bill.total/catalog.full*100)}% полного набора`;
-  $('total-caption').textContent = bill.custom ? 'Подписка + индивидуальный расчёт складов' : 'Стоимость для одной компании';
+  $('total-caption').textContent = bill.custom ? 'Подписка + индивидуальный расчёт складов' : 'За выбранные модули и настройки';
   $('custom-note').hidden = !bill.custom;
   $('line-count').textContent = `(${bill.items.length})`;
   $('breakdown').innerHTML = bill.items.map(i => `<div class="breakdown-row"><span>${escape(i.label)}${i.parent ? `<small>${escape(i.parent)}</small>` : ''}</span><strong>${money(i.price)} ₽</strong></div>`).join('');
@@ -136,12 +138,13 @@ async function copy() {
   }
 }
 async function init() {
-  const response = await fetch('./catalog.json');
+  const response = await fetch('./catalog.json?v=2');
   if (!response.ok) throw new Error('catalog');
   catalog = await response.json();
+  const markup=await fetch('./modules-original.html?v=2');if(!markup.ok)throw new Error('markup');originalHTML=await markup.text();
   let saved;
   try { saved = JSON.parse(localStorage.getItem(key)); } catch {}
-  state = restore(catalog,saved);
+  state = saved ? restore(catalog,saved) : makeState(catalog,true);
   $('all-count').textContent = catalog.modules.length;
   renderNav(); renderCatalog(); renderQuote();
   $('search').addEventListener('input',renderCatalog);
@@ -150,11 +153,10 @@ async function init() {
     document.querySelectorAll('[data-filter]').forEach(b=>{ b.classList.toggle('active',b===button); b.setAttribute('aria-pressed',String(b===button)); });
     renderCatalog();
   }));
-  $('categories').addEventListener('click',e=>{
-    const button = e.target.closest('[data-category]'); if (!button) return;
-    category = button.dataset.category; renderNav(); renderCatalog(); $('search').scrollIntoView({block:'start'});
+  $('category-filter').addEventListener('change',e=>{
+    category=e.target.value;renderCatalog();
   });
-  $('expand').addEventListener('click',()=>{expanded=!expanded;opened.clear();renderCatalog();});
+  $('expand').addEventListener('click',()=>{expanded=!expanded;renderCatalog();});
   $('clear-filters').addEventListener('click',()=>{
     $('search').value='';category='all';document.querySelector('[data-filter="all"]').click();renderNav();
   });
@@ -184,12 +186,23 @@ async function init() {
     state=makeState(catalog,true);state.modules.multiwarehouse=custom;refresh();
     showToast('Полный набор — 50 000 ₽/мес. Мультисклад рассчитывается отдельно.');
   });
-  $('base-only').addEventListener('click',()=>{state=makeState(catalog);refresh();showToast('Оставлена база за 10 000 ₽/мес.');});
+  $('clear-all').addEventListener('click',()=>{state=makeState(catalog);refresh();showToast('Всё выключено. Стоимость — 0 ₽/мес.');});
   $('choose-warehouses').addEventListener('click',()=>{state.modules.multiwarehouse=true;refresh();showToast('Мультисклад добавлен к запросу без изменения суммы.');});
   $('copy').addEventListener('click',copy);
+  try { document.body.classList.toggle('dark',localStorage.getItem('wmr-pricing-theme')==='dark'); } catch {}
+  $('theme-toggle').addEventListener('click',()=>{
+    const dark=document.body.classList.toggle('dark');
+    $('theme-toggle').innerHTML=`<i class="bi bi-${dark?'sun':'moon'}"></i>`;
+    try {localStorage.setItem('wmr-pricing-theme',dark?'dark':'light');} catch {}
+  });
+  document.querySelectorAll('.app-menu a').forEach(a=>a.addEventListener('click',()=>{
+    if(category!=='all'||filter!=='all'||$('search').value){category='all';filter='all';$('search').value='';document.querySelector('[data-filter="all"]').click();renderNav();}
+  }));
+  document.querySelectorAll('.original-settings-nav a').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();if(!a.classList.contains('active'))showToast('В этом прототипе доступна вкладка «Модули».');}));
+
 }
 init().catch(()=>{
   $('catalog').setAttribute('aria-busy','false');
   $('catalog').innerHTML='<p class="loading">Не удалось загрузить список модулей. Обновите страницу.</p>';
-  $('full').disabled=true; $('base-only').disabled=true; $('copy').disabled=true; $('choose-warehouses').disabled=true;
+  $('full').disabled=true; $('clear-all').disabled=true; $('copy').disabled=true; $('choose-warehouses').disabled=true;
 });

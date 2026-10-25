@@ -1,6 +1,6 @@
 {
-  "version": 1,
-  "base": 10000,
+  "version": 2,
+  "base": 0,
   "full": 50000,
   "groups": [
     [
@@ -47,10 +47,11 @@
       "group": "warehouse",
       "category": "optional",
       "id": "layher",
-      "price": 5000,
+      "price": 4000,
       "custom": false,
       "core": false,
-      "options": []
+      "options": [],
+      "icon": "bi-grid-3x3"
     },
     {
       "label": "Субаренда",
@@ -58,10 +59,11 @@
       "group": "projects",
       "category": "optional",
       "id": "subrent",
-      "price": 2500,
+      "price": 2000,
       "custom": false,
       "core": false,
-      "options": []
+      "options": [],
+      "icon": "bi-boxes"
     },
     {
       "label": "Бухгалтерия",
@@ -69,7 +71,7 @@
       "group": "projects",
       "category": "optional",
       "id": "accounting",
-      "price": 2500,
+      "price": 2000,
       "custom": false,
       "core": false,
       "options": [
@@ -79,23 +81,24 @@
           "type": "bool",
           "desc": "Погашать встречные долги заказчика и поставщика без движения денег. Выключение запрещает новые взаимозачёты и их сторнирование, сохраняя историю и ранее учтённые погашения.",
           "default": false,
-          "price": 500
+          "price": 400
         },
         {
           "key": "manager_percent_enabled",
           "label": "Процент менеджера",
           "type": "bool",
           "desc": "Учитывать доход менеджера (процент с проекта) в финансах. Сам процент задаётся во вкладке «Финансы».",
-          "price": 500
+          "price": 400
         },
         {
           "key": "agent_commission_enabled",
           "label": "Агентская комиссия",
           "type": "bool",
           "desc": "Учитывать агентскую комиссию (тех. директор) в расчёте сметы. Размер задаётся во вкладке «Финансы».",
-          "price": 500
+          "price": 400
         }
-      ]
+      ],
+      "icon": "bi-wallet2"
     },
     {
       "label": "Казна",
@@ -103,10 +106,11 @@
       "group": "projects",
       "category": "optional",
       "id": "treasury",
-      "price": 2000,
+      "price": 1500,
       "custom": false,
       "core": false,
-      "options": []
+      "options": [],
+      "icon": "bi-safe2"
     },
     {
       "label": "Приёмка возвратов",
@@ -114,7 +118,7 @@
       "group": "warehouse",
       "category": "optional",
       "id": "acceptance",
-      "price": 2000,
+      "price": 1500,
       "custom": false,
       "core": false,
       "options": [
@@ -131,27 +135,25 @@
             ],
             [
               "scanner",
-              "Сканерный"
+              "Сканер"
             ],
             [
               "hybrid",
               "Гибридный"
             ]
-          ]
-        },
-        {
-          "key": "scanner_mode_enabled",
-          "label": "HID-сканер",
-          "type": "bool",
-          "desc": "Погрузочные и приёмка обновляются только физическим сканом штрихкода (BT/USB-сканер). Клик мышью по позиции блокируется — защита от случайных отметок.",
-          "price": 0
+          ],
+          "choicePrices": {
+            "manual": 0,
+            "scanner": 1000,
+            "hybrid": 1500
+          }
         },
         {
           "key": "loading_reserved_only",
           "label": "Отгружать только зарезервированное",
           "type": "bool",
           "desc": "В погрузочном листе количество ограничивается зарезервированным под смету (а не полным планом). Расходники, субаренда и ручные позиции не ограничиваются.",
-          "price": 0
+          "price": 200
         },
         {
           "key": "label_format_default",
@@ -170,7 +172,8 @@
           ],
           "price": 0
         }
-      ]
+      ],
+      "icon": "bi-clipboard-check"
     },
     {
       "label": "Умные погрузочные",
@@ -178,7 +181,7 @@
       "group": "warehouse",
       "category": "optional",
       "id": "smart_loading",
-      "price": 2500,
+      "price": 2000,
       "custom": false,
       "core": false,
       "options": [
@@ -188,7 +191,7 @@
           "type": "bool",
           "desc": "При переходе сметы в «Подтверждено» создаётся общая умная погрузочная или обновляются существующие с сохранением режима и отметок сборки. Если ведомость финализирована или обновление затрагивает собранные позиции, сначала нужно обновить её вручную; статус сметы не изменится. Закрытие периодов длительного проекта погрузочные не обновляет.",
           "default": false,
-          "price": 0
+          "price": 500
         },
         {
           "key": "stock_reserve_restricted",
@@ -196,16 +199,17 @@
           "type": "bool",
           "desc": "В складской запас можно брать только позиции, помеченные в каталоге как доступные (пометка ставится на категории и может быть перебита на карточке). Дефолт — «запрещено»: в момент включения всё, что не помечено и не наследует пометку сверху, станет недоступно для запаса. Пометки меняются в любой момент, эффект сразу. Выключено — в запас можно любую позицию, как раньше.",
           "default": false,
-          "price": 0
+          "price": 200
         },
         {
           "key": "qr_login_enabled",
           "label": "Вход по QR-бейджу (вне складского поста)",
           "type": "bool",
           "desc": "Скан личного QR-бейджа открывает сессию этого сотрудника без пароля: в основной версии — на экране входа и на любой странице, в мобильной — только на экране входа. На складском посту (киоск) вход по бейджу работает всегда, независимо от этой настройки: там это смена оператора. Настройка доступ не отзывает — чтобы закрыть вход конкретному человеку, отзовите его бейдж.",
-          "price": 0
+          "price": 200
         }
-      ]
+      ],
+      "icon": "bi-truck"
     },
     {
       "label": "Рейсы (логистика)",
@@ -213,10 +217,11 @@
       "group": "team",
       "category": "optional",
       "id": "logistics",
-      "price": 2000,
+      "price": 1500,
       "custom": false,
       "core": false,
-      "options": []
+      "options": [],
+      "icon": "bi-signpost-2"
     },
     {
       "label": "Ремонты",
@@ -224,10 +229,11 @@
       "group": "warehouse",
       "category": "optional",
       "id": "repairs",
-      "price": 1000,
+      "price": 800,
       "custom": false,
       "core": false,
-      "options": []
+      "options": [],
+      "icon": "bi-tools"
     },
     {
       "label": "Инвентаризация",
@@ -235,10 +241,11 @@
       "group": "warehouse",
       "category": "optional",
       "id": "inventory_audits",
-      "price": 1000,
+      "price": 800,
       "custom": false,
       "core": false,
-      "options": []
+      "options": [],
+      "icon": "bi-clipboard-data"
     },
     {
       "label": "Места хранения",
@@ -246,10 +253,11 @@
       "group": "warehouse",
       "category": "optional",
       "id": "storage_locations",
-      "price": 500,
+      "price": 400,
       "custom": false,
       "core": false,
-      "options": []
+      "options": [],
+      "icon": "bi-signpost-split"
     },
     {
       "label": "Мультисклад",
@@ -260,7 +268,8 @@
       "price": 0,
       "custom": true,
       "core": false,
-      "options": []
+      "options": [],
+      "icon": "bi-building"
     },
     {
       "label": "Персонал / смены",
@@ -268,7 +277,7 @@
       "group": "team",
       "category": "optional",
       "id": "staff",
-      "price": 1500,
+      "price": 1000,
       "custom": false,
       "core": false,
       "options": [
@@ -284,7 +293,7 @@
           "label": "Сводный отчёт по сменам",
           "type": "bool",
           "desc": "Пункт «Сводка по сменам» в меню — сводная таблица смен персонала по проектам.",
-          "price": 0
+          "price": 300
         },
         {
           "key": "staff_staff_calendar",
@@ -299,14 +308,14 @@
           "type": "bool",
           "desc": "Добавляет ссылку на вкладку «Персонал» между календарём и каталогом. Видна сотрудникам с доступом к кадровому календарю.",
           "default": false,
-          "price": 0
+          "price": 100
         },
         {
           "key": "staff_payroll",
           "label": "Зарплатный фонд",
           "type": "bool",
           "desc": "Панель «ЗП фонд» на вкладке персонала проекта — бюджет и расход на оплату труда.",
-          "price": 500
+          "price": 400
         },
         {
           "key": "staff_calendar_cell_shifts",
@@ -314,7 +323,7 @@
           "type": "bool",
           "desc": "В календаре персонала ячейки 00–08, 08–16 и 16–00 оплачиваются отдельно. Для каждой можно выбрать позицию и коэффициент ставки. Используется сетка по 8 часов, даже если включён почасовой календарь. Старые назначения меняются только при редактировании с подтверждением.",
           "default": false,
-          "price": 0
+          "price": 300
         },
         {
           "key": "staff_calendar_hourly",
@@ -322,7 +331,7 @@
           "type": "bool",
           "desc": "Календарь персонала (общий и в проекте) разбивается по часам, а не на три дневные фазы 00-08/08-16/16-00 — как сетка в «Рейсах». Занятость рисуется по реальным часам монтажа/мероприятия/демонтажа, а выделение часов ставит смене окно «занят с… до…». На расчёт ЗП не влияет: ставка остаётся за смену.",
           "default": false,
-          "price": 500
+          "price": 400
         },
         {
           "key": "staff_project_view",
@@ -355,7 +364,7 @@
           "type": "bool",
           "desc": "Согласование фиксированной цены за весь проект между сотрудником (мобильный кабинет) и менеджером/бухгалтерией — вместо посменного расчёта. При выключении интерфейс скрыт, уже согласованные цены продолжают действовать в ведомости. ⚠️ Взаимоисключимо с «Зарплатный табель» — включение одного выключает другое.",
           "default": false,
-          "price": 0
+          "price": 500
         },
         {
           "key": "staff_timesheet",
@@ -363,7 +372,7 @@
           "type": "bool",
           "desc": "Режим «Табель» во вкладке «Персонал» проекта + фокус на сотруднике в бухгалтерии: построчный расчёт ЗП (монтаж/демонтаж/мероприятие/расходы → итого → сумма к оплате). Техник вписывает себе зарплату с мобилки, менеджер утверждает/правит. Утверждённая сумма становится итоговой к выплате. При выключении интерфейс скрыт, утверждённые строки продолжают действовать в ведомости. ⚠️ Взаимоисключимо с «Договорная цена» — включение одного выключает другое.",
           "default": false,
-          "price": 0
+          "price": 500
         },
         {
           "key": "payroll_manager_only",
@@ -371,7 +380,7 @@
           "type": "bool",
           "desc": "Суммы за смену в зарплатном табеле правит только тот, у кого есть право «Правка ЗП» — менеджер или бригадир. Техник свою строку видит, вписывает расходы и объём работ, отправляет на проверку, но сумму изменить не может. Премии и штрафы ставит тот же, кто правит суммы. При выключении табель работает как раньше: сумму вписывает сам сотрудник, менеджер утверждает. Требует модуля «Зарплатный табель».",
           "default": false,
-          "price": 0
+          "price": 200
         },
         {
           "key": "staff_brief",
@@ -379,9 +388,10 @@
           "type": "bool",
           "desc": "Страница «Техзадание» проекта — единый документ смены для техника: его роль и смены, тайминг, площадка и контакты, блоки менеджера с фото, документы по разделам, ссылка на погрузочную. Открывается и с мобилы, и с десктопа без права «Доступ к десктопу». Денег не показывает. При выключении страница и все входы в неё скрыты.",
           "default": false,
-          "price": 500
+          "price": 400
         }
-      ]
+      ],
+      "icon": "bi-people"
     },
     {
       "label": "Документы компании",
@@ -389,10 +399,11 @@
       "group": "team",
       "category": "optional",
       "id": "company_documents",
-      "price": 500,
+      "price": 400,
       "custom": false,
       "core": false,
-      "options": []
+      "options": [],
+      "icon": "bi-file-earmark-text"
     },
     {
       "label": "Уведомления",
@@ -400,10 +411,11 @@
       "group": "monitoring",
       "category": "optional",
       "id": "notifications",
-      "price": 0,
+      "price": 400,
       "custom": false,
       "core": false,
-      "options": []
+      "options": [],
+      "icon": "bi-bell"
     },
     {
       "label": "Тревоги",
@@ -411,7 +423,7 @@
       "group": "monitoring",
       "category": "optional",
       "id": "alerts",
-      "price": 0,
+      "price": 500,
       "custom": false,
       "core": false,
       "options": [
@@ -424,7 +436,8 @@
           "max": 30,
           "price": 0
         }
-      ]
+      ],
+      "icon": "bi-exclamation-triangle"
     },
     {
       "label": "Аналитика",
@@ -435,7 +448,8 @@
       "price": 1500,
       "custom": false,
       "core": false,
-      "options": []
+      "options": [],
+      "icon": "bi-bar-chart"
     },
     {
       "label": "Видео-помощь",
@@ -443,10 +457,11 @@
       "group": "monitoring",
       "category": "optional",
       "id": "video_help",
-      "price": 0,
+      "price": 200,
       "custom": false,
       "core": false,
-      "options": []
+      "options": [],
+      "icon": "bi-play-circle"
     },
     {
       "label": "Сообщения об ошибках",
@@ -454,7 +469,7 @@
       "group": "monitoring",
       "category": "optional",
       "id": "bug_reports",
-      "price": 0,
+      "price": 100,
       "custom": false,
       "core": false,
       "options": [
@@ -464,9 +479,10 @@
           "type": "bool",
           "desc": "Строка у островка на компьютере и круглый значок на телефоне. Выключено — кнопка остаётся в боковой панели, в личном кабинете и на странице «Страница не найдена». На телефоне тогда — только в кабинете: при выключенной вкладке «Кабинет» сотруднику без компьютера отправить отчёт будет негде.",
           "default": true,
-          "price": 0
+          "price": 100
         }
-      ]
+      ],
+      "icon": "bi-bug"
     },
     {
       "label": "Presence «кто онлайн»",
@@ -474,10 +490,11 @@
       "group": "monitoring",
       "category": "optional",
       "id": "presence",
-      "price": 0,
+      "price": 200,
       "custom": false,
       "core": false,
-      "options": []
+      "options": [],
+      "icon": "bi-circle-fill"
     },
     {
       "label": "Обсуждение смет",
@@ -485,10 +502,11 @@
       "group": "public",
       "category": "optional",
       "id": "discussion",
-      "price": 1000,
+      "price": 800,
       "custom": false,
       "core": false,
-      "options": []
+      "options": [],
+      "icon": "bi-chat-dots"
     },
     {
       "label": "Витрина",
@@ -496,7 +514,7 @@
       "group": "public",
       "category": "optional",
       "id": "showcase",
-      "price": 1500,
+      "price": 1000,
       "custom": false,
       "core": false,
       "options": [
@@ -505,9 +523,10 @@
           "label": "Промокоды (раскрытие цен)",
           "type": "bool",
           "desc": "Раскрытие цен в публичной витрине по промокоду. Без него витрина показывает каталог без цен.",
-          "price": 500
+          "price": 300
         }
-      ]
+      ],
+      "icon": "bi-eye"
     },
     {
       "label": "Гостевой портал",
@@ -515,10 +534,11 @@
       "group": "public",
       "category": "optional",
       "id": "showcase_guest",
-      "price": 1500,
+      "price": 1200,
       "custom": false,
       "core": false,
-      "options": []
+      "options": [],
+      "icon": "bi-person-badge"
     },
     {
       "label": "Календарь-фид (ICS)",
@@ -526,10 +546,11 @@
       "group": "public",
       "category": "optional",
       "id": "calendar_feed",
-      "price": 0,
+      "price": 300,
       "custom": false,
       "core": false,
-      "options": []
+      "options": [],
+      "icon": "bi-calendar-event"
     },
     {
       "label": "Площадки",
@@ -537,10 +558,11 @@
       "group": "crm",
       "category": "optional",
       "id": "venues",
-      "price": 0,
+      "price": 300,
       "custom": false,
       "core": false,
-      "options": []
+      "options": [],
+      "icon": "bi-geo-alt"
     },
     {
       "label": "Доверенные поставщики",
@@ -548,10 +570,11 @@
       "group": "crm",
       "category": "optional",
       "id": "trusted_providers",
-      "price": 1500,
+      "price": 1000,
       "custom": false,
       "core": false,
-      "options": []
+      "options": [],
+      "icon": "bi-shield-check"
     },
     {
       "label": "MCP / интеграции",
@@ -559,10 +582,11 @@
       "group": "integration",
       "category": "optional",
       "id": "mcp",
-      "price": 1500,
+      "price": 1200,
       "custom": false,
       "core": false,
-      "options": []
+      "options": [],
+      "icon": "bi-plug"
     },
     {
       "label": "Пропуска",
@@ -570,7 +594,7 @@
       "group": "extra",
       "category": "optional",
       "id": "passes",
-      "price": 500,
+      "price": 400,
       "custom": false,
       "core": false,
       "options": [
@@ -580,9 +604,10 @@
           "type": "bool",
           "desc": "Строки прохода людей без транспорта и их блок в сводной. Выключите, если на территорию заезжает только транспорт.",
           "default": true,
-          "price": 0
+          "price": 100
         }
-      ]
+      ],
+      "icon": "bi-ticket-perforated"
     },
     {
       "label": "Календарь",
@@ -590,7 +615,7 @@
       "group": "projects",
       "category": "core",
       "id": "calendar",
-      "price": 0,
+      "price": 2000,
       "custom": false,
       "core": true,
       "options": [
@@ -621,7 +646,14 @@
               "Кадровый"
             ]
           ],
-          "price": 0
+          "price": 0,
+          "choicePrices": {
+            "month": 100,
+            "week": 100,
+            "list": 100,
+            "gantt": 500,
+            "staff": 200
+          }
         },
         {
           "key": "calendar_default_view",
@@ -705,7 +737,8 @@
             ]
           ]
         }
-      ]
+      ],
+      "icon": "bi-calendar3"
     },
     {
       "label": "Сметы",
@@ -713,7 +746,7 @@
       "group": "projects",
       "category": "core",
       "id": "estimates",
-      "price": 0,
+      "price": 2600,
       "custom": false,
       "core": true,
       "options": [
@@ -722,28 +755,28 @@
           "label": "Световые планы",
           "type": "bool",
           "desc": "Загрузка PDF-лайтплотов с OCR-распознаванием списка осветительного оборудования (пункт в меню «+» сметы).",
-          "price": 1500
+          "price": 1200
         },
         {
           "key": "riders",
           "label": "Тех. райдеры (оферы)",
           "type": "bool",
           "desc": "Парсинг Excel-оферов (технических райдеров) заказчика с сопоставлением позиций (пункт в меню «+» сметы).",
-          "price": 1000
+          "price": 800
         },
         {
           "key": "spare",
           "label": "Запас (spare)",
           "type": "bool",
           "desc": "Внутренний запас оборудования сверх клиентского количества — пилюля «Запас» в смете (клиенту не виден).",
-          "price": 0
+          "price": 300
         },
         {
           "key": "zone_discounts",
           "label": "Зонные скидки",
           "type": "bool",
           "desc": "Индивидуальная скидка на каждую зону сметы (строка «По зонам» в блоке Итогов).",
-          "price": 500
+          "price": 300
         },
         {
           "key": "subrent_discount",
@@ -751,14 +784,14 @@
           "type": "bool",
           "desc": "Переключатель в Итогах сметы: распространять скидку сметы на субаренду или нет (по умолчанию распространяется).",
           "default": false,
-          "price": 0
+          "price": 200
         },
         {
           "key": "proebot",
           "label": "Ревизор (проверка сметы)",
           "type": "bool",
           "desc": "Плавающий виджет, который ищет странности и несостыковки в смете (разные цены у одной позиции, класс, из-за которого позиция не бронируется, персонал или логистика в классе «Оборудование», подозрительно дешёвая ручная цена) и переводит к проблемной строке.",
-          "price": 0
+          "price": 500
         },
         {
           "key": "usn_price_round",
@@ -766,7 +799,7 @@
           "type": "bool",
           "desc": "Клиентская цена строки с включённым УСН доводится вверх до кратного 10 ₽ (вместо дробной вроде «11 111,11»). Действует в формах подачи налога «в ценах» и «отдельной строкой»; ОСНО, чистый НДС и форму «строкой» не затрагивает.",
           "default": false,
-          "price": 0
+          "price": 100
         },
         {
           "key": "pdf_status_stamp",
@@ -774,9 +807,10 @@
           "type": "bool",
           "desc": "Плашка статуса первой строкой PDF сметы: «ПОДТВЕРЖДЕНО» у подтверждённой, «НЕ ПОДТВЕРЖДЕНО» у черновика, в работе и резерва, «ОТМЕНЕНО» у отменённой. Действует на все три формы экспорта сметы (обычную, плоскую и по шаблону).",
           "default": false,
-          "price": 0
+          "price": 100
         }
-      ]
+      ],
+      "icon": "bi-file-earmark-ruled"
     },
     {
       "label": "Каталог / склад",
@@ -784,7 +818,7 @@
       "group": "warehouse",
       "category": "core",
       "id": "catalog",
-      "price": 0,
+      "price": 3000,
       "custom": false,
       "core": true,
       "options": [
@@ -810,7 +844,7 @@
           "label": "QR/штрихкод-этикетки оборудования",
           "type": "bool",
           "desc": "Кнопки печати QR/штрихкод-этикеток оборудования на карточке товара и в каталоге.",
-          "price": 0
+          "price": 300
         },
         {
           "key": "foreign_scan_labels",
@@ -818,9 +852,10 @@
           "type": "bool",
           "desc": "Разрешить сканеру считать код с наклейки прежней системы учёта (поле «Код с чужой наклейки» в карточке) за код позиции: скан коробки нетрекуемого добавляет «+1» к строке погрузочной. Нужно, когда каталог перенесён из Rentman/Golova и наклейки на ящиках остались прежними. Единиц не касается — их коды лежат в инвентарных номерах и работают всегда.",
           "default": false,
-          "price": 0
+          "price": 200
         }
-      ]
+      ],
+      "icon": "bi-boxes"
     },
     {
       "id": "mobile",
@@ -828,7 +863,7 @@
       "description": "Работа с телефона: календарь, расписание, кабинет, бухгалтерия, склад, каталог и проверка наличия. Доступ к функциям определяется выбранными модулями и правами сотрудников.",
       "group": "mobile",
       "category": "optional",
-      "price": 0,
+      "price": 1000,
       "custom": false,
       "core": false,
       "options": [
@@ -836,51 +871,52 @@
           "key": "mobile_tab_calendar",
           "label": "Календарь",
           "type": "bool",
-          "price": 0
+          "price": 100
         },
         {
           "key": "mobile_tab_schedule",
           "label": "Расписание",
           "type": "bool",
-          "price": 0
+          "price": 100
         },
         {
           "key": "mobile_tab_cabinet",
           "label": "Кабинет",
           "type": "bool",
-          "price": 0
+          "price": 100
         },
         {
           "key": "mobile_tab_accounting",
           "label": "Бухгалтерия",
           "type": "bool",
-          "price": 0
+          "price": 100
         },
         {
           "key": "mobile_tab_warehouse",
           "label": "Склад",
           "type": "bool",
-          "price": 0
+          "price": 100
         },
         {
           "key": "mobile_tab_catalog",
           "label": "Каталог",
           "type": "bool",
-          "price": 0
+          "price": 100
         },
         {
           "key": "mobile_tab_availability",
           "label": "Проверка наличия",
           "type": "bool",
-          "price": 0
+          "price": 100
         },
         {
           "key": "mobile_availability_create",
           "label": "Создание проекта из корзины «Проверка наличия»",
           "type": "bool",
-          "price": 0
+          "price": 300
         }
-      ]
+      ],
+      "icon": "bi-phone"
     }
   ]
 }

@@ -3,42 +3,131 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f6f7f9">
-  <meta name="description" content="Интерактивный прототип тарифов WMR. Выберите модули и настройки и рассчитайте стоимость подписки.">
-  <title>WMR — Конструктор подписки</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23ef5b35'/%3E%3Ctext x='10' y='45' font-family='Arial' font-size='40' font-weight='bold' fill='white'%3EW%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="style.css">
-  <script type="module" src="app.js"></script>
+  <meta name="theme-color" content="#1e293b">
+  <meta name="description" content="Прототип вкладки Модули WMR: отдельная цена каждого модуля и настройки, калькулятор подписки до 50 000 рублей.">
+  <title>Настройки · Модули — WMR</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232563eb'/%3E%3Ctext x='10' y='45' font-family='Arial' font-size='40' font-weight='bold' fill='white'%3EW%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="vendor/fonts/inter.css">
+  <link rel="stylesheet" href="style.css?v=2">
+  <script type="module" src="app.js?v=2"></script>
 </head>
 <body>
   <a class="skip-link" href="#workspace">Перейти к модулям</a>
   <aside class="sidebar">
-    <a class="brand" href="#"><span class="brand-mark">w</span><span>WMR<span class="brand-caption">RENTAL MANAGEMENT</span></span></a>
-    <div class="sidebar-caption">РАБОЧЕЕ ПРОСТРАНСТВО</div>
-    <div class="workspace-label"><span class="workspace-avatar">W</span><span>Ваша компания<small>Конструктор подписки</small></span></div>
-    <div class="sidebar-caption categories-label">МОДУЛИ И ВОЗМОЖНОСТИ</div>
-    <nav id="categories" aria-label="Категории модулей"></nav>
-    <div class="sidebar-bottom"><span class="live-dot"></span> Прототип тарификации<small>Цены для обсуждения.<br>Оплата не производится.</small></div>
+    <a class="brand" href="#"><i class="bi bi-box-seam"></i><span>WMR<small>WroteMeRent</small></span></a>
+    <div class="sidebar-search"><i class="bi bi-search"></i><span>Настройки модулей</span></div>
+    <div class="warehouse-label"><i class="bi bi-building"></i> Основной склад</div>
+    <div class="app-menu"><a href="#group-projects"><i class="bi bi-calendar3"></i>Календарь</a><a href="#module-catalog"><i class="bi bi-collection"></i>КАТАЛОГ</a><span>СКЛАД</span><a href="#group-warehouse"><i class="bi bi-box-seam"></i>Склад</a><span>ПЕРСОНАЛ</span><a href="#group-team"><i class="bi bi-people"></i>Персонал</a><span>КОНТРАГЕНТЫ</span><a href="#group-crm"><i class="bi bi-person-vcard"></i>Контрагенты</a><span>ФИНАНСЫ</span><a href="#module-accounting"><i class="bi bi-wallet2"></i>Бухгалтерия</a><a href="#module-treasury"><i class="bi bi-safe2"></i>Казна</a><span>СИСТЕМА</span><a class="active" href="#workspace"><i class="bi bi-gear"></i>Настройки</a></div>
+    <div class="sidebar-bottom"><i class="bi bi-person-circle"></i><span>Администратор<small>Прототип тарификации</small></span></div>
   </aside>
-  <div class="page">
-    <header class="topbar"><div><span class="muted">Настройки</span><span class="slash">/</span><strong>Модули и подписка</strong></div><span class="prototype-tag">КОНЦЕПЦИЯ · 01</span></header>
-    <main id="workspace">
-      <div class="page-heading"><div><div class="eyebrow">WMR / ВАША КОНФИГУРАЦИЯ</div><h1>Всё нужное.<br><span>В одной подписке.</span></h1><p>Выберите модули под процессы вашей команды.<br>Стоимость меняется сразу — каждый переключатель прозрачен.</p></div><div class="full-price"><span>Полная комплектация</span><strong>50 000 <small>₽/мес</small></strong><span>Мультисклад — индивидуально</span></div></div>
-      <div class="layout">
-        <div class="catalog-column">
-          <section class="base-card"><div class="base-icon">W</div><div><div class="base-title">База WMR <span class="chip">Всегда включена</span></div><p>Проекты, календарь, сметы, каталог и бронирование.<br>Одна компания · один склад · без оплаты за пользователя.</p></div><div class="base-price">10 000 ₽<small>в месяц</small></div></section>
-          <div class="toolbar"><div class="search-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg><input id="search" type="search" placeholder="Найти модуль или настройку…" aria-label="Поиск модулей и настроек"></div><button id="expand" class="text-button">Раскрыть настройки</button></div>
-          <div class="filterbar"><div class="tabs" role="group" aria-label="Фильтр модулей"><button class="active" data-filter="all" aria-pressed="true">Все <span id="all-count"></span></button><button data-filter="paid" aria-pressed="false">Платные</button><button data-filter="selected" aria-pressed="false">Выбранные</button></div><span class="legend"><i></i> Включено в расчёт</span></div>
-          <div id="catalog" aria-busy="true"><p class="loading">Загружаем модули…</p></div>
-          <div id="empty" class="empty" hidden>Ничего не найдено.<br><small>Попробуйте другое название или сбросьте фильтры.</small><button id="clear-filters" class="text-button">Показать все модули</button></div>
-          <section class="pricing-note"><strong>Как устроен расчёт</strong><p>База + включённые модули + выбранные платные настройки. Поднастройки оплачиваются только при включённом родительском модуле. «Включено» означает 0 ₽ доплаты. Сервер, внедрение и внешние сервисы в расчёт не входят.</p><p>Состав соответствует вкладке «Модули» WMR. Режимы «Договорная цена» и «Зарплатный табель» переключаются взаимоисключающе и не меняют цену полного комплекта.</p></section>
-        </div>
-        <aside class="quote-column" aria-label="Расчёт стоимости"><div class="quote-card" id="quote"><div class="quote-top"><span class="eyebrow">ВАША ПОДПИСКА</span><span class="quote-dot"></span></div><div class="total"><span id="total" aria-live="polite" aria-atomic="true">10 000</span><span class="currency">₽<small>/ месяц</small></span></div><p id="total-caption">Стоимость для одной компании</p><div class="progress"><div id="progress-fill"></div></div><div class="progress-label"><span id="package-share">20% полного набора</span><span>50 000 ₽</span></div><div class="summary-rows"><div><span>База WMR</span><strong>10 000 ₽</strong></div><div><span>Модули <small id="module-count"></small></span><strong id="module-total">0 ₽</strong></div><div><span>Платные настройки <small id="option-count"></small></span><strong id="option-total">0 ₽</strong></div></div><div id="custom-note" class="custom-note" hidden><strong>+ Мультисклад</strong><span>Стоимость согласуется отдельно и не включена в итог.</span></div><div class="presets"><button id="full" class="primary-button">Весь WMR за 50 000 ₽ <span>↗</span></button><button id="base-only" class="secondary-button">Оставить только базу</button></div><details class="breakdown"><summary>Детализация расчёта <span id="line-count"></span></summary><div id="breakdown"></div></details><button id="copy" class="copy-button">Скопировать конфигурацию <span>↗</span></button><div class="quote-foot"><span>Без оплаты и обязательств</span><small>Выбор сохраняется в этом браузере.</small></div></div><div class="help-card"><span>↗</span><div><strong>Несколько складов?</strong><p>Архитектура, перемещения и сопровождение — по индивидуальному предложению.</p><button id="choose-warehouses" class="text-button">Добавить к запросу →</button></div></div></aside>
-      </div>
-      <footer><span>WMR · Конструктор модулей</span><span>Прототип ценовой модели / октябрь 2026</span></footer>
-    </main>
-  </div>
-  <div class="mobile-total"><div><small>Ваша подписка</small><strong id="mobile-total">10 000 ₽/мес</strong></div><a href="#quote">Расчёт ↑</a></div>
+  <main class="main-content" id="workspace">
+    <div class="original-settings-nav">
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-sliders me-2"></i>Настройки</h2>
+
+    <span class="badge bg-secondary">v5.175.2 · прототип</span>
+</div>
+<ul class="nav nav-tabs mb-4">
+    <li class="nav-item">
+        <a class="nav-link " href="#workspace">
+            <i class="bi bi-building me-1"></i>Компания
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link " href="#workspace">
+            <i class="bi bi-currency-exchange me-1"></i>Финансы
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link " href="#workspace">
+            <i class="bi bi-file-earmark-pdf me-1"></i>Шаблоны экспорта
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link " href="#workspace">
+            <i class="bi bi-bell me-1"></i>Уведомления
+        </a>
+    </li>
+
+
+    <li class="nav-item">
+        <a class="nav-link " href="#workspace">
+            <i class="bi bi-people me-1"></i>Пользователи
+        </a>
+    </li>
+
+
+    <li class="nav-item">
+        <a class="nav-link " href="#workspace">
+            <i class="bi bi-file-earmark-text me-1"></i>Документы
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link " href="#workspace">
+            <i class="bi bi-person-badge me-1"></i>Персонал
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link " href="#workspace">
+            <i class="bi bi-tags me-1"></i>Теги клиентов
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="#workspace">
+            <i class="bi bi-toggles me-1"></i>Модули
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link " href="#workspace">
+            <i class="bi bi-gear me-1"></i>Система
+        </a>
+    </li>
+
+
+    <li class="nav-item">
+        <a class="nav-link " href="#workspace">
+            <i class="bi bi-file-earmark-pdf me-1"></i>PDF-шаблоны
+        </a>
+    </li>
+
+
+    <li class="nav-item">
+        <a class="nav-link " href="#workspace">
+            <i class="bi bi-file-earmark-text me-1"></i>Логи
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#workspace">
+            <i class="bi bi-gear-wide-connected me-1"></i>Django Admin
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link " href="#workspace">
+            <i class="bi bi-tools me-1"></i>Утилиты
+        </a>
+    </li>
+</ul>
+
+<button id="theme-toggle" class="btn btn-sm btn-outline-secondary" aria-label="Переключить светлую и тёмную тему"><i class="bi bi-moon"></i></button></div>
+    <div class="intro"><p>Включайте только нужное. Каждый модуль и переключатель имеют отдельную стоимость.</p><span><i class="bi bi-info-circle"></i> Без обязательной базы. Всё выключено — 0 ₽. Полный набор — 50 000 ₽/мес.</span></div>
+    <div class="layout">
+      <section class="catalog-column" aria-label="Модули">
+        <div class="toolbar"><div class="search-wrap"><i class="bi bi-search"></i><input class="form-control" id="search" type="search" placeholder="Поиск по модулям и настройкам…" aria-label="Поиск модулей и настроек"></div><button id="expand" class="btn btn-sm btn-outline-secondary">Свернуть настройки</button></div>
+        <div class="filterbar"><div class="tabs btn-group btn-group-sm" role="group" aria-label="Фильтр модулей"><button class="btn btn-outline-secondary active" data-filter="all" aria-pressed="true">Все <span id="all-count"></span></button><button class="btn btn-outline-secondary" data-filter="selected" aria-pressed="false">Выбранные</button></div><select id="category-filter" class="form-select form-select-sm" aria-label="Категория модулей"></select></div>
+        <div id="catalog" aria-busy="true"><p class="loading">Загружаем модули…</p></div>
+        <div id="empty" class="empty" hidden>Ничего не найдено.<button id="clear-filters" class="btn btn-sm btn-outline-secondary">Показать все модули</button></div>
+        <div class="pricing-note"><strong>Условия расчёта</strong><p>Оплачиваются выбранные модули и их включённые переключатели. Если модуль выключен, его настройки не оплачиваются. Ручные складские отметки — без доплаты, сканерный режим — +1 000 ₽/мес, гибридный — +1 500 ₽/мес. Часовой пояс, формат этикеток и другие настройки отображения цену не меняют.</p><p>Мультисклад, сервер, внедрение и внешние сервисы рассчитываются отдельно. «Договорная цена» и «Зарплатный табель» — альтернативные режимы. Полный набор за 50 000 ₽ включает гибридный складской режим и табель со всеми его настройками.</p></div>
+      </section>
+      <aside class="quote-column" aria-label="Расчёт стоимости"><div class="quote-card card" id="quote"><div class="card-header"><i class="bi bi-calculator"></i><strong>Стоимость подписки</strong></div><div class="card-body"><div class="total"><span id="total" aria-live="polite" aria-atomic="true">0</span> <span>₽<small>/ месяц</small></span></div><p id="total-caption">За выбранные модули и настройки</p><div class="summary-rows"><div><span>Модули <small id="module-count"></small></span><strong id="module-total">0 ₽</strong></div><div><span>Настройки <small id="option-count"></small></span><strong id="option-total">0 ₽</strong></div></div><div class="progress" role="presentation"><div id="progress-fill"></div></div><div class="progress-label"><span id="package-share">0% полного набора</span><span>50 000 ₽</span></div><div id="custom-note" class="alert alert-warning" hidden><strong>+ Мультисклад</strong><span>Стоимость согласуется отдельно и не включена в итог.</span></div><div class="presets"><button id="full" class="btn btn-primary"><i class="bi bi-check2-all"></i> Включить всё · 50 000 ₽</button><button id="clear-all" class="btn btn-outline-secondary"><i class="bi bi-toggle-off"></i> Выключить всё</button></div><details class="breakdown"><summary>Детализация <span id="line-count"></span></summary><div id="breakdown"></div></details><button id="copy" class="btn btn-outline-primary w-100"><i class="bi bi-clipboard"></i> Скопировать расчёт</button><div class="quote-foot">Прототип цен. Оплата не производится.<small>Одна компания · без платы за пользователя</small></div></div></div><div class="help-card"><i class="bi bi-buildings"></i><div><strong>Мультисклад — индивидуально</strong><p>Добавьте его к конфигурации для отдельного расчёта.</p><button id="choose-warehouses" class="btn btn-sm btn-outline-secondary">Добавить к запросу</button></div></div></aside>
+    </div>
+    <footer>WMR · Прототип вкладки «Модули» · Все цены за месяц</footer>
+  </main>
+  <div class="mobile-total"><div><small>Стоимость подписки</small><strong id="mobile-total">0 ₽/мес</strong></div><a class="btn btn-primary btn-sm" href="#quote">Расчёт <i class="bi bi-chevron-up"></i></a></div>
   <div id="toast" role="status" aria-live="polite"></div>
   <noscript><p>Для работы калькулятора включите JavaScript.</p></noscript>
 </body>

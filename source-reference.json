@@ -1,0 +1,10 @@
+{
+  "source_commit": "6d708c2c2bd848a6b76b874931aa760aa134db00",
+  "templates": {
+    "templates/core/settings_tabs/_modules.html": "94f357d1ded801a24b1ad5cd2c640cbcd08f47884cdc1cef66de4fb70aed4456",
+    "templates/core/settings_tabs/_nav.html": "994f5fab1c6bd0aa8c00a776e3118c9c20561c141f73790b98c63052d875492a",
+    "core/modules.py": "e1165ef1b28d0cbc7bdb1f2043b2018d46f21c4c62c57fd743e82924577d2398",
+    "core/warehouse_input.py": "cffacc88f76c6ca756209c876e239771ca1d6316e1075f63e1026dc3fb151fec"
+  },
+  "rendering": "Original Django module and settings-navigation templates rendered offline. Pricing annotations and client-side interactions are added by the prototype. Warehouse contract v1 uses the mode selector instead of the legacy scanner checkbox."
+}

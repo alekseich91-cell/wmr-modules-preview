@@ -4,11 +4,11 @@ const modes = ['staff_rate_agreement', 'staff_timesheet'];
 export function makeState(catalog, full = false) {
   const state = {modules: {}, options: {}, values: {}};
   for (const m of catalog.modules) {
-    state.modules[m.id] = m.core || (!m.custom && (full || m.price === 0));
+    state.modules[m.id] = !m.custom && full;
     for (const o of m.options) {
-      if (o.type === 'bool') state.options[o.key] = full || (o.price === 0 && o.default !== false);
-      else if (o.type === 'multi') state.values[o.key] = o.choices.map(c => c[0]);
-      else if (o.type === 'select') state.values[o.key] = o.key === 'timezone' ? 'Europe/Moscow' : o.choices?.[0]?.[0];
+      if (o.type === 'bool') state.options[o.key] = full;
+      else if (o.type === 'multi') state.values[o.key] = full ? o.choices.map(c => c[0]) : ['month'];
+      else if (o.type === 'select') state.values[o.key] = o.key === 'timezone' ? 'Europe/Moscow' : full && o.choicePrices ? Object.entries(o.choicePrices).sort((a,b)=>b[1]-a[1])[0][0] : o.choices?.[0]?.[0];
       else state.values[o.key] = o.min ?? 1;
     }
   }
@@ -19,7 +19,7 @@ export function makeState(catalog, full = false) {
 
 export function setModule(catalog, state, id, enabled) {
   const m = catalog.modules.find(m => m.id === id);
-  if (!m || m.core) return [];
+  if (!m) return [];
   const notices = [];
   state.modules[id] = enabled;
   if (enabled) for (const dependency of DEPENDENCIES[id] || []) {
@@ -49,30 +49,40 @@ export function setOption(state, key, enabled) {
   if (!state.options.staff_timesheet) state.options.payroll_manager_only = false;
 }
 
+export function optionItems(m, state) {
+  const items = [];
+  for (const o of m.options) {
+    if (o.type === 'bool' && state.options[o.key]) items.push({id:o.key, label:o.label, price:o.price, parent:m.label});
+    if (o.type === 'select' && o.choicePrices?.[state.values[o.key]]) items.push({id:o.key,label:`${o.label}: ${o.choices.find(c=>c[0]===state.values[o.key])[1]}`,price:o.choicePrices[state.values[o.key]],parent:m.label});
+    if (o.type === 'multi') for (const [id,label] of o.choices) {
+      if (state.values[o.key]?.includes(id)) items.push({id:`${o.key}.${id}`,label:`${o.label}: ${label}`,price:o.choicePrices[id],parent:m.label});
+    }
+  }
+  return items;
+}
+
 export function moduleTotal(m, state) {
   if (!state.modules[m.id] || m.custom) return 0;
-  return m.price + m.options.reduce((sum, o) => sum + (state.options[o.key] ? o.price : 0), 0);
+  return m.price + optionItems(m,state).reduce((sum,o)=>sum+o.price,0);
 }
 
 export function calculate(catalog, state) {
-  const items = [{id:'base', label:'База WMR', price:catalog.base}];
+  const items = [];
   let options = 0, modules = 0;
   for (const m of catalog.modules) {
     if (!state.modules[m.id] || m.custom) continue;
-    if (m.price) { modules += m.price; items.push({id:m.id, label:m.label, price:m.price}); }
-    for (const o of m.options) if (o.price && state.options[o.key]) {
-      options += o.price;
-      items.push({id:o.key, label:o.label, price:o.price, parent:m.label});
-    }
+    modules += m.price;
+    items.push({id:m.id,label:m.label,price:m.price});
+    for (const item of optionItems(m,state)) { options += item.price; items.push(item); }
   }
-  return {total:catalog.base + modules + options, modules, options, items, custom:!!state.modules.multiwarehouse};
+  return {total:modules+options,modules,options,items,custom:!!state.modules.multiwarehouse};
 }
 
 export function restore(catalog, saved) {
   const state = makeState(catalog);
   if (!saved || typeof saved !== 'object') return state;
   for (const m of catalog.modules) {
-    if (!m.core && typeof saved.modules?.[m.id] === 'boolean') state.modules[m.id] = saved.modules[m.id];
+    if (typeof saved.modules?.[m.id] === 'boolean') state.modules[m.id] = saved.modules[m.id];
     for (const o of m.options) {
       if (o.type === 'bool' && typeof saved.options?.[o.key] === 'boolean') state.options[o.key] = saved.options[o.key];
       const value = saved.values?.[o.key];
