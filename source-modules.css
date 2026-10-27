@@ -1,0 +1,37 @@
+/* Module styles from the referenced WMR commit. */
+.modules-intro{max-width:860px;color:var(--text-secondary)}
+.modules-group-title{font-size:1rem;font-weight:650;margin:28px 0 12px}
+.module-card{border:1px solid var(--border-default);border-radius:10px;background:var(--bg-card);padding:18px;height:100%}
+.module-heading{display:flex;align-items:flex-start;gap:10px}
+.module-heading label,.module-heading strong{font-weight:650;line-height:1.4;flex:1;min-width:0;cursor:pointer}
+.module-heading .form-switch{flex-shrink:0;margin:2px 0 0}
+.module-state{font-size:12px;color:var(--text-secondary);white-space:nowrap}
+.module-description,.module-effect{font-size:13px;line-height:1.55;color:var(--text-secondary);margin:10px 0 0}
+.module-effect{padding-top:10px;border-top:1px solid var(--border-subtle)}
+.module-settings{margin-top:14px}
+.module-settings>summary{font-size:13px;color:var(--text-primary);cursor:pointer;font-weight:600}
+.module-settings>summary:focus-visible{outline:2px solid var(--bs-primary);outline-offset:4px}
+.module-options{border:0;margin:14px 0 0;padding:0;min-width:0}
+.module-options:disabled{opacity:.65}
+.module-option{padding:10px 0;border-top:1px solid var(--border-subtle)}
+.module-option label,.module-option legend{font-size:13px;font-weight:500}
+.module-option .form-text{font-size:12px;line-height:1.55;color:var(--text-secondary);margin:5px 0 0}
+.module-subgroup{font-size:13px;font-weight:650;margin:18px 0 4px;color:var(--text-primary)}
+.modules-save{position:sticky;bottom:0;z-index:10;background:var(--bg-card);border-top:1px solid var(--border-default);padding:12px 0;display:flex;align-items:center;gap:12px;margin-top:24px}
+.module-option.settings-search-hit{outline:2px solid var(--bs-primary);outline-offset:3px}
+@media(max-width:575px){.module-card{padding:14px}.module-heading{flex-wrap:wrap}.module-state{margin-left:auto}.modules-save{flex-wrap:wrap}}
+
+.module-option-section{min-width:0}
+.module-option-section>.form-text{font-size:12px;color:var(--text-secondary);line-height:1.55}
+.module-option-details{margin-top:8px;font-size:12px;color:var(--text-secondary)}
+.module-option-details>summary{cursor:pointer}
+.module-option-details>summary:focus-visible{outline:2px solid var(--bs-primary);outline-offset:3px}
+.module-jump{border:0;background:none;padding:0;color:var(--accent-primary);text-decoration:underline}
+[data-module="staff"] .module-subgroup{margin-top:0}
+[data-module="staff"] .module-option-section{padding:16px;border:1px solid var(--border-default);border-radius:8px}
+[data-module="staff"] .module-options{display:grid;gap:16px}
+@media(min-width:992px){
+  [data-module="staff"] .module-options{grid-template-columns:repeat(2,minmax(0,1fr))}
+  [data-module="staff"] .module-option-section:first-child{grid-row:span 3}
+  [data-module="staff"] .module-option-section:last-child{grid-column:1/-1}
+}

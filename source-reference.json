@@ -1,30 +1,32 @@
 {
-  "source_commit": "6d708c2c2bd848a6b76b874931aa760aa134db00",
+  "source_commit": "579d9b4f74c29cba37be87c510378963559fb4ea",
+  "source_branch": "codex/modules-ux-20261026",
+  "stand_commit_at_sync": "461e769a5bb05d5aa8c2d269aa3e3874e08a8a06",
+  "pricing_version": 4,
   "templates": {
-    "templates/core/settings_tabs/_modules.html": "94f357d1ded801a24b1ad5cd2c640cbcd08f47884cdc1cef66de4fb70aed4456",
-    "templates/core/settings_tabs/_nav.html": "994f5fab1c6bd0aa8c00a776e3118c9c20561c141f73790b98c63052d875492a",
-    "core/modules.py": "e1165ef1b28d0cbc7bdb1f2043b2018d46f21c4c62c57fd743e82924577d2398",
+    "core/modules.py": "2a5625b08ba399044775963a1a003a862706e0b226be65d8f8bd9a47cfa386d8",
+    "accounts/models.py": "c69da53e943c7a6449f7ba19ee4b4b1286a6e8ddc160328d6ffd3d894f7c86a3",
     "core/warehouse_input.py": "cffacc88f76c6ca756209c876e239771ca1d6316e1075f63e1026dc3fb151fec",
-    "core/module_guards.py": "10df2f81a93d19f1bc815568130b8821133c4a69d7eb9ca839118c7183d19d68",
-    "core/views_settings.py": "da232ea49ce6433ac080e70b19ef39e64d5200cc95956b9f3adb104ea291adcf",
-    "core/permissions.py": "a77f3f0c386db9f13cb1307306e62daa88079efbb942c28c7756be3b3dfb9f03",
-    "tests/test_module_toggles_phase7.py": "d84808b066ee3af688334641d982ed469c119534c789a2ec3b409d6dc9b53300"
+    "core/views_settings.py": "7ca7240d1f649466ab713b7436b8c274979d102420be54c28174becfd90b1d9c",
+    "core/module_guards.py": "143e0fc52c39c5647bda6e4d729a0d52eaca37e8cdbafcb2e10a5c118b36edce",
+    "templates/core/settings_tabs/_modules.html": "d13e03c2820859521075ecabd9757106d99323585f73364e771eccb8748df34b",
+    "templates/core/settings_tabs/_nav.html": "994f5fab1c6bd0aa8c00a776e3118c9c20561c141f73790b98c63052d875492a",
+    "templates/core/includes/_module_option.html": "ac5e2cdace1634a36728f958e2583e51b85296cd9fd918111de8df26a77f4150",
+    "templates/core/includes/_settings_search.html": "7f0d17f9c5125a5f481231433e5721c4cc0b475c2927a1e079d1ee05878e5ab8",
+    "templates/core/includes/_settings_search_empty.html": "f71187b260fc9579bcb26aa7eac7cd02f06b9928e978f4b9a4d90756bbb22e61",
+    "static/css/base.css": "c2c5fdf9ccc87fe9bd3de64a33c274f3bd667901e58aa35f0946830eb64c457b",
+    "static/js/settings_modules.js": "1e28d4d48667e48c8c70be32b8fd0dd8c9138999c7d38cce29e4357fbfc46cd2"
   },
-  "rendering": "Original Django module and settings-navigation templates rendered offline. Pricing annotations and client-side interactions are added by the prototype. Warehouse contract v1 uses the mode selector instead of the legacy scanner checkbox.",
-  "pricing_version": 3,
-  "core_findings": {
-    "permanent_cards": [
-      "calendar",
-      "estimates",
-      "catalog"
-    ],
-    "evidence": "MODULE_REGISTRY category=core; save_modules excludes core from new_disabled; RegistryCoreTilesTests verifies optional sets exclude core.",
-    "conditional_blocks": {
-      "smart_loading": "Finalized loading lists with pending returns.",
-      "alerts": "Unacknowledged at-risk items on reserved/confirmed estimates not past project return."
-    },
-    "dependencies": "Treasury permission includes accounting permission. Prototype couples these paid modules.",
-    "limits": "No live database access. Blockers are explained, not simulated. Acceptance has a WARN definition, but save_modules only applies module guards to newly disabled unflagged modules; acceptance uses a dedicated flag.",
-    "commercial_proposal": "10,000 core + 36,000 optional modules + 4,000 advanced tools/mode = 50,000. UI preferences, mobile access, notifications, feedback and help have no surcharge."
-  }
+  "rendering": "Original module and navigation templates rendered offline from the pinned branch commit. No production settings, database data or credentials are copied.",
+  "core_cards": [
+    "access",
+    "finance_rules",
+    "calendar",
+    "estimates",
+    "catalog"
+  ],
+  "payroll": "Timesheet, rate agreement and amount-edit restrictions are independent compatible switches.",
+  "pricing": "10,000 core + 36,000 optional modules + 4,000 advanced tools/mode = 50,000. Source behavior and proposed commercial prices are distinct.",
+  "stand_commit_verified": "579d9b4f74c29cba37be87c510378963559fb4ea",
+  "stand_branch_verified": "stand/acceptance-module-20261027"
 }

@@ -1,5 +1,4 @@
 export const DEPENDENCIES = {treasury: ['accounting']};
-const modes = ['staff_rate_agreement', 'staff_timesheet'];
 
 export function makeState(catalog, full = false) {
   const state = {modules: {}, options: {}, values: {}};
@@ -12,8 +11,7 @@ export function makeState(catalog, full = false) {
       else state.values[o.key] = o.min ?? 1;
     }
   }
-  state.options.staff_rate_agreement = false;
-  if (!state.options.staff_timesheet) state.options.payroll_manager_only = false;
+  normalizeCalendar(state);
   return state;
 }
 
@@ -40,14 +38,14 @@ export function setModule(catalog, state, id, enabled) {
 
 export function setOption(state, key, enabled) {
   state.options[key] = enabled;
-  if (enabled && modes.includes(key)) {
-    state.options[modes.find(m => m !== key)] = false;
+  // The current source branch permits these payroll tools together.
+  // Amount-edit restrictions also apply to agreement money without timesheets.
+  if(key === 'staff_staff_calendar') {
+    const views=new Set(state.values.calendar_views);
+    if(enabled)views.add('staff');else views.delete('staff');
+    state.values.calendar_views=[...views];
+    normalizeCalendar(state);
   }
-  if (key === 'payroll_manager_only' && enabled) {
-    state.options.staff_timesheet = true;
-    state.options.staff_rate_agreement = false;
-  }
-  if (!state.options.staff_timesheet) state.options.payroll_manager_only = false;
 }
 
 export function optionItems(m, state) {
@@ -95,8 +93,6 @@ export function restore(catalog, saved) {
       if (o.type === 'int' && Number.isInteger(value) && value >= o.min && value <= o.max) state.values[o.key] = value;
     }
   }
-  if (state.options.staff_timesheet) state.options.staff_rate_agreement = false;
-  if (!state.options.staff_timesheet) state.options.payroll_manager_only = false;
   for (const [id, deps] of Object.entries(DEPENDENCIES)) if (state.modules[id]) for (const dep of deps) state.modules[dep] = true;
   normalizeCalendar(state);
   return state;
@@ -105,5 +101,6 @@ export function restore(catalog, saved) {
 export function normalizeCalendar(state) {
   const views = state.values.calendar_views;
   if (!views?.length) state.values.calendar_views = ['month'];
+  state.options.staff_staff_calendar = state.values.calendar_views.includes('staff');
   if (!state.values.calendar_views.includes(state.values.calendar_default_view)) state.values.calendar_default_view = state.values.calendar_views[0];
 }

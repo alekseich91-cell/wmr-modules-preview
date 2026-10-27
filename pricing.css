@@ -1,0 +1,31 @@
+/* Price annotations around the original WMR module markup. */
+:root{--accent-primary:var(--accent);--border-subtle:var(--line);--bs-primary:var(--accent)}
+.source-version{font-size:11px;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+#modulesForm .modules-intro{font-size:12px;line-height:1.65;margin-bottom:9px}
+#modulesForm .modules-intro.small{font-size:11px;margin-bottom:22px}
+#modulesForm .modules-group-title{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:16px;margin-top:26px}
+#modulesForm .modules-group-title .group-price{font-size:11px;font-weight:400;white-space:nowrap}
+#modulesForm .module-heading .module-state{font-size:10px;align-self:center}
+#modulesForm .module-heading .module-state .bi-lock-fill{font-size:9px}
+#modulesForm .pricing-module-row{padding:12px 0 0;gap:10px}
+#modulesForm .pricing-module-row strong{font-size:16px}
+#modulesForm .module-billing-note{margin:10px 0 0;padding:9px 10px;font-size:11px}
+#modulesForm .module-options .module-option{margin:0}
+#modulesForm .module-option .pricing-option{margin-left:7px;white-space:nowrap;font-size:11px;display:inline-block}
+#modulesForm .module-option .form-select{max-width:100%}
+#modulesForm .module-option-details{color:var(--muted)}
+#modulesForm .module-heading label{margin:0}
+#modulesForm .module-card>.module-description{margin:10px 0 0}
+#modulesForm .module-settings .module-options{display:block}
+#modulesForm [data-module="staff"] .module-options{display:grid}
+#modulesForm .modules-save{position:static;background:transparent;margin-top:26px}
+#modulesForm .modules-save .btn{font-size:13px}
+#modulesForm .module-options[disabled]{opacity:.65}
+#modulesForm [data-card="staff"] .module-option-section h3{font-size:13px}
+@media(max-width:1199px){#modulesForm .col-xl-6{width:100%}}
+@media(min-width:1200px){#modulesForm .col-xl-6{width:50%}}
+@media(max-width:767px){#modulesForm [data-module="staff"] .module-options{grid-template-columns:1fr}#modulesForm [data-module="staff"] .module-option-section{grid-column:auto;grid-row:auto}}
+@media(max-width:620px){#modulesForm .module-card{padding:14px}#modulesForm .module-heading{row-gap:7px}#modulesForm .module-heading .module-state{font-size:10px}#modulesForm .module-billing-note{font-size:11px}#modulesForm .modules-group-title{font-size:14px}#modulesForm .module-card .module-effect{font-size:12px}}
+@media print{.original-settings-nav .nav-tabs{display:none!important}#modulesForm .module-card{break-inside:avoid}#modulesForm .module-card:not(.enabled){display:none}}
+/* Semantic aliases must resolve in the selected theme, rather than at :root. */
+body.dark{--bg-card:var(--paper);--border-default:var(--line);--text-primary:var(--ink);--text-secondary:var(--muted);--border-subtle:var(--line);--accent-primary:var(--accent);--bs-primary:var(--accent)}

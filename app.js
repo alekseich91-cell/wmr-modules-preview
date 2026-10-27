@@ -1,9 +1,10 @@
-import {makeState, calculate, moduleTotal, setModule, setOption, restore, normalizeCalendar} from './model.js?v=3';
+import {makeState, calculate, moduleTotal, setModule, setOption, restore, normalizeCalendar} from './model.js?v=4';
 const $ = id => document.getElementById(id);
 const money = n => new Intl.NumberFormat('ru-RU').format(n);
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const key = 'wmr-pricing-v3';
-let catalog, originalHTML, state, filter = 'all', category = 'all', expanded = true, toastTimer;
+const key = 'wmr-pricing-v4';
+const openModules = new Set();
+let catalog, originalHTML, state, filter = 'all', category = 'all', expanded = false, toastTimer;
 
 function showToast(text) {
   clearTimeout(toastTimer);
@@ -21,48 +22,52 @@ function renderNav() {
 function priceTag(text, className='') {
   const span=document.createElement('span');span.className='pricing-option '+className;span.textContent=text;return span;
 }
-function renderCatalog() {
+function renderCatalog(resetDisclosure = false) {
   const query=$('search').value.trim().toLowerCase();
+  if(resetDisclosure)openModules.clear();
+  else for(const details of $('catalog').querySelectorAll('.module-settings')) {
+    const id=details.closest('[data-card]')?.dataset.card;
+    if(details.open)openModules.add(id);else openModules.delete(id);
+  }
   $('catalog').innerHTML=originalHTML;
   const form=$('modulesForm');
-  form.querySelector(':scope > p').remove();
   form.querySelector('.settings-search').remove();
   form.querySelector('.settings-search-empty').remove();
   form.querySelector('[type="hidden"]')?.remove();
   const masterGroups=[...form.querySelectorAll('#modulesList > .js-search-group')];
   let visible=0;
-  for (const [i,[group,label]] of catalog.groups.entries()) {
+  for (const [i,[group]] of catalog.groups.entries()) {
     const el=masterGroups[i];if(!el)continue;
     el.id=`group-${group}`;el.dataset.group=group;
-    const heading=el.querySelector('h6');
+    const heading=el.querySelector('.modules-group-title');
     const sum=catalog.modules.filter(m=>m.group===group).reduce((n,m)=>n+moduleTotal(m,state),0);
     const hasSelected=catalog.modules.some(m=>m.group===group&&state.modules[m.id]);
     heading.append(priceTag(sum?`${money(sum)} ₽/мес`:hasSelected?'Без доплаты':'Не выбрано','group-price'));
   }
   for (const m of catalog.modules) {
     const card=m.id==='mobile'?$('mobileBlock'):form.querySelector(`[data-module="${m.id}"]`);
-    card.removeAttribute('data-module');card.dataset.card=m.id;
+    card.dataset.card=m.id;card.id=`card-${m.id}`;
     card.classList.add('original-module');card.classList.toggle('enabled',state.modules[m.id]);
-    const head=card.querySelector('.card-header');
-    card.id=`card-${m.id}`;
-    let master=head.querySelector('input[type="checkbox"]');
+    const head=card.querySelector('.module-heading');
     if(!m.core){
-      if(!master){
-        head.querySelector('.badge')?.remove();
-      const wrap=document.createElement('div');wrap.className='form-check form-switch mb-0 flex-shrink-0';
-      master=document.createElement('input');master.type='checkbox';master.className='form-check-input mod-switch';wrap.append(master);head.append(wrap);
-    }
-    master.id=`module-${m.id}`;master.dataset.module=m.id;master.checked=!!state.modules[m.id];master.setAttribute('aria-label',m.label);
+      const master=head.querySelector('input[type="checkbox"]');
+      const label=head.querySelector(`label[for="${master.id}"]`);
+      master.id=`module-${m.id}`;master.dataset.module=m.id;master.checked=!!state.modules[m.id];master.setAttribute('aria-label',m.label);
+      if(label)label.htmlFor=master.id;
+      const status=head.querySelector('.module-state');if(status)status.textContent=master.checked?'Включено':'Выключено';
     }else{
-      head.querySelector('.badge').innerHTML='<i class="bi bi-lock-fill"></i> Ядро';
-      head.querySelector('.badge').title='Обязательная часть WMR — отключение не предусмотрено';
+      const status=head.querySelector('.module-state');status.innerHTML='<i class="bi bi-lock-fill"></i> Ядро';
+      status.title='Обязательная часть WMR — отключение не предусмотрено';
     }
     const priceRow=document.createElement('div');priceRow.className='pricing-module-row';
     priceRow.innerHTML=`<strong>${m.custom?'Индивидуально':m.price?`${money(m.price)} ₽ <small>/ мес</small>`:'Без доплаты'}</strong><span>${m.custom?'Вне общего итога':m.core?'Обязательная часть':m.price?`Выбрано: ${money(moduleTotal(m,state))} ₽`:'Можно скрыть'}</span>`;
     head.after(priceRow);
     if(m.note){const note=document.createElement('div');note.className='module-billing-note';note.textContent=m.note;priceRow.after(note);}
-    const sub=card.querySelector('.core-opts,.sub-opts') || (m.id==='mobile'?$('mobileBlockBody'):null);
-    if(sub){sub.classList.toggle('d-none',!expanded&&!query);sub.classList.toggle('inactive-options',!state.modules[m.id]);}
+    const sub=card.querySelector('.module-options');
+    if(sub)sub.disabled=!state.modules[m.id];
+    const details=card.querySelector('.module-settings');
+    if(details)details.open=expanded||openModules.has(m.id)||!!query;
+    const disabledNote=card.querySelector('[data-module-disabled-note]');if(disabledNote)disabledNote.hidden=!!state.modules[m.id];
     for(const o of m.options){
       if(o.type==='multi'){
         for(const input of card.querySelectorAll(`[data-mo-list="${o.key}"]`)){
@@ -76,22 +81,19 @@ function renderCatalog() {
       const oldId=input.id;const label=card.querySelector(`label[for="${oldId}"]`);
       input.id=`opt-${o.key}`;if(label)label.htmlFor=input.id;
       input.disabled=!state.modules[m.id];
-      const row=input.closest('.js-search-sub')||input.parentElement;
       if(o.type==='bool'){
         input.checked=!!state.options[o.key];input.dataset.option=o.key;
-        if(o.price){const tag=priceTag(`+${money(o.price)} ₽`);if(label)label.after(tag);else row.append(tag);}
+        if(o.price&&label)label.after(priceTag(`+${money(o.price)} ₽`));
       }else{
         input.dataset.value=o.key;input.value=state.values[o.key];
-        if(o.type==='select'&&o.choicePrices){
-          for(const option of input.options)option.textContent=`${o.choices.find(c=>c[0]===option.value)[1]} — ${o.choicePrices[option.value]?`+${money(o.choicePrices[option.value])} ₽/мес`:'без доплаты'}`;
-          const hint=document.createElement('div');hint.className='mode-pricing-note';hint.textContent='Ручной: +0 ₽ · Сканерный: +1 000 ₽ · Гибридный: +1 500 ₽';row.append(hint);
-        }
+        if(o.type==='select'&&o.choicePrices)for(const option of input.options)option.textContent=`${o.choices.find(c=>c[0]===option.value)[1]} — ${o.choicePrices[option.value]?`+${money(o.choicePrices[option.value])} ₽/мес`:'без доплаты'}`;
         if(o.key==='calendar_default_view')for(const option of input.options)option.disabled=!state.values.calendar_views.includes(option.value);
       }
     }
     let matches=(category==='all'||m.group===category)&&(filter!=='selected'||state.modules[m.id]);
-    if(query)matches=matches&&`${m.label} ${m.description} ${m.options.map(o=>`${o.label} ${o.desc||''}`).join(' ')}`.toLowerCase().includes(query);
+    if(query)matches=matches&&`${m.label} ${m.description} ${m.off_description} ${m.options.map(o=>`${o.label} ${o.desc||''} ${o.details||''}`).join(' ')}`.toLowerCase().includes(query);
     card.closest('.js-search-unit').hidden=!matches;if(matches)visible++;
+    if(query)card.querySelectorAll('.module-option-details').forEach(el=>el.open=true);
   }
   for(const group of masterGroups)group.hidden=![...group.querySelectorAll('.js-search-unit')].some(el=>!el.hidden);
   $('modSaveBtn').type='button';$('modSaveBtn').addEventListener('click',saveConfiguration);
@@ -99,6 +101,11 @@ function renderCatalog() {
   $('modSaveMsg').textContent='Выбор автоматически сохраняется в этом браузере.';
   $('empty').hidden=visible>0;$('catalog').setAttribute('aria-busy','false');
   $('expand').textContent=expanded?'Свернуть настройки':'Раскрыть настройки';
+  form.querySelectorAll('[data-module-jump]').forEach(button=>button.addEventListener('click',()=>{
+    category='all';filter='all';$('search').value='';openModules.add(button.dataset.moduleJump);
+    document.querySelectorAll('[data-filter]').forEach(b=>{b.classList.toggle('active',b.dataset.filter==='all');b.setAttribute('aria-pressed',String(b.dataset.filter==='all'));});
+    renderNav();renderCatalog();const target=$(`card-${button.dataset.moduleJump}`);target.querySelector('.module-settings').open=true;target.scrollIntoView({block:'center'});
+  }));
 }
 function saveConfiguration(){if(persist()){showToast('Конфигурация сохранена в этом браузере.');$('modSaveMsg').textContent='Сохранено';}else showToast('Не удалось сохранить. Скопируйте расчёт, чтобы не потерять выбор.');}
 function renderQuote() {
@@ -133,7 +140,7 @@ function configurationText() {
       else lines.push(`  ${o.label}: ${o.choices?.find(c=>c[0]===state.values[o.key])?.[1] ?? state.values[o.key]}`);
     }
   }
-  lines.push('', 'Обязательное ядро: календарь, сметы, каталог — 10 000 ₽/мес. Настройки без цены входят в соответствующий модуль. Сервер, внедрение и внешние сервисы оплачиваются отдельно.');
+  lines.push('', 'Обязательное ядро: календарь, сметы, каталог, вход сотрудников и правила комиссий — 10 000 ₽/мес. Настройки без цены входят в соответствующий модуль. Сервер, внедрение и внешние сервисы оплачиваются отдельно.');
   return lines.join('\n');
 }
 async function copy() {
@@ -147,16 +154,16 @@ async function copy() {
   }
 }
 async function init() {
-  const response = await fetch('./catalog.json?v=3');
+  const response = await fetch('./catalog.json?v=4');
   if (!response.ok) throw new Error('catalog');
   catalog = await response.json();
-  const markup=await fetch('./modules-original.html?v=3');if(!markup.ok)throw new Error('markup');originalHTML=await markup.text();
+  const markup=await fetch('./modules-original.html?v=4');if(!markup.ok)throw new Error('markup');originalHTML=await markup.text();
   let saved;
   try { saved = JSON.parse(localStorage.getItem(key)); } catch {}
   state = saved ? restore(catalog,saved) : makeState(catalog,true);
   $('all-count').textContent = catalog.modules.length;
   renderNav(); renderCatalog(); renderQuote();
-  $('search').addEventListener('input',renderCatalog);
+  $('search').addEventListener('input',()=>renderCatalog());
   document.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click',()=>{
     filter = button.dataset.filter;
     document.querySelectorAll('[data-filter]').forEach(b=>{ b.classList.toggle('active',b===button); b.setAttribute('aria-pressed',String(b===button)); });
@@ -165,7 +172,7 @@ async function init() {
   $('category-filter').addEventListener('change',e=>{
     category=e.target.value;renderCatalog();
   });
-  $('expand').addEventListener('click',()=>{expanded=!expanded;renderCatalog();});
+  $('expand').addEventListener('click',()=>{expanded=!expanded;renderCatalog(true);});
   $('clear-filters').addEventListener('click',()=>{
     $('search').value='';category='all';document.querySelector('[data-filter="all"]').click();renderNav();
   });
@@ -177,7 +184,6 @@ async function init() {
       if (el.dataset.module==='multiwarehouse' && el.checked) showToast('Мультисклад добавлен к запросу. Цена согласуется отдельно.');
     } else if (el.dataset.option) {
       setOption(state,el.dataset.option,el.checked);
-      if (el.checked && ['staff_rate_agreement','staff_timesheet'].includes(el.dataset.option)) showToast('Режим оплаты переключён. Договорная цена и табель взаимоисключающие.');
     } else if (el.dataset.multi) {
       const selected = new Set(state.values[el.dataset.multi]);
       if (el.checked) selected.add(el.value); else selected.delete(el.value);

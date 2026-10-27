@@ -1,8 +1,7 @@
-
 <form id="modulesForm" data-url="">
 
-  <p class="text-muted mb-4">Включайте только нужное. Выключенный модуль скрывается из интерфейса; данные и настройки сохраняются.</p>
-
+  <p class="modules-intro">Выберите функции для всей компании. Права сотрудников настраиваются отдельно, в ролях. Изменения вступают в силу после сохранения.</p>
+  <p class="modules-intro small">Параметры расчётов и способы работы описаны внутри карточек. Перед изменением приёмки и выключением функций с незавершённой работой появится предупреждение.</p>
 
 
 
@@ -13,8 +12,8 @@
 
     <input type="search" class="form-control form-control-sm settings-search-input"
            id="modSearch" autocomplete="off"
-           placeholder="Поиск по модулям и настройкам…"
-           aria-label="Поиск по модулям и настройкам…"
+           placeholder="Найти функцию или настройку…"
+           aria-label="Найти функцию или настройку…"
            data-search-root="#modulesList"
            data-search-unit=".js-search-unit"
            data-search-group=".js-search-group"
@@ -33,1357 +32,1576 @@
 </div>
 
 
+  <fieldset>
   <div id="modulesList">
 
+    <section class="js-search-group" aria-labelledby="module-group-projects">
+      <h2 class="modules-group-title" id="module-group-projects">Календарь и проекты</h2>
+      <div class="row g-3">
 
-    <div class="js-search-group">
-    <h6 class="text-muted fw-semibold mt-4 mb-2 text-uppercase" style="font-size:.75rem;letter-spacing:.05em">Проекты и финансы</h6>
-    <div class="row g-3 mb-1">
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="calendar">
-          <div class="card h-100" data-module="calendar" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-calendar3 text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Календарь">Календарь</strong>
-
-                <span class="badge bg-primary-subtle text-primary">Ядро</span>
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="calendar">
+          <article class="module-card" data-module="calendar">
+            <div class="module-heading">
+              <i class="bi bi-calendar3 text-primary" aria-hidden="true"></i>
+              <strong>Календарь</strong>
+              <span class="module-state">Всегда доступно</span>
 
             </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Доступные виды календаря, вид по умолчанию и часовой пояс компании.</p>
+            <p class="module-description" id="module-desc-calendar">Доступные виды календаря, вид по умолчанию и часовой пояс компании.</p>
 
 
-                <div class="core-opts mt-2" id="coreopts_calendar">
+            <details class="module-settings">
+              <summary>Настроить <span class="visually-hidden">Календарь</span></summary>
 
+              <fieldset class="module-options core-opts" id="coreopts_calendar">
 
-                      <div class="mb-2 ms-1 js-search-sub">
-                        <div class="form-label small mb-1">Доступные виды<i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Какие виды календаря доступны пользователям. Снятые галочки скрывают соответствующие кнопки переключения вида."></i></div>
-
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox"
-                                   data-mo-list="calendar_views" value="month"
-                                   id="core_calendar_calendar_views_month"
-                                   checked>
-                            <label class="form-check-label small" for="core_calendar_calendar_views_month">Месяц</label>
-                          </div>
-
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox"
-                                   data-mo-list="calendar_views" value="week"
-                                   id="core_calendar_calendar_views_week"
-                                   checked>
-                            <label class="form-check-label small" for="core_calendar_calendar_views_week">Неделя</label>
-                          </div>
-
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox"
-                                   data-mo-list="calendar_views" value="list"
-                                   id="core_calendar_calendar_views_list"
-                                   checked>
-                            <label class="form-check-label small" for="core_calendar_calendar_views_list">Список</label>
-                          </div>
-
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox"
-                                   data-mo-list="calendar_views" value="gantt"
-                                   id="core_calendar_calendar_views_gantt"
-                                   checked>
-                            <label class="form-check-label small" for="core_calendar_calendar_views_gantt">Гант</label>
-                          </div>
-
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox"
-                                   data-mo-list="calendar_views" value="staff"
-                                   id="core_calendar_calendar_views_staff"
-                                   checked>
-                            <label class="form-check-label small" for="core_calendar_calendar_views_staff">Кадровый</label>
-                          </div>
-
-                      </div>
+                  <section class="module-option-section">
 
 
 
-                      <div class="mb-2 ms-1 d-flex align-items-center gap-2 flex-wrap js-search-sub">
-                        <label class="form-label small mb-0" for="core_calendar_calendar_default_view">Вид по умолчанию</label><i class="bi bi-info-circle text-muted" style="cursor:help" data-bs-toggle="tooltip" title="Какой вид календаря открывается по умолчанию при входе (должен быть среди включённых)."></i>
-                        <select class="form-select form-select-sm" style="width:auto"
-                                data-mo-select="calendar_default_view"
-                                id="core_calendar_calendar_default_view">
 
-                            <option value="month" selected>Месяц</option>
+                    <div class="module-option js-search-sub">
 
-                            <option value="week">Неделя</option>
+    <fieldset><legend class="mb-1">Доступные виды</legend>
 
-                            <option value="list">Список</option>
+      <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" data-mo-list="calendar_views" value="month" id="core_calendar_calendar_views_month" checked><label class="form-check-label" for="core_calendar_calendar_views_month">Месяц</label></div>
 
-                            <option value="gantt">Гант</option>
+      <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" data-mo-list="calendar_views" value="week" id="core_calendar_calendar_views_week" checked><label class="form-check-label" for="core_calendar_calendar_views_week">Неделя</label></div>
 
-                            <option value="staff">Кадровый</option>
+      <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" data-mo-list="calendar_views" value="list" id="core_calendar_calendar_views_list" checked><label class="form-check-label" for="core_calendar_calendar_views_list">Список</label></div>
 
-                        </select>
-                      </div>
+      <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" data-mo-list="calendar_views" value="gantt" id="core_calendar_calendar_views_gantt" checked><label class="form-check-label" for="core_calendar_calendar_views_gantt">Гант</label></div>
 
+      <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" data-mo-list="calendar_views" value="staff" id="core_calendar_calendar_views_staff" checked><label class="form-check-label" for="core_calendar_calendar_views_staff">Кадровый</label></div>
 
+    </fieldset>
 
-                      <div class="mb-2 ms-1 d-flex align-items-center gap-2 flex-wrap js-search-sub">
-                        <label class="form-label small mb-0" for="core_calendar_timezone">Часовой пояс</label><i class="bi bi-info-circle text-muted" style="cursor:help" data-bs-toggle="tooltip" title="Часовой пояс компании — используется в планировщике, календаре и отображении времени."></i>
-                        <select class="form-select form-select-sm" style="width:auto"
-                                data-cs-field="timezone"
-                                id="core_calendar_timezone">
+  <p class="form-text" id="help_calendar_views">Кадровый календарь показывает занятость сотрудников и требует включённого модуля «Персонал и смены». Его ссылку в левом меню можно настроить в карточке персонала.</p>
 
-                            <option value="Europe/Kaliningrad" selected>Калининград (UTC+2)</option>
-
-                            <option value="Europe/Moscow">Москва (UTC+3)</option>
-
-                            <option value="Europe/Samara">Самара (UTC+4)</option>
-
-                            <option value="Asia/Yekaterinburg">Екатеринбург (UTC+5)</option>
-
-                            <option value="Asia/Omsk">Омск (UTC+6)</option>
-
-                            <option value="Asia/Krasnoyarsk">Красноярск (UTC+7)</option>
-
-                            <option value="Asia/Irkutsk">Иркутск (UTC+8)</option>
-
-                            <option value="Asia/Yakutsk">Якутск (UTC+9)</option>
-
-                            <option value="Asia/Vladivostok">Владивосток (UTC+10)</option>
-
-                            <option value="Asia/Magadan">Магадан (UTC+11)</option>
-
-                            <option value="Asia/Kamchatka">Камчатка (UTC+12)</option>
-
-                        </select>
-                      </div>
+</div>
 
 
-                </div>
+                    <div class="module-option js-search-sub">
+
+    <label for="core_calendar_calendar_default_view">Вид по умолчанию</label>
+    <select class="form-select form-select-sm mt-2" id="core_calendar_calendar_default_view" aria-describedby="help_calendar_default_view" data-mo-select="calendar_default_view">
+      <option value="month" selected>Месяц</option><option value="week">Неделя</option><option value="list">Список</option><option value="gantt">Гант</option><option value="staff">Кадровый</option>
+    </select>
+
+  <p class="form-text" id="help_calendar_default_view">Какой вид календаря открывается по умолчанию при входе (должен быть среди включённых).</p>
+
+</div>
 
 
-            </div>
-          </div>
+                    <div class="module-option js-search-sub">
+
+    <label for="core_calendar_timezone">Часовой пояс</label>
+    <select class="form-select form-select-sm mt-2" id="core_calendar_timezone" aria-describedby="help_timezone" data-cs-field="timezone">
+      <option value="Europe/Kaliningrad" selected>Калининград (UTC+2)</option><option value="Europe/Moscow">Москва (UTC+3)</option><option value="Europe/Samara">Самара (UTC+4)</option><option value="Asia/Yekaterinburg">Екатеринбург (UTC+5)</option><option value="Asia/Omsk">Омск (UTC+6)</option><option value="Asia/Krasnoyarsk">Красноярск (UTC+7)</option><option value="Asia/Irkutsk">Иркутск (UTC+8)</option><option value="Asia/Yakutsk">Якутск (UTC+9)</option><option value="Asia/Vladivostok">Владивосток (UTC+10)</option><option value="Asia/Magadan">Магадан (UTC+11)</option><option value="Asia/Kamchatka">Камчатка (UTC+12)</option>
+    </select>
+
+  <p class="form-text" id="help_timezone">Часовой пояс компании — используется в планировщике, календаре и отображении времени.</p>
+
+</div>
+
+
+                  </section>
+
+
+              </fieldset>
+            </details>
+
+          </article>
         </div>
 
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="estimates">
-          <div class="card h-100" data-module="estimates" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-file-earmark-ruled text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Сметы">Сметы</strong>
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="project_journal">
+          <article class="module-card" data-module="project_journal">
+            <div class="module-heading">
+              <i class="bi bi-clock-history text-primary" aria-hidden="true"></i>
+              <label for="mod_project_journal">Журнал проекта</label>
 
-                <span class="badge bg-primary-subtle text-primary">Ядро</span>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Инструменты сметы: световые планы, тех. райдеры, запас, зонные скидки, скидка на субаренду.</p>
-
-
-                <div class="core-opts mt-2" id="coreopts_estimates">
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               data-mo-group="estimate_tools" data-mo-key="lightplots"
-                               id="core_estimates_lightplots"
-                               checked>
-                        <label class="form-check-label small" for="core_estimates_lightplots">Световые планы</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Загрузка PDF-лайтплотов с OCR-распознаванием списка осветительного оборудования (пункт в меню «+» сметы)."></i>
-                      </div>
-
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               data-mo-group="estimate_tools" data-mo-key="riders"
-                               id="core_estimates_riders"
-                               checked>
-                        <label class="form-check-label small" for="core_estimates_riders">Тех. райдеры (оферы)</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Парсинг Excel-оферов (технических райдеров) заказчика с сопоставлением позиций (пункт в меню «+» сметы)."></i>
-                      </div>
-
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               data-mo-group="estimate_tools" data-mo-key="spare"
-                               id="core_estimates_spare"
-                               checked>
-                        <label class="form-check-label small" for="core_estimates_spare">Запас (spare)</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Внутренний запас оборудования сверх клиентского количества — пилюля «Запас» в смете (клиенту не виден)."></i>
-                      </div>
-
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               data-mo-group="estimate_tools" data-mo-key="zone_discounts"
-                               id="core_estimates_zone_discounts"
-                               checked>
-                        <label class="form-check-label small" for="core_estimates_zone_discounts">Зонные скидки</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Индивидуальная скидка на каждую зону сметы (строка «По зонам» в блоке Итогов)."></i>
-                      </div>
-
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               data-mo-group="estimate_tools" data-mo-key="subrent_discount"
-                               id="core_estimates_subrent_discount"
-                               checked>
-                        <label class="form-check-label small" for="core_estimates_subrent_discount">Скидка на субаренду — переключатель</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Переключатель в Итогах сметы: распространять скидку сметы на субаренду или нет (по умолчанию распространяется)."></i>
-                      </div>
-
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               data-mo-group="estimate_tools" data-mo-key="proebot"
-                               id="core_estimates_proebot"
-                               checked>
-                        <label class="form-check-label small" for="core_estimates_proebot">Ревизор (проверка сметы)</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Плавающий виджет, который ищет странности и несостыковки в смете (разные цены у одной позиции, класс, из-за которого позиция не бронируется, персонал или логистика в классе «Оборудование», подозрительно дешёвая ручная цена) и переводит к проблемной строке."></i>
-                      </div>
-
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               data-mo-flag="usn_price_round"
-                               id="core_estimates_usn_price_round"
-                               checked>
-                        <label class="form-check-label small" for="core_estimates_usn_price_round">Округление цен с УСН до 10 ₽</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Клиентская цена строки с включённым УСН доводится вверх до кратного 10 ₽ (вместо дробной вроде «11 111,11»). Действует в формах подачи налога «в ценах» и «отдельной строкой»; ОСНО, чистый НДС и форму «строкой» не затрагивает."></i>
-                      </div>
-
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               data-mo-flag="pdf_status_stamp"
-                               id="core_estimates_pdf_status_stamp"
-                               checked>
-                        <label class="form-check-label small" for="core_estimates_pdf_status_stamp">Маркировка статуса в PDF сметы</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Плашка статуса первой строкой PDF сметы: «ПОДТВЕРЖДЕНО» у подтверждённой, «НЕ ПОДТВЕРЖДЕНО» у черновика, в работе и резерва, «ОТМЕНЕНО» у отменённой. Действует на все три формы экспорта сметы (обычную, плоскую и по шаблону)."></i>
-                      </div>
-
-
-                </div>
-
+              <span class="module-state" data-module-state="project_journal">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="project_journal" value="project_journal" id="mod_project_journal" aria-describedby="module-desc-project_journal" checked >
+              </div>
 
             </div>
-          </div>
+            <p class="module-description" id="module-desc-project_journal">Кто, что и когда изменил в проекте: события, сотрудники и поиск по истории.</p>
+            <p class="module-effect"><strong>При выключении:</strong> Вкладка журнала и её просмотр станут недоступны. Запись истории действий продолжится.</p>
+
+          </article>
         </div>
 
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="subrent">
-          <div class="card h-100" data-module="subrent" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-boxes text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Субаренда">Субаренда</strong>
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="project_timing">
+          <article class="module-card" data-module="project_timing">
+            <div class="module-heading">
+              <i class="bi bi-stopwatch text-primary" aria-hidden="true"></i>
+              <label for="mod_project_timing">Тайминг мероприятия</label>
 
-                <div class="form-check form-switch mb-0 flex-shrink-0">
-                  <input class="form-check-input mod-switch" type="checkbox"
-                         name="subrent" value="subrent"
-                         id="mod_subrent"
-                         aria-label="Субаренда"
-                         checked
-                         >
-                </div>
+              <span class="module-state" data-module-state="project_timing">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="project_timing" value="project_timing" id="mod_project_timing" aria-describedby="module-desc-project_timing" checked >
+              </div>
 
             </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Аренда оборудования у сторонних поставщиков для покрытия дефицита.</p>
+            <p class="module-description" id="module-desc-project_timing">План мероприятия по времени: вкладка проекта, раздел техзадания, выгрузка в PDF и Excel.</p>
+            <p class="module-effect"><strong>При выключении:</strong> Просмотр, правка и выгрузка тайминга станут недоступны. Сохранённый план останется; даты проекта и бронирования не изменятся.</p>
 
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="accounting">
-          <div class="card h-100" data-module="accounting" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-wallet2 text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Бухгалтерия">Бухгалтерия</strong>
-
-                <div class="form-check form-switch mb-0 flex-shrink-0">
-                  <input class="form-check-input mod-switch" type="checkbox"
-                         name="accounting" value="accounting"
-                         id="mod_accounting"
-                         aria-label="Бухгалтерия"
-                         checked
-                         >
-                </div>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Учёт платежей клиентов, выплат персоналу и взаиморасчётов с поставщиками.</p>
-
-
-                <div class="sub-opts mt-2" id="subopts_accounting">
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               name="counterparty_netting" value="1" id="sopt_counterparty_netting"
-                               checked>
-                        <label class="form-check-label small" for="sopt_counterparty_netting">Взаимозачёты контрагентов</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Погашать встречные долги заказчика и поставщика без движения денег. Выключение запрещает новые взаимозачёты и их сторнирование, сохраняя историю и ранее учтённые погашения."></i>
-                      </div>
-
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               name="manager_percent_enabled" value="1" id="sopt_manager_percent_enabled"
-                               checked>
-                        <label class="form-check-label small" for="sopt_manager_percent_enabled">Процент менеджера</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Учитывать доход менеджера (процент с проекта) в финансах. Сам процент задаётся во вкладке «Финансы»."></i>
-                      </div>
-
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               name="agent_commission_enabled" value="1" id="sopt_agent_commission_enabled"
-                               checked>
-                        <label class="form-check-label small" for="sopt_agent_commission_enabled">Агентская комиссия</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Учитывать агентскую комиссию (тех. директор) в расчёте сметы. Размер задаётся во вкладке «Финансы»."></i>
-                      </div>
-
-
-                </div>
-
-
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="treasury">
-          <div class="card h-100" data-module="treasury" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-safe2 text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Казна">Казна</strong>
-
-                <div class="form-check form-switch mb-0 flex-shrink-0">
-                  <input class="form-check-input mod-switch" type="checkbox"
-                         name="treasury" value="treasury"
-                         id="mod_treasury"
-                         aria-label="Казна"
-                         checked
-                         >
-                </div>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Остатки денег компании по счетам, журнал движений, кто кому должен, операции владельца. На компьютере и в мобильном приложении.</p>
-
-            </div>
-          </div>
-        </div>
-
-    </div>
-    </div>
-
-    <div class="js-search-group">
-    <h6 class="text-muted fw-semibold mt-4 mb-2 text-uppercase" style="font-size:.75rem;letter-spacing:.05em">Склад</h6>
-    <div class="row g-3 mb-1">
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="catalog">
-          <div class="card h-100" data-module="catalog" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-boxes text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Каталог / склад">Каталог / склад</strong>
-
-                <span class="badge bg-primary-subtle text-primary">Ядро</span>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Единица габаритов и QR/штрихкод-этикетки оборудования.</p>
-
-
-                <div class="core-opts mt-2" id="coreopts_catalog">
-
-
-                      <div class="mb-2 ms-1 d-flex align-items-center gap-2 flex-wrap js-search-sub">
-                        <label class="form-label small mb-0" for="core_catalog_dimensions_unit">Единица габаритов</label><i class="bi bi-info-circle text-muted" style="cursor:help" data-bs-toggle="tooltip" title="Единица измерения габаритов в карточках оборудования (см или мм). БД хранит в см — переключение безопасно."></i>
-                        <select class="form-select form-select-sm" style="width:auto"
-                                data-cs-field="dimensions_unit"
-                                id="core_catalog_dimensions_unit">
-
-                            <option value="cm" selected>Сантиметры (см)</option>
-
-                            <option value="mm">Миллиметры (мм)</option>
-
-                        </select>
-                      </div>
-
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               data-mo-flag="equipment_labels"
-                               id="core_catalog_equipment_labels"
-                               checked>
-                        <label class="form-check-label small" for="core_catalog_equipment_labels">QR/штрихкод-этикетки оборудования</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Кнопки печати QR/штрихкод-этикеток оборудования на карточке товара и в каталоге."></i>
-                      </div>
-
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               data-mo-flag="foreign_scan_labels"
-                               id="core_catalog_foreign_scan_labels"
-                               checked>
-                        <label class="form-check-label small" for="core_catalog_foreign_scan_labels">Чужие наклейки на коробках</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Разрешить сканеру считать код с наклейки прежней системы учёта (поле «Код с чужой наклейки» в карточке) за код позиции: скан коробки нетрекуемого добавляет «+1» к строке погрузочной. Нужно, когда каталог перенесён из Rentman/Golova и наклейки на ящиках остались прежними. Единиц не касается — их коды лежат в инвентарных номерах и работают всегда."></i>
-                      </div>
-
-
-                </div>
-
-
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="layher">
-          <div class="card h-100" data-module="layher" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-grid-3x3 text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Layher Allround">Layher Allround</strong>
-
-                <div class="form-check form-switch mb-0 flex-shrink-0">
-                  <input class="form-check-input mod-switch" type="checkbox"
-                         name="layher" value="layher"
-                         id="mod_layher"
-                         aria-label="Layher Allround"
-                         checked
-                         data-flag="layher_enabled">
-                </div>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Сцены и башни Layher: модульная сетка, состав из дерева склада и модель на общем 3D-движке. Отключение сохраняет ранее созданные сметы и схемы.</p>
-
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="acceptance">
-          <div class="card h-100" data-module="acceptance" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-clipboard-check text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Приёмка возвратов">Приёмка возвратов</strong>
-
-                <div class="form-check form-switch mb-0 flex-shrink-0">
-                  <input class="form-check-input mod-switch" type="checkbox"
-                         name="acceptance" value="acceptance"
-                         id="mod_acceptance"
-                         aria-label="Приёмка возвратов"
-                         checked
-                         data-flag="warehouse_acceptance_enabled">
-                </div>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Кладовщик сканирует и подтверждает физическое поступление возвращённого оборудования.</p>
-
-
-                <div class="sub-opts mt-2" id="subopts_acceptance">
-
-
-                      <div class="mb-2 ms-1 d-flex align-items-center gap-2 flex-wrap js-search-sub">
-                        <label class="form-label small mb-0" for="sopt_warehouse_input_mode">Способ складских отметок</label><i class="bi bi-info-circle text-muted" style="cursor:help" data-bs-toggle="tooltip" title="Ручной — отметки количеством; сканерный — сканирование единиц; гибридный — сканер и ручной выбор конкретных номеров. Изменение действует только на новые погрузочные."></i>
-                        <select class="form-select form-select-sm" style="width:auto"
-                                data-cs-field="warehouse_input_mode" id="sopt_warehouse_input_mode">
-
-                            <option value="manual" selected>Ручной</option>
-
-                            <option value="scanner">Сканер</option>
-
-                            <option value="hybrid">Гибридный</option>
-
-                        </select>
-                      </div>
-
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               name="loading_reserved_only" value="1" id="sopt_loading_reserved_only"
-                               checked>
-                        <label class="form-check-label small" for="sopt_loading_reserved_only">Отгружать только зарезервированное</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="В погрузочном листе количество ограничивается зарезервированным под смету (а не полным планом). Расходники, субаренда и ручные позиции не ограничиваются."></i>
-                      </div>
-
-
-
-                      <div class="mb-2 ms-1 d-flex align-items-center gap-2 flex-wrap js-search-sub">
-                        <label class="form-label small mb-0" for="sopt_label_format_default">Формат этикеток по умолчанию</label><i class="bi bi-info-circle text-muted" style="cursor:help" data-bs-toggle="tooltip" title="Формат штрихкод-этикеток оборудования по умолчанию: QR (для 2D-сканеров) или Code-128 (1D)."></i>
-                        <select class="form-select form-select-sm" style="width:auto"
-                                data-cs-field="label_format_default" id="sopt_label_format_default">
-
-                            <option value="qr" selected>QR-код (для 2D-сканеров)</option>
-
-                            <option value="code128">Code-128 (1D)</option>
-
-                        </select>
-                      </div>
-
-
-                </div>
-
-
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="smart_loading">
-          <div class="card h-100" data-module="smart_loading" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-truck text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Умные погрузочные">Умные погрузочные</strong>
-
-                <div class="form-check form-switch mb-0 flex-shrink-0">
-                  <input class="form-check-input mod-switch" type="checkbox"
-                         name="smart_loading" value="smart_loading"
-                         id="mod_smart_loading"
-                         aria-label="Умные погрузочные"
-                         checked
-                         >
-                </div>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Генерация и ведение погрузочных листов с мобильной отметкой позиций.</p>
-
-
-                <div class="sub-opts mt-2" id="subopts_smart_loading">
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               name="loading_on_confirmation" value="1" id="sopt_loading_on_confirmation"
-                               checked>
-                        <label class="form-check-label small" for="sopt_loading_on_confirmation">Создавать или обновлять при подтверждении сметы</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="При переходе сметы в «Подтверждено» создаётся общая умная погрузочная или обновляются существующие с сохранением режима и отметок сборки. Если ведомость финализирована или обновление затрагивает собранные позиции, сначала нужно обновить её вручную; статус сметы не изменится. Закрытие периодов длительного проекта погрузочные не обновляет."></i>
-                      </div>
-
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               name="stock_reserve_restricted" value="1" id="sopt_stock_reserve_restricted"
-                               checked>
-                        <label class="form-check-label small" for="sopt_stock_reserve_restricted">Ограничить складской запас белым списком</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="В складской запас можно брать только позиции, помеченные в каталоге как доступные (пометка ставится на категории и может быть перебита на карточке). Дефолт — «запрещено»: в момент включения всё, что не помечено и не наследует пометку сверху, станет недоступно для запаса. Пометки меняются в любой момент, эффект сразу. Выключено — в запас можно любую позицию, как раньше."></i>
-                      </div>
-
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               name="qr_login_enabled" value="1" id="sopt_qr_login_enabled"
-                               checked>
-                        <label class="form-check-label small" for="sopt_qr_login_enabled">Вход по QR-бейджу (вне складского поста)</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Скан личного QR-бейджа открывает сессию этого сотрудника без пароля: в основной версии — на экране входа и на любой странице, в мобильной — только на экране входа. На складском посту (киоск) вход по бейджу работает всегда, независимо от этой настройки: там это смена оператора. Настройка доступ не отзывает — чтобы закрыть вход конкретному человеку, отзовите его бейдж."></i>
-                      </div>
-
-
-                </div>
-
-
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="repairs">
-          <div class="card h-100" data-module="repairs" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-tools text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Ремонты">Ремонты</strong>
-
-                <div class="form-check form-switch mb-0 flex-shrink-0">
-                  <input class="form-check-input mod-switch" type="checkbox"
-                         name="repairs" value="repairs"
-                         id="mod_repairs"
-                         aria-label="Ремонты"
-                         checked
-                         >
-                </div>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Учёт ремонтов оборудования: открытие, журнал, аналитика затрат.</p>
-
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="inventory_audits">
-          <div class="card h-100" data-module="inventory_audits" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-clipboard-data text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Инвентаризация">Инвентаризация</strong>
-
-                <div class="form-check form-switch mb-0 flex-shrink-0">
-                  <input class="form-check-input mod-switch" type="checkbox"
-                         name="inventory_audits" value="inventory_audits"
-                         id="mod_inventory_audits"
-                         aria-label="Инвентаризация"
-                         checked
-                         >
-                </div>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Плановые и внеплановые инвентаризации склада.</p>
-
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="storage_locations">
-          <div class="card h-100" data-module="storage_locations" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-signpost-split text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Места хранения">Места хранения</strong>
-
-                <div class="form-check form-switch mb-0 flex-shrink-0">
-                  <input class="form-check-input mod-switch" type="checkbox"
-                         name="storage_locations" value="storage_locations"
-                         id="mod_storage_locations"
-                         aria-label="Места хранения"
-                         checked
-                         >
-                </div>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Складское дерево размещения: склад, отдел, ряд, стеллаж, полка. Место видно в карточке позиции и, по галке, в погрузочной.</p>
-
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="multiwarehouse">
-          <div class="card h-100" data-module="multiwarehouse" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-building text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Мультисклад">Мультисклад</strong>
-
-                <div class="form-check form-switch mb-0 flex-shrink-0">
-                  <input class="form-check-input mod-switch" type="checkbox"
-                         name="multiwarehouse" value="multiwarehouse"
-                         id="mod_multiwarehouse"
-                         aria-label="Мультисклад"
-                         checked
-                         >
-                </div>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Управление несколькими складами и трансферы оборудования между ними.</p>
-
-            </div>
-          </div>
-        </div>
-
-    </div>
-    </div>
-
-    <div class="js-search-group">
-    <h6 class="text-muted fw-semibold mt-4 mb-2 text-uppercase" style="font-size:.75rem;letter-spacing:.05em">Команда</h6>
-    <div class="row g-3 mb-1">
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="logistics">
-          <div class="card h-100" data-module="logistics" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-signpost-2 text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Рейсы (логистика)">Рейсы (логистика)</strong>
-
-                <div class="form-check form-switch mb-0 flex-shrink-0">
-                  <input class="form-check-input mod-switch" type="checkbox"
-                         name="logistics" value="logistics"
-                         id="mod_logistics"
-                         aria-label="Рейсы (логистика)"
-                         checked
-                         data-flag="logistics_enabled">
-                </div>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Рейсы транспорта: остановки по часам, сетка занятости машин, мобильный и публичный флоу водителя.</p>
-
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="staff">
-          <div class="card h-100" data-module="staff" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-people text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Персонал / смены">Персонал / смены</strong>
-
-                <div class="form-check form-switch mb-0 flex-shrink-0">
-                  <input class="form-check-input mod-switch" type="checkbox"
-                         name="staff" value="staff"
-                         id="mod_staff"
-                         aria-label="Персонал / смены"
-                         checked
-                         >
-                </div>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Планировщик смен, кадровый календарь, сводный отчёт и зарплатный фонд.</p>
-
-
-                <div class="sub-opts mt-2" id="subopts_staff">
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               name="staff_planner" value="1" id="sopt_staff_planner"
-                               checked>
-                        <label class="form-check-label small" for="sopt_staff_planner">Планировщик</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Пункт «Планировщик» в меню — таймлайн-планирование смен персонала по проектам (drag-and-drop)."></i>
-                      </div>
-
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               name="staff_summary" value="1" id="sopt_staff_summary"
-                               checked>
-                        <label class="form-check-label small" for="sopt_staff_summary">Сводный отчёт по сменам</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Пункт «Сводка по сменам» в меню — сводная таблица смен персонала по проектам."></i>
-                      </div>
-
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               name="staff_staff_calendar" value="1" id="sopt_staff_staff_calendar"
-                               checked>
-                        <label class="form-check-label small" for="sopt_staff_staff_calendar">Кадровый календарь</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Вкладка «Персонал» в календаре проектов — статусы сотрудников (отпуск/выходной/больничный) и назначения."></i>
-                      </div>
-
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               name="staff_calendar_sidebar" value="1" id="sopt_staff_calendar_sidebar"
-                               checked>
-                        <label class="form-check-label small" for="sopt_staff_calendar_sidebar">Календарь персонала в левом меню</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Добавляет ссылку на вкладку «Персонал» между календарём и каталогом. Видна сотрудникам с доступом к кадровому календарю."></i>
-                      </div>
-
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               name="staff_payroll" value="1" id="sopt_staff_payroll"
-                               checked>
-                        <label class="form-check-label small" for="sopt_staff_payroll">Зарплатный фонд</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Панель «ЗП фонд» на вкладке персонала проекта — бюджет и расход на оплату труда."></i>
-                      </div>
-
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               name="staff_calendar_cell_shifts" value="1" id="sopt_staff_calendar_cell_shifts"
-                               checked>
-                        <label class="form-check-label small" for="sopt_staff_calendar_cell_shifts">Каждые 8 часов — отдельная смена</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="В календаре персонала ячейки 00–08, 08–16 и 16–00 оплачиваются отдельно. Для каждой можно выбрать позицию и коэффициент ставки. Используется сетка по 8 часов, даже если включён почасовой календарь. Старые назначения меняются только при редактировании с подтверждением."></i>
-                      </div>
-
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               name="staff_calendar_hourly" value="1" id="sopt_staff_calendar_hourly"
-                               checked>
-                        <label class="form-check-label small" for="sopt_staff_calendar_hourly">Почасовой календарь персонала</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Календарь персонала (общий и в проекте) разбивается по часам, а не на три дневные фазы 00-08/08-16/16-00 — как сетка в «Рейсах». Занятость рисуется по реальным часам монтажа/мероприятия/демонтажа, а выделение часов ставит смене окно «занят с… до…». На расчёт ЗП не влияет: ставка остаётся за смену."></i>
-                      </div>
-
-
-
-                      <div class="mb-2 ms-1 d-flex align-items-center gap-2 flex-wrap js-search-sub">
-                        <label class="form-label small mb-0" for="sopt_staff_project_view">Персонал в проекте</label><i class="bi bi-info-circle text-muted" style="cursor:help" data-bs-toggle="tooltip" title="Вкладка «Персонал» внутри проекта: таблица назначений, режим-календарь, оба (с переключателем), либо вкладка скрыта целиком."></i>
-                        <select class="form-select form-select-sm" style="width:auto"
-                                data-cs-field="staff_project_view" id="sopt_staff_project_view">
-
-                            <option value="both" selected>Таблица и календарь</option>
-
-                            <option value="table">Только таблица</option>
-
-                            <option value="calendar">Только календарь</option>
-
-                            <option value="off">Выключено (скрыть вкладку)</option>
-
-                        </select>
-                      </div>
-
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               name="staff_rate_agreement" value="1" id="sopt_staff_rate_agreement"
-                               checked>
-                        <label class="form-check-label small" for="sopt_staff_rate_agreement">Договорная цена за проект</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Согласование фиксированной цены за весь проект между сотрудником (мобильный кабинет) и менеджером/бухгалтерией — вместо посменного расчёта. При выключении интерфейс скрыт, уже согласованные цены продолжают действовать в ведомости. ⚠️ Взаимоисключимо с «Зарплатный табель» — включение одного выключает другое."></i>
-                      </div>
-
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               name="staff_timesheet" value="1" id="sopt_staff_timesheet"
-                               checked>
-                        <label class="form-check-label small" for="sopt_staff_timesheet">Зарплатный табель</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Режим «Табель» во вкладке «Персонал» проекта + фокус на сотруднике в бухгалтерии: построчный расчёт ЗП (монтаж/демонтаж/мероприятие/расходы → итого → сумма к оплате). Техник вписывает себе зарплату с мобилки, менеджер утверждает/правит. Утверждённая сумма становится итоговой к выплате. При выключении интерфейс скрыт, утверждённые строки продолжают действовать в ведомости. ⚠️ Взаимоисключимо с «Договорная цена» — включение одного выключает другое."></i>
-                      </div>
-
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               name="payroll_manager_only" value="1" id="sopt_payroll_manager_only"
-                               checked>
-                        <label class="form-check-label small" for="sopt_payroll_manager_only">Зарплату вписывает только менеджер</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Суммы за смену в зарплатном табеле правит только тот, у кого есть право «Правка ЗП» — менеджер или бригадир. Техник свою строку видит, вписывает расходы и объём работ, отправляет на проверку, но сумму изменить не может. Премии и штрафы ставит тот же, кто правит суммы. При выключении табель работает как раньше: сумму вписывает сам сотрудник, менеджер утверждает. Требует модуля «Зарплатный табель»."></i>
-                      </div>
-
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               name="staff_brief" value="1" id="sopt_staff_brief"
-                               checked>
-                        <label class="form-check-label small" for="sopt_staff_brief">Техзадание для техника</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Страница «Техзадание» проекта — единый документ смены для техника: его роль и смены, тайминг, площадка и контакты, блоки менеджера с фото, документы по разделам, ссылка на погрузочную. Открывается и с мобилы, и с десктопа без права «Доступ к десктопу». Денег не показывает. При выключении страница и все входы в неё скрыты."></i>
-                      </div>
-
-
-                </div>
-
-
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="company_documents">
-          <div class="card h-100" data-module="company_documents" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-file-earmark-text text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Документы компании">Документы компании</strong>
-
-                <div class="form-check form-switch mb-0 flex-shrink-0">
-                  <input class="form-check-input mod-switch" type="checkbox"
-                         name="company_documents" value="company_documents"
-                         id="mod_company_documents"
-                         aria-label="Документы компании"
-                         checked
-                         >
-                </div>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Хранение договоров, актов, шаблонов и корпоративных документов.</p>
-
-            </div>
-          </div>
-        </div>
-
-    </div>
-    </div>
-
-    <div class="js-search-group">
-    <h6 class="text-muted fw-semibold mt-4 mb-2 text-uppercase" style="font-size:.75rem;letter-spacing:.05em">Уведомления и мониторинг</h6>
-    <div class="row g-3 mb-1">
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="notifications">
-          <div class="card h-100" data-module="notifications" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-bell text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Уведомления">Уведомления</strong>
-
-                <div class="form-check form-switch mb-0 flex-shrink-0">
-                  <input class="form-check-input mod-switch" type="checkbox"
-                         name="notifications" value="notifications"
-                         id="mod_notifications"
-                         aria-label="Уведомления"
-                         checked
-                         >
-                </div>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Центр уведомлений о дедлайнах, конфликтах оборудования и изменениях статусов.</p>
-
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="alerts">
-          <div class="card h-100" data-module="alerts" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-exclamation-triangle text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Тревоги">Тревоги</strong>
-
-                <div class="form-check form-switch mb-0 flex-shrink-0">
-                  <input class="form-check-input mod-switch" type="checkbox"
-                         name="alerts" value="alerts"
-                         id="mod_alerts"
-                         aria-label="Тревоги"
-                         checked
-                         >
-                </div>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Мониторинг at-risk резерваций и физических конфликтов оборудования.</p>
-
-
-                <div class="sub-opts mt-2" id="subopts_alerts">
-
-
-                      <div class="mb-1 d-flex align-items-center gap-2 flex-wrap js-search-sub">
-                        <label class="form-label small mb-0" for="sopt_alert_horizon_days">Горизонт алертов (дней)</label><i class="bi bi-info-circle text-muted" style="cursor:help" data-bs-toggle="tooltip" title="За сколько дней до отгрузки показывать тревоги о нехватке (at-risk) оборудования. Меньше — только ближайшие конфликты, больше — заранее."></i>
-                        <input type="number" class="form-control form-control-sm" style="width:70px"
-                               id="sopt_alert_horizon_days" name="alert_horizon_days"
-                               min="1" max="30" value="1">
-                      </div>
-
-
-                </div>
-
-
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="analytics">
-          <div class="card h-100" data-module="analytics" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-bar-chart text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Аналитика">Аналитика</strong>
-
-                <div class="form-check form-switch mb-0 flex-shrink-0">
-                  <input class="form-check-input mod-switch" type="checkbox"
-                         name="analytics" value="analytics"
-                         id="mod_analytics"
-                         aria-label="Аналитика"
-                         checked
-                         >
-                </div>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Бизнес-дашборд: KPI, выручка по месяцам, спрос на оборудование.</p>
-
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="video_help">
-          <div class="card h-100" data-module="video_help" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-play-circle text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Видео-помощь">Видео-помощь</strong>
-
-                <div class="form-check form-switch mb-0 flex-shrink-0">
-                  <input class="form-check-input mod-switch" type="checkbox"
-                         name="video_help" value="video_help"
-                         id="mod_video_help"
-                         aria-label="Видео-помощь"
-                         checked
-                         >
-                </div>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Кнопки «?» с обучающими видео прямо в интерфейсе.</p>
-
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="bug_reports">
-          <div class="card h-100" data-module="bug_reports" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-bug text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Сообщения об ошибках">Сообщения об ошибках</strong>
-
-                <div class="form-check form-switch mb-0 flex-shrink-0">
-                  <input class="form-check-input mod-switch" type="checkbox"
-                         name="bug_reports" value="bug_reports"
-                         id="mod_bug_reports"
-                         aria-label="Сообщения об ошибках"
-                         checked
-                         data-flag="bug_reports_enabled">
-                </div>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Кнопка «Сообщить об ошибке» на каждой странице (строка у островка на компьютере, круглый значок на телефоне), в боковой панели, в личном кабинете и на странице «Страница не найдена». Разработчику программы уходят: текст пользователя; снимки экрана, если их приложили, — целиком, как на экране; страница отправки и переходы с открытой формой шаблонами адресов, без номеров записей; версия WMR, вид устройства, браузер и размер окна; список включённых у вас модулей — названиями, без данных; журнал обращений к серверу за 5 минут (адреса-шаблоны, коды, время, без содержимого) и ошибки браузера за то же время (класс, файл, строка, без текста). Состав описан в Политике, § 7.6. Плавающую кнопку можно выключить отдельно — тумблер ниже.</p>
-
-
-                <div class="sub-opts mt-2" id="subopts_bug_reports">
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               name="bug_reports_float" value="1" id="sopt_bug_reports_float"
-                               checked>
-                        <label class="form-check-label small" for="sopt_bug_reports_float">Плавающая кнопка «Сообщить об ошибке»</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Строка у островка на компьютере и круглый значок на телефоне. Выключено — кнопка остаётся в боковой панели, в личном кабинете и на странице «Страница не найдена». На телефоне тогда — только в кабинете: при выключенной вкладке «Кабинет» сотруднику без компьютера отправить отчёт будет негде."></i>
-                      </div>
-
-
-                </div>
-
-
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="presence">
-          <div class="card h-100" data-module="presence" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-circle-fill text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Presence «кто онлайн»">Presence «кто онлайн»</strong>
-
-                <div class="form-check form-switch mb-0 flex-shrink-0">
-                  <input class="form-check-input mod-switch" type="checkbox"
-                         name="presence" value="presence"
-                         id="mod_presence"
-                         aria-label="Presence «кто онлайн»"
-                         checked
-                         >
-                </div>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Пузырь присутствия — видно, кто сейчас работает в той же смете.</p>
-
-            </div>
-          </div>
-        </div>
-
-    </div>
-    </div>
-
-    <div class="js-search-group">
-    <h6 class="text-muted fw-semibold mt-4 mb-2 text-uppercase" style="font-size:.75rem;letter-spacing:.05em">Публичность</h6>
-    <div class="row g-3 mb-1">
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="discussion">
-          <div class="card h-100" data-module="discussion" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-chat-dots text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Обсуждение смет">Обсуждение смет</strong>
-
-                <div class="form-check form-switch mb-0 flex-shrink-0">
-                  <input class="form-check-input mod-switch" type="checkbox"
-                         name="discussion" value="discussion"
-                         id="mod_discussion"
-                         aria-label="Обсуждение смет"
-                         checked
-                         data-flag="discussion_enabled">
-                </div>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Публичная ссылка на смету и комментарии клиента.</p>
-
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="showcase">
-          <div class="card h-100" data-module="showcase" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-eye text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Витрина">Витрина</strong>
-
-                <div class="form-check form-switch mb-0 flex-shrink-0">
-                  <input class="form-check-input mod-switch" type="checkbox"
-                         name="showcase" value="showcase"
-                         id="mod_showcase"
-                         aria-label="Витрина"
-                         checked
-                         data-flag="showcase_enabled">
-                </div>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Проект-витрина и публичный каталог оборудования без цен.</p>
-
-
-                <div class="sub-opts mt-2" id="subopts_showcase">
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               name="showcase_promo" value="1" id="sopt_showcase_promo"
-                               checked>
-                        <label class="form-check-label small" for="sopt_showcase_promo">Промокоды (раскрытие цен)</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Раскрытие цен в публичной витрине по промокоду. Без него витрина показывает каталог без цен."></i>
-                      </div>
-
-
-                </div>
-
-
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="showcase_guest">
-          <div class="card h-100" data-module="showcase_guest" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-person-badge text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Гостевой портал">Гостевой портал</strong>
-
-                <div class="form-check form-switch mb-0 flex-shrink-0">
-                  <input class="form-check-input mod-switch" type="checkbox"
-                         name="showcase_guest" value="showcase_guest"
-                         id="mod_showcase_guest"
-                         aria-label="Гостевой портал"
-                         checked
-                         data-flag="showcase_guest_enabled">
-                </div>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Внешние компании заводят аккаунт и подают заявку. Аккаунт активируется только после одобрения менеджером.</p>
-
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="calendar_feed">
-          <div class="card h-100" data-module="calendar_feed" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-calendar-event text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Календарь-фид (ICS)">Календарь-фид (ICS)</strong>
-
-                <div class="form-check form-switch mb-0 flex-shrink-0">
-                  <input class="form-check-input mod-switch" type="checkbox"
-                         name="calendar_feed" value="calendar_feed"
-                         id="mod_calendar_feed"
-                         aria-label="Календарь-фид (ICS)"
-                         checked
-                         >
-                </div>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Подписка на календарь проектов через Google Calendar, Apple Calendar и др.</p>
-
-            </div>
-          </div>
-        </div>
-
-    </div>
-    </div>
-
-    <div class="js-search-group">
-    <h6 class="text-muted fw-semibold mt-4 mb-2 text-uppercase" style="font-size:.75rem;letter-spacing:.05em">Справочники</h6>
-    <div class="row g-3 mb-1">
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="venues">
-          <div class="card h-100" data-module="venues" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-geo-alt text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Площадки">Площадки</strong>
-
-                <div class="form-check form-switch mb-0 flex-shrink-0">
-                  <input class="form-check-input mod-switch" type="checkbox"
-                         name="venues" value="venues"
-                         id="mod_venues"
-                         aria-label="Площадки"
-                         checked
-                         >
-                </div>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">База мероприятий и мест проведения — привязка к проектам.</p>
-
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="trusted_providers">
-          <div class="card h-100" data-module="trusted_providers" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-shield-check text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Доверенные поставщики">Доверенные поставщики</strong>
-
-                <div class="form-check form-switch mb-0 flex-shrink-0">
-                  <input class="form-check-input mod-switch" type="checkbox"
-                         name="trusted_providers" value="trusted_providers"
-                         id="mod_trusted_providers"
-                         aria-label="Доверенные поставщики"
-                         checked
-                         >
-                </div>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Привязка позиций каталога к внешним поставщикам-партнёрам.</p>
-
-            </div>
-          </div>
-        </div>
-
-    </div>
-    </div>
-
-    <div class="js-search-group">
-    <h6 class="text-muted fw-semibold mt-4 mb-2 text-uppercase" style="font-size:.75rem;letter-spacing:.05em">Интеграции</h6>
-    <div class="row g-3 mb-1">
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="mcp">
-          <div class="card h-100" data-module="mcp" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-plug text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="MCP / интеграции">MCP / интеграции</strong>
-
-                <div class="form-check form-switch mb-0 flex-shrink-0">
-                  <input class="form-check-input mod-switch" type="checkbox"
-                         name="mcp" value="mcp"
-                         id="mod_mcp"
-                         aria-label="MCP / интеграции"
-                         checked
-                         data-flag="mcp_enabled">
-                </div>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">API-доступ ассистентов (Claude и др.) через Model Context Protocol. Токены — в профиле пользователя.</p>
-
-            </div>
-          </div>
-        </div>
-
-    </div>
-    </div>
-
-    <div class="js-search-group">
-    <h6 class="text-muted fw-semibold mt-4 mb-2 text-uppercase" style="font-size:.75rem;letter-spacing:.05em">Дополнительно</h6>
-    <div class="row g-3 mb-1">
-
-        <div class="col-md-6 col-lg-4 js-search-unit" data-search-extra="passes">
-          <div class="card h-100" data-module="passes" style="border-color:var(--bs-border-color)">
-            <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-              <i class="bi bi-ticket-perforated text-primary flex-shrink-0"></i>
-              <strong class="me-auto text-truncate" title="Пропуска">Пропуска</strong>
-
-                <div class="form-check form-switch mb-0 flex-shrink-0">
-                  <input class="form-check-input mod-switch" type="checkbox"
-                         name="passes" value="passes"
-                         id="mod_passes"
-                         aria-label="Пропуска"
-                         checked
-                         data-flag="passes_enabled">
-                </div>
-
-            </div>
-            <div class="card-body py-2">
-              <p class="text-muted small mb-0">Журнал въездов на режимную территорию и сводная по тарифу арендодателя: разовые и постоянные пропуска, расходы на перевозчиков, остаток бланков.</p>
-
-
-                <div class="sub-opts mt-2" id="subopts_passes">
-
-
-                      <div class="form-check form-switch ms-1 mb-1 js-search-sub">
-                        <input class="form-check-input" type="checkbox"
-                               name="passes_person" value="1" id="sopt_passes_person"
-                               checked>
-                        <label class="form-check-label small" for="sopt_passes_person">Пропуска на персонал</label><i class="bi bi-info-circle text-muted ms-1" style="cursor:help" data-bs-toggle="tooltip" title="Строки прохода людей без транспорта и их блок в сводной. Выключите, если на территорию заезжает только транспорт."></i>
-                      </div>
-
-
-                </div>
-
-
-            </div>
-          </div>
-        </div>
-
-    </div>
-    </div>
-
-
-
-  <div class="js-search-group">
-  <h6 class="text-muted fw-semibold mt-4 mb-2 text-uppercase" style="font-size:.75rem;letter-spacing:.05em">Мобильное приложение</h6>
-  <div class="js-search-unit" data-search-extra="mobile мобильное приложение">
-  <div class="card mb-2" id="mobileBlock" style="border-color:var(--bs-border-color)">
-    <input type="hidden" name="mobile_block" value="1">
-    <div class="card-header d-flex align-items-center py-2 gap-2" style="background:transparent">
-      <i class="bi bi-phone text-primary flex-shrink-0"></i>
-      <strong class="me-auto">Мобильное приложение</strong>
-      <div class="form-check form-switch mb-0 flex-shrink-0">
-        <input class="form-check-input" type="checkbox" id="mobile_enabled"
-               name="mobile_enabled" value="1" aria-label="Мобильное приложение"
-               checked>
-      </div>
-    </div>
-    <div class="card-body py-2" id="mobileBlockBody">
-      <p class="text-muted small mb-2">Видимость вкладок мобильной версии. «Расписание» и «Кабинет» также зависят от модуля «Персонал»/«Бухгалтерия», «Склад»/«Проверка наличия» — от прав склада.</p>
-      <div class="row">
-
-        <div class="col-6 col-md-4">
-          <div class="form-check form-switch mb-1 js-search-sub">
-            <input class="form-check-input mobile-tab" type="checkbox"
-                   id="mobile_tab_calendar" name="mobile_tab_calendar" value="1"
-                   checked>
-            <label class="form-check-label small" for="mobile_tab_calendar">Календарь</label>
-          </div>
-        </div>
-
-        <div class="col-6 col-md-4">
-          <div class="form-check form-switch mb-1 js-search-sub">
-            <input class="form-check-input mobile-tab" type="checkbox"
-                   id="mobile_tab_schedule" name="mobile_tab_schedule" value="1"
-                   checked>
-            <label class="form-check-label small" for="mobile_tab_schedule">Расписание</label>
-          </div>
-        </div>
-
-        <div class="col-6 col-md-4">
-          <div class="form-check form-switch mb-1 js-search-sub">
-            <input class="form-check-input mobile-tab" type="checkbox"
-                   id="mobile_tab_cabinet" name="mobile_tab_cabinet" value="1"
-                   checked>
-            <label class="form-check-label small" for="mobile_tab_cabinet">Кабинет</label>
-          </div>
-        </div>
-
-        <div class="col-6 col-md-4">
-          <div class="form-check form-switch mb-1 js-search-sub">
-            <input class="form-check-input mobile-tab" type="checkbox"
-                   id="mobile_tab_accounting" name="mobile_tab_accounting" value="1"
-                   checked>
-            <label class="form-check-label small" for="mobile_tab_accounting">Бухгалтерия</label>
-          </div>
-        </div>
-
-        <div class="col-6 col-md-4">
-          <div class="form-check form-switch mb-1 js-search-sub">
-            <input class="form-check-input mobile-tab" type="checkbox"
-                   id="mobile_tab_warehouse" name="mobile_tab_warehouse" value="1"
-                   checked>
-            <label class="form-check-label small" for="mobile_tab_warehouse">Склад</label>
-          </div>
-        </div>
-
-        <div class="col-6 col-md-4">
-          <div class="form-check form-switch mb-1 js-search-sub">
-            <input class="form-check-input mobile-tab" type="checkbox"
-                   id="mobile_tab_catalog" name="mobile_tab_catalog" value="1"
-                   checked>
-            <label class="form-check-label small" for="mobile_tab_catalog">Каталог</label>
-          </div>
-        </div>
-
-        <div class="col-6 col-md-4">
-          <div class="form-check form-switch mb-1 js-search-sub">
-            <input class="form-check-input mobile-tab" type="checkbox"
-                   id="mobile_tab_availability" name="mobile_tab_availability" value="1"
-                   checked>
-            <label class="form-check-label small" for="mobile_tab_availability">Проверка наличия</label>
-          </div>
+          </article>
         </div>
 
       </div>
-      <div class="form-check form-switch mt-2 js-search-sub">
-        <input class="form-check-input" type="checkbox" id="mobile_availability_create"
-               name="mobile_availability_create" value="1"
-               checked>
-        <label class="form-check-label small" for="mobile_availability_create">Создание проекта из корзины «Проверка наличия»</label>
-      </div>
-    </div>
-  </div>
-  </div>
+    </section>
+
+    <section class="js-search-group" aria-labelledby="module-group-estimates">
+      <h2 class="modules-group-title" id="module-group-estimates">Сметы и документы для клиента</h2>
+      <div class="row g-3">
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="estimates">
+          <article class="module-card" data-module="estimates">
+            <div class="module-heading">
+              <i class="bi bi-file-earmark-ruled text-primary" aria-hidden="true"></i>
+              <strong>Сметы</strong>
+              <span class="module-state">Всегда доступно</span>
+
+            </div>
+            <p class="module-description" id="module-desc-estimates">Инструменты сметы: световые планы, тех. райдеры, запас, зонные скидки, скидка на субаренду.</p>
+
+
+            <details class="module-settings">
+              <summary>Настроить <span class="visually-hidden">Сметы</span></summary>
+
+              <fieldset class="module-options core-opts" id="coreopts_estimates">
+
+                  <section class="module-option-section">
+
+
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="lightplots" value="1" id="core_estimates_lightplots" aria-describedby="help_lightplots" checked
+      data-mo-group="estimate_tools" data-mo-key="lightplots">
+    <label class="form-check-label" for="core_estimates_lightplots">Световые планы</label>
   </div>
 
+  <p class="form-text" id="help_lightplots">Загрузка PDF-лайтплотов с OCR-распознаванием списка осветительного оборудования (пункт в меню «+» сметы).</p>
+
+</div>
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="riders" value="1" id="core_estimates_riders" aria-describedby="help_riders" checked
+      data-mo-group="estimate_tools" data-mo-key="riders">
+    <label class="form-check-label" for="core_estimates_riders">Технические райдеры</label>
+  </div>
+
+  <p class="form-text" id="help_riders">Загрузка Excel-файлов (технических райдеров) заказчика с сопоставлением позиций (пункт в меню «+» сметы).</p>
+
+</div>
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="spare" value="1" id="core_estimates_spare" aria-describedby="help_spare" checked
+      data-mo-group="estimate_tools" data-mo-key="spare">
+    <label class="form-check-label" for="core_estimates_spare">Запас оборудования в смете</label>
+  </div>
+
+  <p class="form-text" id="help_spare">Внутренний запас оборудования сверх клиентского количества — раздел «Запас» в смете (клиенту не виден).</p>
+
+</div>
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="zone_discounts" value="1" id="core_estimates_zone_discounts" aria-describedby="help_zone_discounts" checked
+      data-mo-group="estimate_tools" data-mo-key="zone_discounts">
+    <label class="form-check-label" for="core_estimates_zone_discounts">Скидки по зонам</label>
+  </div>
+
+  <p class="form-text" id="help_zone_discounts">Индивидуальная скидка на каждую зону сметы (строка «По зонам» в блоке Итогов).</p>
+
+</div>
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="subrent_discount" value="1" id="core_estimates_subrent_discount" aria-describedby="help_subrent_discount" checked
+      data-mo-group="estimate_tools" data-mo-key="subrent_discount">
+    <label class="form-check-label" for="core_estimates_subrent_discount">Разрешить выбор: применять скидку к субаренде</label>
+  </div>
+
+  <p class="form-text" id="help_subrent_discount">Переключатель в Итогах сметы: распространять скидку сметы на субаренду или нет (по умолчанию распространяется).</p>
+
+</div>
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="proebot" value="1" id="core_estimates_proebot" aria-describedby="help_proebot" checked
+      data-mo-group="estimate_tools" data-mo-key="proebot">
+    <label class="form-check-label" for="core_estimates_proebot">Ревизор (проверка сметы)</label>
+  </div>
+
+  <p class="form-text" id="help_proebot">Плавающий виджет, который ищет странности и несостыковки в смете (разные цены у одной позиции, класс, из-за которого позиция не бронируется, персонал или логистика в классе «Оборудование», подозрительно дешёвая ручная цена) и переводит к проблемной строке.</p>
+
+</div>
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="usn_price_round" value="1" id="core_estimates_usn_price_round" aria-describedby="help_usn_price_round" checked
+      data-mo-flag="usn_price_round">
+    <label class="form-check-label" for="core_estimates_usn_price_round">Округлять цены с УСН вверх до кратного 10 ₽</label>
+  </div>
+
+  <p class="form-text" id="help_usn_price_round">Клиентская цена строки с включённым УСН доводится вверх до кратного 10 ₽ (вместо дробной вроде «11 111,11»). Действует в формах подачи налога «в ценах» и «отдельной строкой»; ОСНО, чистый НДС и форму «строкой» не затрагивает.</p>
+
+</div>
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="pdf_status_stamp" value="1" id="core_estimates_pdf_status_stamp" aria-describedby="help_pdf_status_stamp" checked
+      data-mo-flag="pdf_status_stamp">
+    <label class="form-check-label" for="core_estimates_pdf_status_stamp">Маркировка статуса в PDF сметы</label>
+  </div>
+
+  <p class="form-text" id="help_pdf_status_stamp">Плашка статуса первой строкой PDF сметы: «ПОДТВЕРЖДЕНО» у подтверждённой, «НЕ ПОДТВЕРЖДЕНО» у черновика, в работе и резерва, «ОТМЕНЕНО» у отменённой. Действует на все три формы экспорта сметы (обычную, плоскую и по шаблону).</p>
+
+</div>
+
+
+                  </section>
+
+
+              </fieldset>
+            </details>
+
+          </article>
+        </div>
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="discussion">
+          <article class="module-card" data-module="discussion">
+            <div class="module-heading">
+              <i class="bi bi-chat-dots text-primary" aria-hidden="true"></i>
+              <label for="mod_discussion">Клиентская ссылка и обсуждение сметы</label>
+
+              <span class="module-state" data-module-state="discussion">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="discussion" value="discussion" id="mod_discussion" aria-describedby="module-desc-discussion" checked data-flag="discussion_enabled">
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-discussion">Публичная ссылка на смету и комментарии клиента.</p>
+
+
+          </article>
+        </div>
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="snapshots">
+          <article class="module-card" data-module="snapshots">
+            <div class="module-heading">
+              <i class="bi bi-collection text-primary" aria-hidden="true"></i>
+              <label for="mod_snapshots">Личные шаблоны состава (снепшоты)</label>
+
+              <span class="module-state" data-module-state="snapshots">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="snapshots" value="snapshots" id="mod_snapshots" aria-describedby="module-desc-snapshots" checked >
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-snapshots">Сохранение выбранных позиций или зоны для повторного добавления в сметы. Новые строки из каталога получают актуальные цены.</p>
+            <p class="module-effect"><strong>При выключении:</strong> Создание и применение шаблонов станут недоступны. Сохранённые шаблоны останутся; отмена действий и история версий сметы продолжат работать.</p>
+
+          </article>
+        </div>
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="pdf_templates">
+          <article class="module-card" data-module="pdf_templates">
+            <div class="module-heading">
+              <i class="bi bi-file-earmark-pdf text-primary" aria-hidden="true"></i>
+              <label for="mod_pdf_templates">Редактор PDF-шаблонов</label>
+
+              <span class="module-state" data-module-state="pdf_templates">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="pdf_templates" value="pdf_templates" id="mod_pdf_templates" aria-describedby="module-desc-pdf_templates" checked >
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-pdf_templates">Создание и редактирование общих PDF-шаблонов компании и оформления отдельных смет.</p>
+            <p class="module-effect"><strong>При выключении:</strong> Редактор, предпросмотр с настройкой и их API будут закрыты. Скачать PDF по готовому шаблону или сохранённому оформлению сметы можно будет по-прежнему.</p>
+
+          </article>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="js-search-group" aria-labelledby="module-group-calculators">
+      <h2 class="modules-group-title" id="module-group-calculators">Калькуляторы и 3D</h2>
+      <div class="row g-3">
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="scene3d">
+          <article class="module-card" data-module="scene3d">
+            <div class="module-heading">
+              <i class="bi bi-box text-primary" aria-hidden="true"></i>
+              <label for="mod_scene3d">3D-редактор</label>
+
+              <span class="module-state" data-module-state="scene3d">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="scene3d" value="scene3d" id="mod_scene3d" aria-describedby="module-desc-scene3d" checked >
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-scene3d">Общий холст конструкций и расстановка в зоне. При выключении калькуляторы открываются в обычных окнах, сохранённые сцены остаются.</p>
+
+
+          </article>
+        </div>
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="layher">
+          <article class="module-card" data-module="layher">
+            <div class="module-heading">
+              <i class="bi bi-grid-3x3 text-primary" aria-hidden="true"></i>
+              <label for="mod_layher">Layher Allround</label>
+
+              <span class="module-state" data-module-state="layher">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="layher" value="layher" id="mod_layher" aria-describedby="module-desc-layher" checked data-flag="layher_enabled">
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-layher">Сцены и башни Layher: модульная сетка, состав из дерева склада и модель на общем 3D-движке. Отключение сохраняет ранее созданные сметы и схемы.</p>
+
+
+          </article>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="js-search-group" aria-labelledby="module-group-warehouse">
+      <h2 class="modules-group-title" id="module-group-warehouse">Склад и оборудование</h2>
+      <div class="row g-3">
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="catalog">
+          <article class="module-card" data-module="catalog">
+            <div class="module-heading">
+              <i class="bi bi-boxes text-primary" aria-hidden="true"></i>
+              <strong>Каталог и маркировка</strong>
+              <span class="module-state">Всегда доступно</span>
+
+            </div>
+            <p class="module-description" id="module-desc-catalog">Единица габаритов и QR/штрихкод-этикетки оборудования.</p>
+
+
+            <details class="module-settings">
+              <summary>Настроить <span class="visually-hidden">Каталог и маркировка</span></summary>
+
+              <fieldset class="module-options core-opts" id="coreopts_catalog">
+
+                  <section class="module-option-section">
+
+
+
+
+                    <div class="module-option js-search-sub">
+
+    <label for="core_catalog_label_format_default">Формат этикеток по умолчанию</label>
+    <select class="form-select form-select-sm mt-2" id="core_catalog_label_format_default" aria-describedby="help_label_format_default" data-cs-field="label_format_default">
+      <option value="qr" selected>QR-код (для 2D-сканеров)</option><option value="code128">Code-128 (1D)</option>
+    </select>
+
+  <p class="form-text" id="help_label_format_default">Формат штрихкод-этикеток оборудования по умолчанию: QR (для 2D-сканеров) или Code-128 (1D).</p>
+
+</div>
+
+
+                    <div class="module-option js-search-sub">
+
+    <label for="core_catalog_dimensions_unit">Единица габаритов</label>
+    <select class="form-select form-select-sm mt-2" id="core_catalog_dimensions_unit" aria-describedby="help_dimensions_unit" data-cs-field="dimensions_unit">
+      <option value="cm" selected>Сантиметры (см)</option><option value="mm">Миллиметры (мм)</option>
+    </select>
+
+  <p class="form-text" id="help_dimensions_unit">Единица измерения габаритов в карточках оборудования (см или мм). Размеры автоматически переводятся в выбранную единицу.</p>
+
+</div>
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="equipment_labels" value="1" id="core_catalog_equipment_labels" aria-describedby="help_equipment_labels" checked
+      data-mo-flag="equipment_labels">
+    <label class="form-check-label" for="core_catalog_equipment_labels">QR/штрихкод-этикетки оборудования</label>
+  </div>
+
+  <p class="form-text" id="help_equipment_labels">Кнопки печати QR/штрихкод-этикеток оборудования на карточке товара и в каталоге.</p>
+
+</div>
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="foreign_scan_labels" value="1" id="core_catalog_foreign_scan_labels" aria-describedby="help_foreign_scan_labels" checked
+      data-mo-flag="foreign_scan_labels">
+    <label class="form-check-label" for="core_catalog_foreign_scan_labels">Чужие наклейки на коробках</label>
+  </div>
+
+  <p class="form-text" id="help_foreign_scan_labels">Разрешить сканеру считать код с наклейки прежней системы учёта (поле «Код с чужой наклейки» в карточке) за код позиции: скан коробки нетрекуемого добавляет «+1» к строке погрузочной. Нужно, когда каталог перенесён из Rentman/Golova и наклейки на ящиках остались прежними. Единиц не касается — их коды лежат в инвентарных номерах и работают всегда.</p>
+
+</div>
+
+
+                  </section>
+
+
+              </fieldset>
+            </details>
+
+          </article>
+        </div>
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="acceptance">
+          <article class="module-card" data-module="acceptance">
+            <div class="module-heading">
+              <i class="bi bi-clipboard-check text-primary" aria-hidden="true"></i>
+              <label for="mod_acceptance">Приёмка возвратов</label>
+
+              <span class="module-state" data-module-state="acceptance">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="acceptance" value="acceptance" id="mod_acceptance" aria-describedby="module-desc-acceptance" checked data-flag="warehouse_acceptance_enabled">
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-acceptance">Кладовщик подтверждает физическое поступление возвращённого оборудования.</p>
+            <p class="module-effect"><strong>При смене режима:</strong> Сначала завершите приёмку погрузочных с поштучным учётом и выберите ручной способ отметок. Смена режима может завершить приёмку старых ручных погрузочных. В старом складском режиме выключение также снимает режим сканера и отгрузку по резерву. Перед сохранением будут показаны последствия.</p>
+
+            <details class="module-settings">
+              <summary>Настроить <span class="visually-hidden">Приёмка возвратов</span></summary>
+              <p class="small text-muted mt-2 mb-0" data-module-disabled-note="acceptance" hidden>Параметры сохранены. Для их изменения включите модуль.</p>
+              <fieldset class="module-options sub-opts" id="subopts_acceptance">
+
+                  <section class="module-option-section">
+
+
+
+
+                    <div class="module-option js-search-sub">
+
+    <label for="sopt_warehouse_input_mode">Способ складских отметок</label>
+    <select class="form-select form-select-sm mt-2" id="sopt_warehouse_input_mode" aria-describedby="help_warehouse_input_mode" data-cs-field="warehouse_input_mode">
+      <option value="manual" selected>Ручной</option><option value="scanner">Сканер</option><option value="hybrid">Гибридный</option>
+    </select>
+
+  <p class="form-text" id="help_warehouse_input_mode">Ручной — отметки количеством; сканерный — сканирование единиц; гибридный — сканер и ручной выбор конкретных номеров. Изменение действует только на новые погрузочные.</p>
+
+</div>
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="loading_reserved_only" value="1" id="sopt_loading_reserved_only" aria-describedby="help_loading_reserved_only" checked
+      >
+    <label class="form-check-label" for="sopt_loading_reserved_only">Отгружать только зарезервированное</label>
+  </div>
+
+  <p class="form-text" id="help_loading_reserved_only">В погрузочном листе количество ограничивается зарезервированным под смету (а не полным планом). Расходники, субаренда и ручные позиции не ограничиваются.</p>
+
+</div>
+
+
+                  </section>
+
+
+              </fieldset>
+            </details>
+
+          </article>
+        </div>
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="smart_loading">
+          <article class="module-card" data-module="smart_loading">
+            <div class="module-heading">
+              <i class="bi bi-truck text-primary" aria-hidden="true"></i>
+              <label for="mod_smart_loading">Умные погрузочные</label>
+
+              <span class="module-state" data-module-state="smart_loading">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="smart_loading" value="smart_loading" id="mod_smart_loading" aria-describedby="module-desc-smart_loading" checked >
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-smart_loading">Генерация и ведение погрузочных листов с мобильной отметкой позиций.</p>
+
+
+            <details class="module-settings">
+              <summary>Настроить <span class="visually-hidden">Умные погрузочные</span></summary>
+              <p class="small text-muted mt-2 mb-0" data-module-disabled-note="smart_loading" hidden>Параметры сохранены. Для их изменения включите модуль.</p>
+              <fieldset class="module-options sub-opts" id="subopts_smart_loading">
+
+                  <section class="module-option-section">
+
+
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="loading_on_confirmation" value="1" id="sopt_loading_on_confirmation" aria-describedby="help_loading_on_confirmation" checked
+      >
+    <label class="form-check-label" for="sopt_loading_on_confirmation">Создавать или обновлять при подтверждении сметы</label>
+  </div>
+
+  <p class="form-text" id="help_loading_on_confirmation">При переходе сметы в «Подтверждено» создаётся общая умная погрузочная или обновляются существующие с сохранением режима и отметок сборки. Если ведомость финализирована или обновление затрагивает собранные позиции, сначала нужно обновить её вручную; статус сметы не изменится. Закрытие периодов длительного проекта погрузочные не обновляет.</p>
+
+</div>
+
+
+                  </section>
+
+
+              </fieldset>
+            </details>
+
+          </article>
+        </div>
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="repairs">
+          <article class="module-card" data-module="repairs">
+            <div class="module-heading">
+              <i class="bi bi-tools text-primary" aria-hidden="true"></i>
+              <label for="mod_repairs">Ремонты</label>
+
+              <span class="module-state" data-module-state="repairs">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="repairs" value="repairs" id="mod_repairs" aria-describedby="module-desc-repairs" checked >
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-repairs">Учёт ремонтов оборудования: открытие, журнал, аналитика затрат.</p>
+
+
+          </article>
+        </div>
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="inventory_audits">
+          <article class="module-card" data-module="inventory_audits">
+            <div class="module-heading">
+              <i class="bi bi-clipboard-data text-primary" aria-hidden="true"></i>
+              <label for="mod_inventory_audits">Инвентаризация</label>
+
+              <span class="module-state" data-module-state="inventory_audits">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="inventory_audits" value="inventory_audits" id="mod_inventory_audits" aria-describedby="module-desc-inventory_audits" checked >
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-inventory_audits">Плановые и внеплановые инвентаризации склада.</p>
+
+
+          </article>
+        </div>
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="storage_locations">
+          <article class="module-card" data-module="storage_locations">
+            <div class="module-heading">
+              <i class="bi bi-signpost-split text-primary" aria-hidden="true"></i>
+              <label for="mod_storage_locations">Места хранения</label>
+
+              <span class="module-state" data-module-state="storage_locations">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="storage_locations" value="storage_locations" id="mod_storage_locations" aria-describedby="module-desc-storage_locations" checked >
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-storage_locations">Складское дерево размещения: склад, отдел, ряд, стеллаж, полка. Место видно в карточке позиции и, по галке, в погрузочной.</p>
+
+
+          </article>
+        </div>
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="multiwarehouse">
+          <article class="module-card" data-module="multiwarehouse">
+            <div class="module-heading">
+              <i class="bi bi-building text-primary" aria-hidden="true"></i>
+              <label for="mod_multiwarehouse">Несколько складов</label>
+
+              <span class="module-state" data-module-state="multiwarehouse">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="multiwarehouse" value="multiwarehouse" id="mod_multiwarehouse" aria-describedby="module-desc-multiwarehouse" checked >
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-multiwarehouse">Управление несколькими складами и трансферы оборудования между ними.</p>
+
+
+          </article>
+        </div>
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="stock_reserve">
+          <article class="module-card" data-module="stock_reserve">
+            <div class="module-heading">
+              <i class="bi bi-box-seam text-primary" aria-hidden="true"></i>
+              <label for="mod_stock_reserve">Складской запас</label>
+
+              <span class="module-state" data-module-state="stock_reserve">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="stock_reserve" value="stock_reserve" id="mod_stock_reserve" aria-describedby="module-desc-stock_reserve" checked >
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-stock_reserve">Дополнительное оборудование сверх сметы: выбор из каталога и корзина сканера в погрузочной.</p>
+            <p class="module-effect"><strong>При выключении:</strong> Перед выключением нужно применить или очистить непустые корзины. Добавление нового запаса и корзина станут недоступны. Уже добавленное оборудование останется в погрузочных: его можно собрать и вернуть.</p>
+
+            <details class="module-settings">
+              <summary>Настроить <span class="visually-hidden">Складской запас</span></summary>
+              <p class="small text-muted mt-2 mb-0" data-module-disabled-note="stock_reserve" hidden>Параметры сохранены. Для их изменения включите модуль.</p>
+              <fieldset class="module-options sub-opts" id="subopts_stock_reserve">
+
+                  <section class="module-option-section">
+
+
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="stock_reserve_restricted" value="1" id="sopt_stock_reserve_restricted" aria-describedby="help_stock_reserve_restricted" checked
+      >
+    <label class="form-check-label" for="sopt_stock_reserve_restricted">Разрешать в складском запасе только отмеченные позиции</label>
+  </div>
+
+  <p class="form-text" id="help_stock_reserve_restricted">В складской запас можно брать только позиции, помеченные в каталоге как доступные (пометка ставится на категории и может быть перебита на карточке). Без отметки позиция недоступна: в момент включения всё, что не помечено и не наследует пометку сверху, станет недоступно для запаса. Пометки меняются в любой момент, эффект сразу. Выключено — в запас можно любую позицию, как раньше.</p>
+
+</div>
+
+
+                  </section>
+
+
+              </fieldset>
+            </details>
+
+          </article>
+        </div>
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="brigadier_tasks">
+          <article class="module-card" data-module="brigadier_tasks">
+            <div class="module-heading">
+              <i class="bi bi-clipboard-check text-primary" aria-hidden="true"></i>
+              <label for="mod_brigadier_tasks">Бригадирское задание</label>
+
+              <span class="module-state" data-module-state="brigadier_tasks">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="brigadier_tasks" value="brigadier_tasks" id="mod_brigadier_tasks" aria-describedby="module-desc-brigadier_tasks" checked >
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-brigadier_tasks">Распределение позиций погрузочной между техниками и выгрузка заданий. Добавление запаса требует модуля «Складской запас».</p>
+            <p class="module-effect"><strong>При выключении:</strong> Планирование, правка и выгрузка заданий будут закрыты. Сохранённые назначения останутся в работе техников и погрузочных.</p>
+
+          </article>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="js-search-group" aria-labelledby="module-group-team">
+      <h2 class="modules-group-title" id="module-group-team">Персонал</h2>
+      <div class="row g-3">
+
+        <div class="col-12 js-search-unit" data-search-extra="staff">
+          <article class="module-card" data-module="staff">
+            <div class="module-heading">
+              <i class="bi bi-people text-primary" aria-hidden="true"></i>
+              <label for="mod_staff">Персонал и смены</label>
+
+              <span class="module-state" data-module-state="staff">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="staff" value="staff" id="mod_staff" aria-describedby="module-desc-staff" checked >
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-staff">Планирование работы сотрудников, календарь занятости и оплата труда.</p>
+            <p class="module-effect"><strong>При выключении:</strong> Интерфейсы персонала будут скрыты. Сохранённые назначения, согласованные цены и утверждённые суммы останутся.</p>
+
+            <details class="module-settings">
+              <summary>Настроить <span class="visually-hidden">Персонал и смены</span></summary>
+              <p class="small text-muted mt-2 mb-0" data-module-disabled-note="staff" hidden>Параметры сохранены. Для их изменения включите модуль.</p>
+              <fieldset class="module-options sub-opts" id="subopts_staff">
+
+                  <section class="module-option-section">
+                  <h3 class="module-subgroup">Планирование</h3>
+                  <p class="form-text">Кадровый вид включается в карточке <button type="button" class="module-jump" data-module-jump="calendar">«Календарь»</button>.</p>
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="staff_planner" value="1" id="sopt_staff_planner" aria-describedby="help_staff_planner" checked
+      >
+    <label class="form-check-label" for="sopt_staff_planner">Планировщик смен</label>
+  </div>
+
+  <p class="form-text" id="help_staff_planner">Пункт «Планировщик» в меню — планирование смен по проектам с перетаскиванием назначений.</p>
+
+</div>
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="staff_summary" value="1" id="sopt_staff_summary" aria-describedby="help_staff_summary" checked
+      >
+    <label class="form-check-label" for="sopt_staff_summary">Сводный отчёт по сменам</label>
+  </div>
+
+  <p class="form-text" id="help_staff_summary">Пункт «Сводка по сменам» в меню — сводная таблица смен персонала по проектам.</p>
+
+</div>
+
+
+                    <div class="module-option js-search-sub" hidden>
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="staff_staff_calendar" value="1" id="sopt_staff_staff_calendar" aria-describedby="help_staff_staff_calendar" checked
+      >
+    <label class="form-check-label" for="sopt_staff_staff_calendar">Календарь персонала</label>
+  </div>
+
+  <p class="form-text" id="help_staff_staff_calendar">Вкладка «Персонал» в календаре проектов — статусы сотрудников (отпуск/выходной/больничный) и назначения.</p>
+
+</div>
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="staff_calendar_sidebar" value="1" id="sopt_staff_calendar_sidebar" aria-describedby="help_staff_calendar_sidebar" checked
+      >
+    <label class="form-check-label" for="sopt_staff_calendar_sidebar">Ссылка на кадровый календарь в левом меню</label>
+  </div>
+
+  <p class="form-text" id="help_staff_calendar_sidebar">Добавляет ссылку на вкладку «Персонал» между календарём и каталогом. Видна сотрудникам с доступом к кадровому календарю.</p>
+
+</div>
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="staff_calendar_hourly" value="1" id="sopt_staff_calendar_hourly" aria-describedby="help_staff_calendar_hourly" checked
+      >
+    <label class="form-check-label" for="sopt_staff_calendar_hourly">Почасовой календарь персонала</label>
+  </div>
+
+  <p class="form-text" id="help_staff_calendar_hourly">Календарь персонала (общий и в проекте) разбивается по часам, а не на три дневные фазы 00-08/08-16/16-00 — как сетка в «Рейсах». Занятость рисуется по реальным часам монтажа/мероприятия/демонтажа, а выделение часов ставит смене окно «занят с… до…». На расчёт ЗП не влияет: ставка остаётся за смену.</p>
+
+</div>
+
+
+                    <div class="module-option js-search-sub">
+
+    <label for="sopt_staff_project_view">Персонал в проекте</label>
+    <select class="form-select form-select-sm mt-2" id="sopt_staff_project_view" aria-describedby="help_staff_project_view" data-cs-field="staff_project_view">
+      <option value="both" selected>Таблица и календарь</option><option value="table">Только таблица</option><option value="calendar">Только календарь</option><option value="off">Выключено (скрыть вкладку)</option>
+    </select>
+
+  <p class="form-text" id="help_staff_project_view">Вкладка «Персонал» внутри проекта: таблица назначений, режим-календарь, оба (с переключателем), либо вкладка скрыта целиком.</p>
+
+</div>
+
+
+                  </section>
+
+                  <section class="module-option-section">
+                  <h3 class="module-subgroup">Бюджет оплаты</h3>
+
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="staff_payroll" value="1" id="sopt_staff_payroll" aria-describedby="help_staff_payroll" checked
+      >
+    <label class="form-check-label" for="sopt_staff_payroll">Показывать зарплатный фонд проекта</label>
+  </div>
+
+  <p class="form-text" id="help_staff_payroll">Панель «ЗП фонд» на вкладке персонала проекта — бюджет и расход на оплату труда.</p>
+
+</div>
+
+
+                  </section>
+
+                  <section class="module-option-section">
+                  <h3 class="module-subgroup">Расчёт смен</h3>
+
+                  <p class="form-text">Оплата по ставкам за смены доступна всегда. Табель и согласование цены используют те же строки работы: их можно включать вместе.</p>
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="staff_calendar_cell_shifts" value="1" id="sopt_staff_calendar_cell_shifts" aria-describedby="help_staff_calendar_cell_shifts" checked
+      >
+    <label class="form-check-label" for="sopt_staff_calendar_cell_shifts">Каждые 8 часов календаря — отдельная оплачиваемая смена</label>
+  </div>
+
+  <p class="form-text" id="help_staff_calendar_cell_shifts">В календаре персонала ячейки 00–08, 08–16 и 16–00 оплачиваются отдельно. Для каждой можно выбрать позицию и коэффициент ставки. Используется сетка по 8 часов, даже если включён почасовой календарь. Старые назначения меняются только при редактировании с подтверждением.</p>
+
+</div>
+
+
+                  </section>
+
+                  <section class="module-option-section">
+                  <h3 class="module-subgroup">Согласование цены</h3>
+
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="staff_rate_agreement" value="1" id="sopt_staff_rate_agreement" aria-describedby="help_staff_rate_agreement" checked
+      >
+    <label class="form-check-label" for="sopt_staff_rate_agreement">Согласовывать общую цену за проект</label>
+  </div>
+
+  <p class="form-text" id="help_staff_rate_agreement">Сотрудник и менеджер согласуют общую цену за проект. Она распределяется по строкам работы. Можно использовать вместе с табелем; уже согласованные суммы сохраняются при выключении.</p>
+
+</div>
+
+
+                  </section>
+
+                  <section class="module-option-section">
+                  <h3 class="module-subgroup">Зарплатный табель</h3>
+
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="staff_timesheet" value="1" id="sopt_staff_timesheet" aria-describedby="help_staff_timesheet" checked
+      >
+    <label class="form-check-label" for="sopt_staff_timesheet">Включить зарплатный табель</label>
+  </div>
+
+  <p class="form-text" id="help_staff_timesheet">Ввод и проверка оплаты по дням и видам работ. Табель использует смены и их ставки, а также согласованную цену. Его включение не отменяет посменный расчёт и не создаёт второе начисление.</p>
+
+</div>
+
+
+                  </section>
+
+                  <section class="module-option-section">
+                  <h3 class="module-subgroup">Права на оплату</h3>
+
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="payroll_manager_only" value="1" id="sopt_payroll_manager_only" aria-describedby="help_payroll_manager_only" checked
+      >
+    <label class="form-check-label" for="sopt_payroll_manager_only">Ограничивать ввод и правку сумм</label>
+  </div>
+
+  <p class="form-text" id="help_payroll_manager_only">Для правки сумм в табеле и утверждённых договорных сумм требуется право «Правка ЗП». Действует и при выключенном табеле.</p>
+  <details class="module-option-details"><summary>Подробнее <span class="visually-hidden">о настройке «Ограничивать ввод и правку сумм»</span></summary><p class="form-text">Кроме права «Правка ЗП» нужен доступ со стороны компании к оплате этого назначения. Техник может вписывать расходы и объём работ и отправлять табель на проверку. Премии и штрафы также требуют права «Правка ЗП». При выключении ограничения сотрудник может вводить неутверждённые суммы в своём табеле. Утверждённые суммы в любом случае может менять только сторона компании.</p></details>
+</div>
+
+
+                  </section>
+
+                  <section class="module-option-section">
+                  <h3 class="module-subgroup">Работа техника</h3>
+
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="staff_brief" value="1" id="sopt_staff_brief" aria-describedby="help_staff_brief" checked
+      >
+    <label class="form-check-label" for="sopt_staff_brief">Техзадание для техника</label>
+  </div>
+
+  <p class="form-text" id="help_staff_brief">Страница «Техзадание» проекта — единый документ смены для техника: его роль и смены, тайминг, площадка и контакты, блоки менеджера с фото, документы по разделам, ссылка на погрузочную. Открывается и с мобилы, и с десктопа без права «Доступ к десктопу». Денег не показывает. При выключении страница и все входы в неё скрыты.</p>
+
+</div>
+
+
+                  </section>
+
+
+              </fieldset>
+            </details>
+
+          </article>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="js-search-group" aria-labelledby="module-group-finance">
+      <h2 class="modules-group-title" id="module-group-finance">Финансы и отчёты</h2>
+      <div class="row g-3">
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="finance_rules">
+          <article class="module-card" data-module="finance_rules">
+            <div class="module-heading">
+              <i class="bi bi-percent text-primary" aria-hidden="true"></i>
+              <strong>Комиссии и вознаграждения</strong>
+              <span class="module-state">Всегда доступно</span>
+
+            </div>
+            <p class="module-description" id="module-desc-finance_rules">Участие комиссий в расчётах сметы и проекта. Размер процентов — в настройках «Финансы».</p>
+
+
+            <details class="module-settings">
+              <summary>Настроить <span class="visually-hidden">Комиссии и вознаграждения</span></summary>
+
+              <fieldset class="module-options core-opts" id="coreopts_finance_rules">
+
+                  <section class="module-option-section">
+
+
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="manager_percent_enabled" value="1" id="core_finance_rules_manager_percent_enabled" aria-describedby="help_manager_percent_enabled" checked
+      data-cs-field="manager_percent_enabled">
+    <label class="form-check-label" for="core_finance_rules_manager_percent_enabled">Процент менеджера</label>
+  </div>
+
+  <p class="form-text" id="help_manager_percent_enabled">Учитывать доход менеджера (процент с проекта) в финансах. Сам процент задаётся во вкладке «Финансы».</p>
+
+</div>
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="agent_commission_enabled" value="1" id="core_finance_rules_agent_commission_enabled" aria-describedby="help_agent_commission_enabled" checked
+      data-cs-field="agent_commission_enabled">
+    <label class="form-check-label" for="core_finance_rules_agent_commission_enabled">Агентская комиссия</label>
+  </div>
+
+  <p class="form-text" id="help_agent_commission_enabled">Учитывать агентскую комиссию (тех. директор) в расчёте сметы. Размер задаётся во вкладке «Финансы».</p>
+
+</div>
+
+
+                  </section>
+
+
+              </fieldset>
+            </details>
+
+          </article>
+        </div>
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="accounting">
+          <article class="module-card" data-module="accounting">
+            <div class="module-heading">
+              <i class="bi bi-wallet2 text-primary" aria-hidden="true"></i>
+              <label for="mod_accounting">Бухгалтерия</label>
+
+              <span class="module-state" data-module-state="accounting">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="accounting" value="accounting" id="mod_accounting" aria-describedby="module-desc-accounting" checked >
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-accounting">Учёт платежей клиентов, выплат персоналу и взаиморасчётов с поставщиками.</p>
+
+
+            <details class="module-settings">
+              <summary>Настроить <span class="visually-hidden">Бухгалтерия</span></summary>
+              <p class="small text-muted mt-2 mb-0" data-module-disabled-note="accounting" hidden>Параметры сохранены. Для их изменения включите модуль.</p>
+              <fieldset class="module-options sub-opts" id="subopts_accounting">
+
+                  <section class="module-option-section">
+
+
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="counterparty_netting" value="1" id="sopt_counterparty_netting" aria-describedby="help_counterparty_netting" checked
+      >
+    <label class="form-check-label" for="sopt_counterparty_netting">Взаимозачёты контрагентов</label>
+  </div>
+
+  <p class="form-text" id="help_counterparty_netting">Погашать встречные долги заказчика и поставщика без движения денег. Выключение запрещает новые взаимозачёты и их сторнирование, сохраняя историю и ранее учтённые погашения.</p>
+
+</div>
+
+
+                  </section>
+
+
+              </fieldset>
+            </details>
+
+          </article>
+        </div>
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="treasury">
+          <article class="module-card" data-module="treasury">
+            <div class="module-heading">
+              <i class="bi bi-safe2 text-primary" aria-hidden="true"></i>
+              <label for="mod_treasury">Казна</label>
+
+              <span class="module-state" data-module-state="treasury">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="treasury" value="treasury" id="mod_treasury" aria-describedby="module-desc-treasury" checked >
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-treasury">Остатки денег компании по счетам, журнал движений, кто кому должен, операции владельца. На компьютере и в мобильном приложении.</p>
+
+
+          </article>
+        </div>
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="analytics">
+          <article class="module-card" data-module="analytics">
+            <div class="module-heading">
+              <i class="bi bi-bar-chart text-primary" aria-hidden="true"></i>
+              <label for="mod_analytics">Аналитика</label>
+
+              <span class="module-state" data-module-state="analytics">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="analytics" value="analytics" id="mod_analytics" aria-describedby="module-desc-analytics" checked >
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-analytics">Бизнес-дашборд: KPI, выручка по месяцам, спрос на оборудование.</p>
+
+
+          </article>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="js-search-group" aria-labelledby="module-group-transport">
+      <h2 class="modules-group-title" id="module-group-transport">Транспорт и пропуска</h2>
+      <div class="row g-3">
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="logistics">
+          <article class="module-card" data-module="logistics">
+            <div class="module-heading">
+              <i class="bi bi-signpost-2 text-primary" aria-hidden="true"></i>
+              <label for="mod_logistics">Рейсы (логистика)</label>
+
+              <span class="module-state" data-module-state="logistics">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="logistics" value="logistics" id="mod_logistics" aria-describedby="module-desc-logistics" checked data-flag="logistics_enabled">
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-logistics">Рейсы транспорта: остановки по часам, сетка занятости машин, мобильная страница и ссылка для водителя.</p>
+
+
+          </article>
+        </div>
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="passes">
+          <article class="module-card" data-module="passes">
+            <div class="module-heading">
+              <i class="bi bi-ticket-perforated text-primary" aria-hidden="true"></i>
+              <label for="mod_passes">Пропуска</label>
+
+              <span class="module-state" data-module-state="passes">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="passes" value="passes" id="mod_passes" aria-describedby="module-desc-passes" checked data-flag="passes_enabled">
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-passes">Журнал въездов на режимную территорию и сводная по тарифу арендодателя: разовые и постоянные пропуска, расходы на перевозчиков, остаток бланков.</p>
+
+
+            <details class="module-settings">
+              <summary>Настроить <span class="visually-hidden">Пропуска</span></summary>
+              <p class="small text-muted mt-2 mb-0" data-module-disabled-note="passes" hidden>Параметры сохранены. Для их изменения включите модуль.</p>
+              <fieldset class="module-options sub-opts" id="subopts_passes">
+
+                  <section class="module-option-section">
+
+
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="passes_person" value="1" id="sopt_passes_person" aria-describedby="help_passes_person" checked
+      >
+    <label class="form-check-label" for="sopt_passes_person">Пропуска на персонал</label>
+  </div>
+
+  <p class="form-text" id="help_passes_person">Строки прохода людей без транспорта и их блок в сводной. Выключите, если на территорию заезжает только транспорт.</p>
+
+</div>
+
+
+                  </section>
+
+
+              </fieldset>
+            </details>
+
+          </article>
+        </div>
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="load_planner">
+          <article class="module-card" data-module="load_planner">
+            <div class="module-heading">
+              <i class="bi bi-truck text-primary" aria-hidden="true"></i>
+              <label for="mod_load_planner">План погрузки</label>
+
+              <span class="module-state" data-module-state="load_planner">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="load_planner" value="load_planner" id="mod_load_planner" aria-describedby="module-desc-load_planner" checked >
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-load_planner">Экспериментальная расстановка оборудования сметы в кузове автомобиля.</p>
+            <p class="module-effect"><strong>При выключении:</strong> Кнопка и страница планирования будут скрыты. Сметы, погрузочные и их отметки не изменятся.</p>
+
+          </article>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="js-search-group" aria-labelledby="module-group-public">
+      <h2 class="modules-group-title" id="module-group-public">Клиенты и партнёры</h2>
+      <div class="row g-3">
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="subrent">
+          <article class="module-card" data-module="subrent">
+            <div class="module-heading">
+              <i class="bi bi-boxes text-primary" aria-hidden="true"></i>
+              <label for="mod_subrent">Субаренда</label>
+
+              <span class="module-state" data-module-state="subrent">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="subrent" value="subrent" id="mod_subrent" aria-describedby="module-desc-subrent" checked >
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-subrent">Аренда оборудования у сторонних поставщиков для покрытия дефицита.</p>
+
+
+          </article>
+        </div>
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="showcase">
+          <article class="module-card" data-module="showcase">
+            <div class="module-heading">
+              <i class="bi bi-eye text-primary" aria-hidden="true"></i>
+              <label for="mod_showcase">Витрина</label>
+
+              <span class="module-state" data-module-state="showcase">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="showcase" value="showcase" id="mod_showcase" aria-describedby="module-desc-showcase" checked data-flag="showcase_enabled">
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-showcase">Проект-витрина и публичный каталог оборудования без цен.</p>
+
+
+            <details class="module-settings">
+              <summary>Настроить <span class="visually-hidden">Витрина</span></summary>
+              <p class="small text-muted mt-2 mb-0" data-module-disabled-note="showcase" hidden>Параметры сохранены. Для их изменения включите модуль.</p>
+              <fieldset class="module-options sub-opts" id="subopts_showcase">
+
+                  <section class="module-option-section">
+
+
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="showcase_promo" value="1" id="sopt_showcase_promo" aria-describedby="help_showcase_promo" checked
+      >
+    <label class="form-check-label" for="sopt_showcase_promo">Промокоды (раскрытие цен)</label>
+  </div>
+
+  <p class="form-text" id="help_showcase_promo">Раскрытие цен в публичной витрине по промокоду. Без него витрина показывает каталог без цен.</p>
+
+</div>
+
+
+                  </section>
+
+
+              </fieldset>
+            </details>
+
+          </article>
+        </div>
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="showcase_guest">
+          <article class="module-card" data-module="showcase_guest">
+            <div class="module-heading">
+              <i class="bi bi-person-badge text-primary" aria-hidden="true"></i>
+              <label for="mod_showcase_guest">Гостевой портал</label>
+
+              <span class="module-state" data-module-state="showcase_guest">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="showcase_guest" value="showcase_guest" id="mod_showcase_guest" aria-describedby="module-desc-showcase_guest" checked data-flag="showcase_guest_enabled">
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-showcase_guest">Внешние компании заводят аккаунт и подают заявку. Аккаунт активируется только после одобрения менеджером.</p>
+
+
+          </article>
+        </div>
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="venues">
+          <article class="module-card" data-module="venues">
+            <div class="module-heading">
+              <i class="bi bi-geo-alt text-primary" aria-hidden="true"></i>
+              <label for="mod_venues">Площадки</label>
+
+              <span class="module-state" data-module-state="venues">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="venues" value="venues" id="mod_venues" aria-describedby="module-desc-venues" checked >
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-venues">База мероприятий и мест проведения — привязка к проектам.</p>
+
+
+          </article>
+        </div>
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="trusted_providers">
+          <article class="module-card" data-module="trusted_providers">
+            <div class="module-heading">
+              <i class="bi bi-shield-check text-primary" aria-hidden="true"></i>
+              <label for="mod_trusted_providers">Доверенные поставщики</label>
+
+              <span class="module-state" data-module-state="trusted_providers">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="trusted_providers" value="trusted_providers" id="mod_trusted_providers" aria-describedby="module-desc-trusted_providers" checked >
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-trusted_providers">Привязка позиций каталога к внешним поставщикам-партнёрам.</p>
+
+
+          </article>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="js-search-group" aria-labelledby="module-group-monitoring">
+      <h2 class="modules-group-title" id="module-group-monitoring">Совместная работа и уведомления</h2>
+      <div class="row g-3">
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="notifications">
+          <article class="module-card" data-module="notifications">
+            <div class="module-heading">
+              <i class="bi bi-bell text-primary" aria-hidden="true"></i>
+              <label for="mod_notifications">Уведомления</label>
+
+              <span class="module-state" data-module-state="notifications">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="notifications" value="notifications" id="mod_notifications" aria-describedby="module-desc-notifications" checked >
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-notifications">Центр уведомлений о дедлайнах, конфликтах оборудования и изменениях статусов.</p>
+
+
+          </article>
+        </div>
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="alerts">
+          <article class="module-card" data-module="alerts">
+            <div class="module-heading">
+              <i class="bi bi-exclamation-triangle text-primary" aria-hidden="true"></i>
+              <label for="mod_alerts">Тревоги</label>
+
+              <span class="module-state" data-module-state="alerts">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="alerts" value="alerts" id="mod_alerts" aria-describedby="module-desc-alerts" checked >
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-alerts">Риски нехватки оборудования и конфликты фактического наличия.</p>
+
+
+            <details class="module-settings">
+              <summary>Настроить <span class="visually-hidden">Тревоги</span></summary>
+              <p class="small text-muted mt-2 mb-0" data-module-disabled-note="alerts" hidden>Параметры сохранены. Для их изменения включите модуль.</p>
+              <fieldset class="module-options sub-opts" id="subopts_alerts">
+
+                  <section class="module-option-section">
+
+
+
+
+                    <div class="module-option js-search-sub">
+
+    <label for="sopt_alert_horizon_days">Показывать риски нехватки за … дней</label>
+    <input type="number" class="form-control form-control-sm mt-2" id="sopt_alert_horizon_days" name="alert_horizon_days" min="1" max="30" value="1" aria-describedby="help_alert_horizon_days">
+
+  <p class="form-text" id="help_alert_horizon_days">За сколько дней до отгрузки показывать тревоги о риске нехватки оборудования. Меньше — только ближайшие конфликты, больше — заранее.</p>
+
+</div>
+
+
+                  </section>
+
+
+              </fieldset>
+            </details>
+
+          </article>
+        </div>
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="presence">
+          <article class="module-card" data-module="presence">
+            <div class="module-heading">
+              <i class="bi bi-circle-fill text-primary" aria-hidden="true"></i>
+              <label for="mod_presence">Кто работает со сметой</label>
+
+              <span class="module-state" data-module-state="presence">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="presence" value="presence" id="mod_presence" aria-describedby="module-desc-presence" checked >
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-presence">Пузырь присутствия — видно, кто сейчас работает в той же смете.</p>
+
+
+          </article>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="js-search-group" aria-labelledby="module-group-integration">
+      <h2 class="modules-group-title" id="module-group-integration">Подключения и доступ</h2>
+      <div class="row g-3">
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="access">
+          <article class="module-card" data-module="access">
+            <div class="module-heading">
+              <i class="bi bi-person-badge text-primary" aria-hidden="true"></i>
+              <strong>Вход сотрудников</strong>
+              <span class="module-state">Всегда доступно</span>
+
+            </div>
+            <p class="module-description" id="module-desc-access">Вход сотрудников по личному QR-бейджу. Настраивается независимо от погрузочных.</p>
+
+
+            <details class="module-settings">
+              <summary>Настроить <span class="visually-hidden">Вход сотрудников</span></summary>
+
+              <fieldset class="module-options core-opts" id="coreopts_access">
+
+                  <section class="module-option-section">
+
+
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="qr_login_enabled" value="1" id="core_access_qr_login_enabled" aria-describedby="help_qr_login_enabled" checked
+      data-cs-field="qr_login_enabled">
+    <label class="form-check-label" for="core_access_qr_login_enabled">Вход по QR-бейджу (вне складского поста)</label>
+  </div>
+
+  <p class="form-text" id="help_qr_login_enabled">Скан личного QR-бейджа открывает сессию этого сотрудника без пароля: в основной версии — на экране входа и на любой странице, в мобильной — только на экране входа. На складском посту (киоск) вход по бейджу работает всегда, независимо от этой настройки: там это смена оператора. Настройка доступ не отзывает — чтобы закрыть вход конкретному человеку, отзовите его бейдж.</p>
+
+</div>
+
+
+                  </section>
+
+
+              </fieldset>
+            </details>
+
+          </article>
+        </div>
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="calendar_feed">
+          <article class="module-card" data-module="calendar_feed">
+            <div class="module-heading">
+              <i class="bi bi-calendar-event text-primary" aria-hidden="true"></i>
+              <label for="mod_calendar_feed">Подписка на календарь</label>
+
+              <span class="module-state" data-module-state="calendar_feed">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="calendar_feed" value="calendar_feed" id="mod_calendar_feed" aria-describedby="module-desc-calendar_feed" checked >
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-calendar_feed">Подписка на календарь проектов через Google Calendar, Apple Calendar и др.</p>
+
+
+          </article>
+        </div>
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="mcp">
+          <article class="module-card" data-module="mcp">
+            <div class="module-heading">
+              <i class="bi bi-plug text-primary" aria-hidden="true"></i>
+              <label for="mod_mcp">Подключение ИИ-ассистентов (MCP)</label>
+
+              <span class="module-state" data-module-state="mcp">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="mcp" value="mcp" id="mod_mcp" aria-describedby="module-desc-mcp" checked data-flag="mcp_enabled">
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-mcp">API-доступ ассистентов (Claude и др.) через Model Context Protocol. Токены — в профиле пользователя.</p>
+
+
+          </article>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="js-search-group" aria-labelledby="module-group-help">
+      <h2 class="modules-group-title" id="module-group-help">Документы и помощь</h2>
+      <div class="row g-3">
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="company_documents">
+          <article class="module-card" data-module="company_documents">
+            <div class="module-heading">
+              <i class="bi bi-file-earmark-text text-primary" aria-hidden="true"></i>
+              <label for="mod_company_documents">Документы компании</label>
+
+              <span class="module-state" data-module-state="company_documents">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="company_documents" value="company_documents" id="mod_company_documents" aria-describedby="module-desc-company_documents" checked >
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-company_documents">Хранение договоров, актов, шаблонов и корпоративных документов.</p>
+
+
+          </article>
+        </div>
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="video_help">
+          <article class="module-card" data-module="video_help">
+            <div class="module-heading">
+              <i class="bi bi-play-circle text-primary" aria-hidden="true"></i>
+              <label for="mod_video_help">Видео-помощь</label>
+
+              <span class="module-state" data-module-state="video_help">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="video_help" value="video_help" id="mod_video_help" aria-describedby="module-desc-video_help" checked >
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-video_help">Кнопки «?» с обучающими видео прямо в интерфейсе.</p>
+
+
+          </article>
+        </div>
+
+        <div class="col-12 col-xl-6 js-search-unit" data-search-extra="bug_reports">
+          <article class="module-card" data-module="bug_reports">
+            <div class="module-heading">
+              <i class="bi bi-bug text-primary" aria-hidden="true"></i>
+              <label for="mod_bug_reports">Сообщения об ошибках</label>
+
+              <span class="module-state" data-module-state="bug_reports">Включено</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input mod-switch" type="checkbox" name="bug_reports" value="bug_reports" id="mod_bug_reports" aria-describedby="module-desc-bug_reports" checked data-flag="bug_reports_enabled">
+              </div>
+
+            </div>
+            <p class="module-description" id="module-desc-bug_reports">Кнопка «Сообщить об ошибке» на каждой странице (строка у островка на компьютере, круглый значок на телефоне), в боковой панели, в личном кабинете и на странице «Страница не найдена». Разработчику программы уходят: текст пользователя; снимки экрана, если их приложили, — целиком, как на экране; страница отправки и переходы с открытой формой шаблонами адресов, без номеров записей; версия WMR, вид устройства, браузер и размер окна; список включённых у вас модулей — названиями, без данных; журнал обращений к серверу за 5 минут (адреса-шаблоны, коды, время, без содержимого) и ошибки браузера за то же время (класс, файл, строка, без текста). Состав описан в Политике, § 7.6. Плавающую кнопку можно выключить отдельно — тумблер ниже.</p>
+
+
+            <details class="module-settings">
+              <summary>Настроить <span class="visually-hidden">Сообщения об ошибках</span></summary>
+              <p class="small text-muted mt-2 mb-0" data-module-disabled-note="bug_reports" hidden>Параметры сохранены. Для их изменения включите модуль.</p>
+              <fieldset class="module-options sub-opts" id="subopts_bug_reports">
+
+                  <section class="module-option-section">
+
+
+
+
+                    <div class="module-option js-search-sub">
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" name="bug_reports_float" value="1" id="sopt_bug_reports_float" aria-describedby="help_bug_reports_float" checked
+      >
+    <label class="form-check-label" for="sopt_bug_reports_float">Плавающая кнопка «Сообщить об ошибке»</label>
+  </div>
+
+  <p class="form-text" id="help_bug_reports_float">Строка у островка на компьютере и круглый значок на телефоне. Выключено — кнопка остаётся в боковой панели, в личном кабинете и на странице «Страница не найдена». На телефоне тогда — только в кабинете: при выключенной вкладке «Кабинет» сотруднику без компьютера отправить отчёт будет негде.</p>
+
+</div>
+
+
+                  </section>
+
+
+              </fieldset>
+            </details>
+
+          </article>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="js-search-group">
+      <h2 class="modules-group-title">Мобильная версия</h2>
+      <div class="js-search-unit" data-search-extra="mobile мобильное приложение">
+        <article class="module-card" id="mobileBlock">
+          <input type="hidden" name="mobile_block" value="1">
+          <div class="module-heading"><i class="bi bi-phone text-primary" aria-hidden="true"></i><label for="mobile_enabled">Мобильная версия</label><div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="mobile_enabled" name="mobile_enabled" value="1" checked></div></div>
+          <p class="module-description">Доступ с телефона и видимость вкладок. Включение вкладки не выдаёт сотруднику права на её содержимое.</p>
+          <details class="module-settings"><summary>Настроить вкладки</summary>
+          <fieldset class="module-options" id="mobileBlockBody">
+            <p class="small text-muted">Расписание зависит от модуля «Персонал», бухгалтерия — от финансового доступа. Для склада и проверки наличия нужны соответствующие права.</p>
+            <div class="row">
+              <div class="col-6 col-md-4"><div class="form-check form-switch mb-2 js-search-sub"><input class="form-check-input mobile-tab" type="checkbox" id="mobile_tab_calendar" name="mobile_tab_calendar" value="1" checked><label class="form-check-label small" for="mobile_tab_calendar">Календарь</label></div></div><div class="col-6 col-md-4"><div class="form-check form-switch mb-2 js-search-sub"><input class="form-check-input mobile-tab" type="checkbox" id="mobile_tab_schedule" name="mobile_tab_schedule" value="1" checked><label class="form-check-label small" for="mobile_tab_schedule">Расписание</label></div></div><div class="col-6 col-md-4"><div class="form-check form-switch mb-2 js-search-sub"><input class="form-check-input mobile-tab" type="checkbox" id="mobile_tab_cabinet" name="mobile_tab_cabinet" value="1" checked><label class="form-check-label small" for="mobile_tab_cabinet">Кабинет</label></div></div><div class="col-6 col-md-4"><div class="form-check form-switch mb-2 js-search-sub"><input class="form-check-input mobile-tab" type="checkbox" id="mobile_tab_accounting" name="mobile_tab_accounting" value="1" checked><label class="form-check-label small" for="mobile_tab_accounting">Бухгалтерия</label></div></div><div class="col-6 col-md-4"><div class="form-check form-switch mb-2 js-search-sub"><input class="form-check-input mobile-tab" type="checkbox" id="mobile_tab_warehouse" name="mobile_tab_warehouse" value="1" checked><label class="form-check-label small" for="mobile_tab_warehouse">Склад</label></div></div><div class="col-6 col-md-4"><div class="form-check form-switch mb-2 js-search-sub"><input class="form-check-input mobile-tab" type="checkbox" id="mobile_tab_catalog" name="mobile_tab_catalog" value="1" checked><label class="form-check-label small" for="mobile_tab_catalog">Каталог</label></div></div><div class="col-6 col-md-4"><div class="form-check form-switch mb-2 js-search-sub"><input class="form-check-input mobile-tab" type="checkbox" id="mobile_tab_availability" name="mobile_tab_availability" value="1" checked><label class="form-check-label small" for="mobile_tab_availability">Проверка наличия</label></div></div>
+            </div>
+            <div class="form-check form-switch mt-2 js-search-sub"><input class="form-check-input" type="checkbox" id="mobile_availability_create" name="mobile_availability_create" value="1" checked><label class="form-check-label small" for="mobile_availability_create">Создание проекта из корзины «Проверка наличия»</label></div>
+          </fieldset></details>
+        </article>
+      </div>
+    </section>
 
 
 <div class="settings-search-empty d-none text-muted text-center py-4" role="status">
@@ -1392,9 +1610,6 @@
 </div>
 
   </div>
-
-  <div class="mt-4">
-    <button type="submit" class="btn btn-primary" id="modSaveBtn">Сохранить</button>
-    <span id="modSaveMsg" class="ms-2 small text-muted"></span>
-  </div>
+  <div class="modules-save"><button type="submit" class="btn btn-primary" id="modSaveBtn">Сохранить изменения</button><span id="modSaveMsg" class="small text-muted" role="status" aria-live="polite"></span></div>
+  </fieldset>
 </form>
