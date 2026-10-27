@@ -33,6 +33,7 @@ export function setModule(catalog, state, id, enabled) {
       notices.push('Казна выключена вместе с Бухгалтерией.');
     }
   }
+  normalizeCalendar(state);
   return notices;
 }
 
@@ -48,13 +49,17 @@ export function setOption(state, key, enabled) {
   }
 }
 
+export function choiceAvailable(option, value, state) {
+  return (option.choiceRequiresModules?.[value] || []).every(id=>state.modules[id]);
+}
+
 export function optionItems(m, state) {
   const items = [];
   for (const o of m.options) {
     if (o.type === 'bool' && o.price > 0 && state.options[o.key]) items.push({id:o.key, label:o.label, price:o.price, parent:m.label});
     if (o.type === 'select' && o.choicePrices?.[state.values[o.key]]) items.push({id:o.key,label:`${o.label}: ${o.choices.find(c=>c[0]===state.values[o.key])[1]}`,price:o.choicePrices[state.values[o.key]],parent:m.label});
     if (o.type === 'multi') for (const [id,label] of o.choices) {
-      if (o.choicePrices[id] > 0 && state.values[o.key]?.includes(id)) items.push({id:`${o.key}.${id}`,label:`${o.label}: ${label}`,price:o.choicePrices[id],parent:m.label});
+      if (o.choicePrices[id] > 0 && state.values[o.key]?.includes(id) && choiceAvailable(o,id,state)) items.push({id:`${o.key}.${id}`,label:`${o.label}: ${label}`,price:o.choicePrices[id],parent:m.label});
     }
   }
   return items;
@@ -102,5 +107,7 @@ export function normalizeCalendar(state) {
   const views = state.values.calendar_views;
   if (!views?.length) state.values.calendar_views = ['month'];
   state.options.staff_staff_calendar = state.values.calendar_views.includes('staff');
-  if (!state.values.calendar_views.includes(state.values.calendar_default_view)) state.values.calendar_default_view = state.values.calendar_views[0];
+  let available=state.values.calendar_views.filter(v=>v!=='staff'||state.modules.staff);
+  if(!available.length){state.values.calendar_views.push('month');available=['month'];}
+  if (!available.includes(state.values.calendar_default_view)) state.values.calendar_default_view = available[0];
 }

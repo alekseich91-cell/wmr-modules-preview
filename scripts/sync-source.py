@@ -55,6 +55,7 @@ with tempfile.TemporaryDirectory(prefix='wmr-pricing-source-') as temporary:
         if code not in policy['prices']:
             raise ValueError(f'Price decision missing for new module: {code}')
         module = {key: meta[key] for key in ('label', 'description', 'group', 'category', 'icon')}
+        module.update(policy.get('moduleOverrides', {}).get(code, {}))
         module.update(id=code, price=policy['prices'][code], core=meta['category'] == 'core',
                       custom=code == 'multiwarehouse', options=[], note=policy['notes'].get(code, ''),
                       off_description=meta.get('off_description', ''))
@@ -62,6 +63,7 @@ with tempfile.TemporaryDirectory(prefix='wmr-pricing-source-') as temporary:
             if original['key'] == 'scanner_mode_enabled':
                 continue  # Current warehouse contract v1 renders the mode selector.
             option = {key: original[key] for key in ('key', 'label', 'type', 'desc', 'details', 'min', 'max', 'choices', 'default', 'source', 'section', 'hidden') if key in original}
+            option.update(policy.get('optionOverrides', {}).get(option['key'], {}))
             option['price'] = policy['optionPrices'].get(option['key'], 0)
             if original.get('choices_attr') in choice_sets:
                 option['choices'] = choice_sets[original['choices_attr']]
@@ -69,7 +71,8 @@ with tempfile.TemporaryDirectory(prefix='wmr-pricing-source-') as temporary:
                 option['choices'] = [('manual', 'Ручной'), ('scanner', 'Сканер'), ('hybrid', 'Гибридный')]
                 option['choicePrices'] = policy['modePrices']
             if option['type'] == 'multi':
-                option['choicePrices'] = {value: 0 for value, _ in option['choices']}
+                option['choicePrices'] = {value: policy.get('choicePrices', {}).get(option['key'], {}).get(value, 0) for value, _ in option['choices']}
+                option['choiceRequiresModules'] = policy.get('choiceRequiresModules', {}).get(option['key'], {})
             module['options'].append(option)
         modules.append(module)
     mobile = {'id': 'mobile', 'label': 'Мобильная версия', 'description': 'Доступ с телефона и видимость вкладок. Включение вкладки не выдаёт сотруднику права на её содержимое.',
@@ -79,11 +82,12 @@ with tempfile.TemporaryDirectory(prefix='wmr-pricing-source-') as temporary:
         mobile['options'].append({'key': 'mobile_tab_' + code, 'label': label, 'type': 'bool', 'price': 0})
     mobile['options'].append({'key': 'mobile_availability_create', 'label': 'Создание проекта из корзины «Проверка наличия»', 'type': 'bool', 'price': 0})
     modules.append(mobile)
-    catalog = {'version': policy['version'], 'base': 0, 'full': policy['full'], 'coreTotal': policy['coreTotal'],
+    catalog = {'version': policy['version'], 'base': 0, 'full': 0, 'coreTotal': sum(m['price'] for m in modules if m['core']),
                'sourceCommit': sha, 'groups': source['MODULE_GROUPS'] + [('mobile', 'Мобильная версия')], 'modules': modules}
-    total = sum(m['price'] for m in modules) + sum(o['price'] for m in modules for o in m['options']) + max(policy['modePrices'].values())
-    assert total == policy['full'], (total, policy['full'])
-    assert sum(m['price'] for m in modules if m['core']) == policy['coreTotal']
+    total = sum(m['price'] for m in modules) + sum(o['price'] for m in modules for o in m['options']) + sum(sum(o['choicePrices'].values()) if o['type']=='multi' else max(o['choicePrices'].values()) for m in modules for o in m['options'] if o.get('choicePrices'))
+    catalog['full'] = total
+    assert all(m['price'] >= 0 for m in modules)
+    assert all(o['price'] >= 0 for m in modules for o in m['options'])
     (site / 'catalog.json').write_text(json.dumps(catalog, ensure_ascii=False, indent=2) + '\n')
     groups = []
     for group_code, group_label in source['MODULE_GROUPS']:
@@ -104,7 +108,7 @@ with tempfile.TemporaryDirectory(prefix='wmr-pricing-source-') as temporary:
                     opt['value'] = opt['min']
                 options.append(opt)
                 option_groups.setdefault(opt.get('section', ''), []).append(opt)
-            entries.append({**meta, 'code': module['id'], 'is_core': module['core'], 'enabled': True,
+            entries.append({**meta, 'label': module['label'], 'description': module['description'], 'code': module['id'], 'is_core': module['core'], 'enabled': True,
                             'sub_options': options, 'option_groups': [{'label': label, 'options': opts} for label, opts in option_groups.items()]})
         entries.sort(key=lambda m: not m['is_core'])
         if entries:
@@ -120,7 +124,7 @@ with tempfile.TemporaryDirectory(prefix='wmr-pricing-source-') as temporary:
     html = re.sub(r'<!--.*?-->', '', html, flags=re.S)
     (site / 'modules-original.html').write_text('\n'.join(line.rstrip() for line in html.splitlines()).strip() + '\n')
     nav = re.sub(r'{% url [^%]*%}', '#', raw['templates/core/settings_tabs/_nav.html'].decode())
-    nav = engine.from_string(nav).render(Context({'can_manage_settings': True, 'can_manage_users': True, 'can_manage_pdf_templates': True, 'company_modules': [m['id'] for m in modules], 'active': 'modules', 'APP_VERSION': '5.176.1 · прототип v4'}))
+    nav = engine.from_string(nav).render(Context({'can_manage_settings': True, 'can_manage_users': True, 'can_manage_pdf_templates': True, 'company_modules': [m['id'] for m in modules], 'active': 'modules', 'APP_VERSION': f"5.176.1 · прототип v{policy['version']}"}))
     nav = re.sub(r'href="[^"]*"', 'href="#workspace"', nav)
     document = (site / 'index.html').read_text()
     a = document.index('    <div class="original-settings-nav">')
@@ -135,6 +139,7 @@ with tempfile.TemporaryDirectory(prefix='wmr-pricing-source-') as temporary:
                   'rendering': 'Original module and navigation templates rendered offline from the pinned branch commit. No production settings, database data or credentials are copied.',
                   'core_cards': [m['id'] for m in modules if m['core']],
                   'payroll': 'Timesheet, rate agreement and amount-edit restrictions are independent compatible switches.',
-                  'pricing': '10,000 core + 36,000 optional modules + 4,000 advanced tools/mode = 50,000. Source behavior and proposed commercial prices are distinct.'}
+                  'pricing': f"Owner-specified individual prices; core={catalog['coreTotal']}, full={total}. Unchanged items retain the preceding prototype prices; no target-total adjustment.",
+                  'copy_overrides': 'Module and option wording in pricing-policy.json intentionally overrides source labels and descriptions for this prototype.'}
     (site / 'source-reference.json').write_text(json.dumps(provenance, ensure_ascii=False, indent=2) + '\n')
     print(json.dumps({'source': sha, 'cards': len(modules), 'options': sum(len(m['options']) for m in modules), 'core': provenance['core_cards'], 'full': total}, ensure_ascii=False))

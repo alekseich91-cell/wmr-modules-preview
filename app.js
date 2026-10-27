@@ -1,8 +1,8 @@
-import {makeState, calculate, moduleTotal, setModule, setOption, restore, normalizeCalendar} from './model.js?v=4';
+import {makeState, calculate, moduleTotal, setModule, setOption, restore, normalizeCalendar, choiceAvailable} from './model.js?v=5';
 const $ = id => document.getElementById(id);
 const money = n => new Intl.NumberFormat('ru-RU').format(n);
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const key = 'wmr-pricing-v4';
+const key = 'wmr-pricing-v5';
 const openModules = new Set();
 let catalog, originalHTML, state, filter = 'all', category = 'all', expanded = false, toastTimer;
 
@@ -71,7 +71,8 @@ function renderCatalog(resetDisclosure = false) {
     for(const o of m.options){
       if(o.type==='multi'){
         for(const input of card.querySelectorAll(`[data-mo-list="${o.key}"]`)){
-          input.dataset.multi=o.key;input.checked=state.values[o.key].includes(input.value);input.disabled=!state.modules[m.id];
+          input.dataset.multi=o.key;input.checked=state.values[o.key].includes(input.value);input.disabled=!state.modules[m.id]||!choiceAvailable(o,input.value,state);
+          if(!choiceAvailable(o,input.value,state))input.title='Для кадрового календаря включите модуль «Персонал и смены».';
           if(o.choicePrices[input.value])input.closest('.form-check').append(priceTag(`+${money(o.choicePrices[input.value])} ₽`));
         }
         continue;
@@ -87,7 +88,7 @@ function renderCatalog(resetDisclosure = false) {
       }else{
         input.dataset.value=o.key;input.value=state.values[o.key];
         if(o.type==='select'&&o.choicePrices)for(const option of input.options)option.textContent=`${o.choices.find(c=>c[0]===option.value)[1]} — ${o.choicePrices[option.value]?`+${money(o.choicePrices[option.value])} ₽/мес`:'без доплаты'}`;
-        if(o.key==='calendar_default_view')for(const option of input.options)option.disabled=!state.values.calendar_views.includes(option.value);
+        if(o.key==='calendar_default_view')for(const option of input.options)option.disabled=!state.values.calendar_views.includes(option.value)||(option.value==='staff'&&!state.modules.staff);
       }
     }
     let matches=(category==='all'||m.group===category)&&(filter!=='selected'||state.modules[m.id]);
@@ -140,7 +141,7 @@ function configurationText() {
       else lines.push(`  ${o.label}: ${o.choices?.find(c=>c[0]===state.values[o.key])?.[1] ?? state.values[o.key]}`);
     }
   }
-  lines.push('', 'Обязательное ядро: календарь, сметы, каталог, вход сотрудников и правила комиссий — 10 000 ₽/мес. Настройки без цены входят в соответствующий модуль. Сервер, внедрение и внешние сервисы оплачиваются отдельно.');
+  lines.push('', `Обязательное ядро: календарь, сметы, каталог, вход сотрудников и правила комиссий — ${money(catalog.coreTotal)} ₽/мес. Настройки без цены входят в соответствующий модуль. Сервер, внедрение и внешние сервисы оплачиваются отдельно.`);
   return lines.join('\n');
 }
 async function copy() {
@@ -154,10 +155,11 @@ async function copy() {
   }
 }
 async function init() {
-  const response = await fetch('./catalog.json?v=4');
+  const response = await fetch('./catalog.json?v=5');
   if (!response.ok) throw new Error('catalog');
   catalog = await response.json();
-  const markup=await fetch('./modules-original.html?v=4');if(!markup.ok)throw new Error('markup');originalHTML=await markup.text();
+  document.querySelectorAll('[data-price]').forEach(el=>el.textContent=`${money(catalog[el.dataset.price])} ₽`);
+  const markup=await fetch('./modules-original.html?v=5');if(!markup.ok)throw new Error('markup');originalHTML=await markup.text();
   let saved;
   try { saved = JSON.parse(localStorage.getItem(key)); } catch {}
   state = saved ? restore(catalog,saved) : makeState(catalog,true);
@@ -199,9 +201,9 @@ async function init() {
   $('full').addEventListener('click',()=>{
     const custom = state.modules.multiwarehouse;
     state=makeState(catalog,true);state.modules.multiwarehouse=custom;refresh();
-    showToast('Полный набор — 50 000 ₽/мес. Мультисклад рассчитывается отдельно.');
+    showToast(`Полный набор — ${money(catalog.full)} ₽/мес. Мультисклад рассчитывается отдельно.`);
   });
-  $('clear-all').addEventListener('click',()=>{state=makeState(catalog);refresh();showToast('Оставлено ядро за 10 000 ₽/мес и возможности без доплаты.');});
+  $('clear-all').addEventListener('click',()=>{state=makeState(catalog);refresh();showToast(`Оставлено ядро за ${money(catalog.coreTotal)} ₽/мес и возможности без доплаты.`);});
   $('choose-warehouses').addEventListener('click',()=>{state.modules.multiwarehouse=true;refresh();showToast('Мультисклад добавлен к запросу без изменения суммы.');});
   $('copy').addEventListener('click',copy);
   try { document.body.classList.toggle('dark',localStorage.getItem('wmr-pricing-theme')==='dark'); } catch {}

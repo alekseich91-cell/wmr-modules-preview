@@ -1,13 +1,13 @@
 {
-  "source_commit": "579d9b4f74c29cba37be87c510378963559fb4ea",
+  "source_commit": "b1f8a74457e0cb7d452453ea48fe61af7765c1c4",
   "source_branch": "codex/modules-ux-20261026",
-  "stand_commit_at_sync": "461e769a5bb05d5aa8c2d269aa3e3874e08a8a06",
-  "pricing_version": 4,
+  "stand_commit_at_sync": "b1f8a74457e0cb7d452453ea48fe61af7765c1c4",
+  "pricing_version": 5,
   "templates": {
-    "core/modules.py": "2a5625b08ba399044775963a1a003a862706e0b226be65d8f8bd9a47cfa386d8",
+    "core/modules.py": "134a998322cbbbdcbdfed1cfc461d5b70ef4b2a9306d6d4aef07ae8306d92417",
     "accounts/models.py": "c69da53e943c7a6449f7ba19ee4b4b1286a6e8ddc160328d6ffd3d894f7c86a3",
     "core/warehouse_input.py": "cffacc88f76c6ca756209c876e239771ca1d6316e1075f63e1026dc3fb151fec",
-    "core/views_settings.py": "7ca7240d1f649466ab713b7436b8c274979d102420be54c28174becfd90b1d9c",
+    "core/views_settings.py": "fa075fe83f195f0ba043f1fff5cf009a61358697c5b54e085b0dd48acf9ccba7",
     "core/module_guards.py": "143e0fc52c39c5647bda6e4d729a0d52eaca37e8cdbafcb2e10a5c118b36edce",
     "templates/core/settings_tabs/_modules.html": "d13e03c2820859521075ecabd9757106d99323585f73364e771eccb8748df34b",
     "templates/core/settings_tabs/_nav.html": "994f5fab1c6bd0aa8c00a776e3118c9c20561c141f73790b98c63052d875492a",
@@ -15,7 +15,7 @@
     "templates/core/includes/_settings_search.html": "7f0d17f9c5125a5f481231433e5721c4cc0b475c2927a1e079d1ee05878e5ab8",
     "templates/core/includes/_settings_search_empty.html": "f71187b260fc9579bcb26aa7eac7cd02f06b9928e978f4b9a4d90756bbb22e61",
     "static/css/base.css": "c2c5fdf9ccc87fe9bd3de64a33c274f3bd667901e58aa35f0946830eb64c457b",
-    "static/js/settings_modules.js": "1e28d4d48667e48c8c70be32b8fd0dd8c9138999c7d38cce29e4357fbfc46cd2"
+    "static/js/settings_modules.js": "2aa5e06b7bf8f08e5912f074327aab897b4eeaac40804bfba2391b839dcdf60b"
   },
   "rendering": "Original module and navigation templates rendered offline from the pinned branch commit. No production settings, database data or credentials are copied.",
   "core_cards": [
@@ -26,7 +26,6 @@
     "catalog"
   ],
   "payroll": "Timesheet, rate agreement and amount-edit restrictions are independent compatible switches.",
-  "pricing": "10,000 core + 36,000 optional modules + 4,000 advanced tools/mode = 50,000. Source behavior and proposed commercial prices are distinct.",
-  "stand_commit_verified": "579d9b4f74c29cba37be87c510378963559fb4ea",
-  "stand_branch_verified": "stand/acceptance-module-20261027"
+  "pricing": "Owner-specified individual prices; core=5000, full=49400. Unchanged items retain the preceding prototype prices; no target-total adjustment.",
+  "copy_overrides": "Module and option wording in pricing-policy.json intentionally overrides source labels and descriptions for this prototype."
 }
